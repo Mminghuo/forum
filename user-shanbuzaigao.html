@@ -1,0 +1,671 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>用户个人主页 - 怪谈论坛</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* ========== 基本样式 - 蓝白色调 ========== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+        }
+        
+        body {
+            background-color: #f0f2f5;        /* 灰白色背景 */
+            color: #1e293b;                    /* 深灰色文字 */
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        /* 关闭窗口按钮 */
+        .close-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            z-index: 100;
+        }
+        
+        .close-btn button {
+            background-color: #4a6fa5;          /* 灰蓝色 */
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 30px;                /* 圆角 */
+            cursor: pointer;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s;
+        }
+        
+        .close-btn button:hover {
+            background-color: #3a5a87;          /* 加深 */
+            box-shadow: 0 2px 8px rgba(74, 111, 165, 0.3);
+        }
+        
+        /* 个人主页头部 - 白色卡片 */
+        .profile-header {
+            background-color: #ffffff;
+            border-radius: 24px;                 /* 大圆角 */
+            padding: 30px;
+            margin-bottom: 20px;
+            border: 1px solid #e2e8f0;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+        }
+        
+        .header-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            max-width: 600px;
+        }
+        
+        .avatar-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .user-avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #4a6fa5, #2c4a73);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 40px;
+            border: 3px solid #4a6fa5;
+            box-shadow: 0 4px 10px rgba(74, 111, 165, 0.2);
+        }
+        
+        .avatar-upload {
+            font-size: 12px;
+            color: #94a3b8;
+            cursor: not-allowed;
+            margin-bottom: 15px;
+            display: none; /* 隐藏文字 */
+        }
+        
+        .user-title {
+            text-align: center;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+        
+        .user-name {
+            font-size: 32px;
+            color: #1e293b;                     /* 深灰色 */
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        
+        /* 状态和私聊行 */
+        .status-pm-row {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            max-width: 400px;
+            gap: 30px;
+            margin-top: 10px;
+        }
+        
+        .user-status {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            padding: 5px 15px;
+            border-radius: 30px;
+            background-color: #f8fafc;
+            border: 1px solid #cbd5e1;
+        }
+        
+        .status-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+        
+        .status-dot.online {
+            background-color: #2e7d32;
+            box-shadow: 0 0 6px rgba(46, 125, 50, 0.5);
+            animation: pulse 2s infinite;
+        }
+        
+        .status-dot.offline {
+            background-color: #94a3b8;
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 0.7; }
+            50% { opacity: 1; }
+            100% { opacity: 0.7; }
+        }
+        
+        .pm-btn {
+            background-color: #4a6fa5;          /* 灰蓝色 */
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 30px;                /* 圆角 */
+            cursor: pointer;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s;
+            width: auto;
+            min-width: 100px;
+            max-width: 150px;
+            justify-content: center;
+        }
+        
+        .pm-btn:hover {
+            background-color: #3a5a87;
+            box-shadow: 0 2px 8px rgba(74, 111, 165, 0.3);
+        }
+        
+        .pm-btn.disabled {
+            background-color: #a0afc0;
+            cursor: not-allowed;
+        }
+        
+        .pm-btn.disabled:hover {
+            background-color: #a0afc0;
+            box-shadow: none;
+        }
+        
+        /* 个人资料区域 */
+        .profile-content {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .profile-section {
+            background-color: #ffffff;
+            border-radius: 24px;
+            padding: 25px;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+        }
+        
+        .section-title {
+            font-size: 20px;
+            color: #4a6fa5;                     /* 灰蓝色 */
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .section-title i {
+            font-size: 18px;
+        }
+        
+        .info-grid {
+            display: grid;
+            grid-template-columns: 120px 1fr;
+            row-gap: 15px;
+        }
+        
+        .info-label {
+            color: #64748b;                      /* 中灰色 */
+            font-weight: 500;
+            font-size: 14px;
+        }
+        
+        .info-value {
+            color: #1e293b;                      /* 深灰色 */
+            font-size: 14px;
+        }
+        
+        .hidden-info {
+            color: #94a3b8;                      /* 浅灰色 */
+            font-style: italic;
+        }
+        
+        /* 用户简介区域 */
+        .bio-content {
+            background-color: #f8fafc;
+            border-radius: 16px;
+            padding: 20px;
+            line-height: 1.6;
+            color: #334155;
+            min-height: 120px;
+            border: 1px solid #e2e8f0;
+        }
+        
+        /* 底部提示 */
+        .footer-note {
+            margin-top: 30px;
+            text-align: center;
+            color: #94a3b8;
+            font-size: 12px;
+            border-top: 1px solid #e2e8f0;
+            padding-top: 20px;
+        }
+        
+        /* 自定义提示框样式 - 调整为蓝白 */
+        .custom-alert {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            backdrop-filter: blur(3px);
+        }
+        
+        .custom-alert.show {
+            display: flex;
+        }
+        
+        .alert-content {
+            background-color: #ffffff;
+            border-radius: 30px;
+            padding: 30px;
+            max-width: 400px;
+            width: 90%;
+            border: 1px solid #4a6fa5;
+            box-shadow: 0 20px 30px rgba(74, 111, 165, 0.1);
+            text-align: center;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .alert-icon {
+            font-size: 48px;
+            color: #4a6fa5;
+            margin-bottom: 20px;
+        }
+        
+        .alert-title {
+            font-size: 22px;
+            color: #1e293b;
+            margin-bottom: 15px;
+        }
+        
+        .alert-message {
+            color: #334155;
+            font-size: 16px;
+            line-height: 1.5;
+            margin-bottom: 25px;
+        }
+        
+        .alert-btn {
+            background-color: #4a6fa5;
+            color: white;
+            border: none;
+            padding: 10px 30px;
+            border-radius: 40px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.2s;
+        }
+        
+        .alert-btn:hover {
+            background-color: #3a5a87;
+            box-shadow: 0 2px 8px rgba(74, 111, 165, 0.3);
+        }
+        
+        /* 响应式调整 */
+        @media (max-width: 768px) {
+            .status-pm-row {
+                flex-direction: column;
+                gap: 15px;
+                align-items: center;
+            }
+            
+            .info-grid {
+                grid-template-columns: 100px 1fr;
+            }
+            
+            .close-btn {
+                position: relative;
+                top: 0;
+                right: 0;
+                display: flex;
+                justify-content: flex-end;
+                margin-bottom: 15px;
+            }
+            
+            .user-name {
+                font-size: 28px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .profile-header {
+                padding: 20px;
+            }
+            
+            .user-name {
+                font-size: 24px;
+            }
+            
+            .user-avatar {
+                width: 80px;
+                height: 80px;
+                font-size: 32px;
+            }
+            
+            .alert-content {
+                padding: 20px;
+            }
+            
+            .alert-title {
+                font-size: 20px;
+            }
+            
+            .alert-message {
+                font-size: 14px;
+            }
+        }
+        
+        /* 全屏状态下的优化 */
+        @media (min-width: 1200px) {
+            .container {
+                max-width: 900px;
+            }
+            
+            .profile-header {
+                padding: 40px 30px;
+            }
+            
+            .user-avatar {
+                width: 120px;
+                height: 120px;
+                font-size: 48px;
+            }
+            
+            .user-name {
+                font-size: 36px;
+            }
+            
+            .status-pm-row {
+                max-width: 450px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 自定义提示框 -->
+    <div class="custom-alert" id="pmAlert">
+        <div class="alert-content">
+            <div class="alert-icon">
+                <i class="fas fa-info-circle"></i>
+            </div>
+            <h2 class="alert-title">私聊提示</h2>
+            <div class="alert-message" id="alertMessage">该已存在于列表</div>
+            <button class="alert-btn" onclick="continueToPrivateChat()">确定</button>
+        </div>
+    </div>
+    
+    <div class="container">
+        <!-- 关闭窗口按钮 -->
+        <div class="close-btn">
+            <button onclick="window.close()">
+                <i class="fas fa-times"></i> 关闭窗口
+            </button>
+        </div>
+        
+        <!-- 个人主页头部 -->
+        <div class="profile-header">
+            <div class="header-content">
+                <!-- 头像 -->
+                <div class="avatar-section">
+                    <div class="user-avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <!-- 隐藏了"点击修改头像"文字 -->
+                    <div class="avatar-upload">点击修改头像</div>
+                </div>
+                
+                <!-- 用户名 -->
+                <div class="user-title">
+                    <h1 class="user-name">
+                        <span id="username">喵喵神</span>
+                    </h1>
+                </div>
+                
+                <!-- 状态和私聊行 -->
+                <div class="status-pm-row">
+                    <div class="user-status">
+                        <div class="status-dot offline" id="statusDot"></div>
+                        <span id="statusText">离线</span>
+                    </div>
+                    
+                    <button class="pm-btn" id="pmButton" onclick="initiatePrivateChat()">
+                        <i class="fas fa-comment"></i> 私聊
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 个人资料内容 -->
+        <div class="profile-content">
+            <!-- 个人资料 -->
+            <div class="profile-section personal-info">
+                <h2 class="section-title">
+                    <i class="fas fa-id-card"></i> 个人资料
+                </h2>
+                
+                <div class="info-grid">
+                    <div class="info-label">用户名：</div>
+                    <div class="info-value" id="profileUsername">喵喵神</div>
+                    
+                    <div class="info-label">注册天数：</div>
+                    <div class="info-value" id="registerDays">347</div>
+                    
+                    <div class="info-label">真实姓名：</div>
+                    <div class="info-value hidden-info">已隐藏</div>
+                    
+                    <div class="info-label">生辰八字：</div>
+                    <div class="info-value hidden-info">已隐藏</div>
+                    
+                    <div class="info-label">最后登录：</div>
+                    <div class="info-value" id="lastLogin">3天前</div>
+                </div>
+            </div>
+            
+            <!-- 用户简介 -->
+            <div class="profile-section user-bio">
+                <h2 class="section-title">
+                    <i class="fas fa-user-edit"></i> 用户简介✡
+                </h2>
+                
+                <div class="bio-content" id="userBio">
+                    这个用户很神秘，什么都没有填写。
+                </div>
+            </div>
+        </div>
+        
+        <!-- 底部提示 -->
+        <div class="footer-note">
+            本页面为论坛用户个人主页，用户信息由用户自行填写并对其真实性负责。
+        </div>
+    </div>
+    
+     <script>
+        // 用户数据配置 - 您可以根据需要修改这些值
+        const userData = {
+            username: "山不在高", // 修改为具体用户名
+            isOnline: false, // true = 在线, false = 离线
+            registerDays: 37, // 注册天数
+            lastLogin: "6天前", // 最后登录时间
+            userBio: "这个用户很神秘，什么都没有填写。" // 用户简介
+        };
+        
+        // 私聊相关变量
+        let targetUser = "";
+        let shouldOpenChat = false;
+        
+        // 从URL获取用户名参数（如果通过链接访问）
+        function getQueryParam(name) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(name);
+        }
+        
+        // 从本地存储获取当前用户信息
+        function getCurrentUserFromStorage() {
+            try {
+                const savedState = localStorage.getItem('forum_user_state');
+                if (savedState) {
+                    return JSON.parse(savedState);
+                }
+            } catch (e) {
+                console.log('加载用户状态失败');
+            }
+            return null;
+        }
+        
+        // 初始化页面
+        function initPage() {
+            // 检查URL中是否有用户名参数
+            const urlUsername = getQueryParam('user');
+            
+            // 如果有URL参数，使用URL中的用户名
+            if (urlUsername) {
+                userData.username = decodeURIComponent(urlUsername);
+            }
+            
+            // 更新页面元素
+            document.getElementById('username').textContent = userData.username;
+            document.getElementById('profileUsername').textContent = userData.username;
+            document.getElementById('registerDays').textContent = userData.registerDays;
+            document.getElementById('lastLogin').textContent = userData.lastLogin;
+            document.getElementById('userBio').textContent = userData.userBio;
+            
+            // 更新页面标题
+            document.title = userData.username + " - 个人主页 - 怪谈论坛";
+            
+            // 更新在线状态
+            updateOnlineStatus(userData.isOnline);
+            
+            // 如果是当前登录用户，禁用私聊按钮
+            const currentUser = getCurrentUserFromStorage();
+            if (currentUser && currentUser.username === userData.username) {
+                const pmButton = document.getElementById('pmButton');
+                pmButton.classList.add('disabled');
+                pmButton.innerHTML = '<i class="fas fa-comment-slash"></i> 不能私聊自己';
+                pmButton.onclick = function() {
+                    showCustomAlert("不能私聊自己", "您不能给自己发送私聊消息。");
+                };
+            } else {
+                // 设置目标用户
+                targetUser = userData.username;
+            }
+        }
+        
+        // 更新在线状态
+        function updateOnlineStatus(isOnline) {
+            const statusDot = document.getElementById('statusDot');
+            const statusText = document.getElementById('statusText');
+            
+            if (isOnline) {
+                statusDot.className = 'status-dot online';
+                statusText.textContent = '在线';
+                statusText.style.color = '#4CAF50';
+            } else {
+                statusDot.className = 'status-dot offline';
+                statusText.textContent = '离线';
+                statusText.style.color = '#666';
+            }
+        }
+        
+        // 发起私聊
+        function initiatePrivateChat() {
+            // 检查是否已登录
+            const currentUser = getCurrentUserFromStorage();
+            if (!currentUser || !currentUser.isLoggedIn) {
+                alert('请先登录才能使用私聊功能！');
+                return;
+            }
+            
+            // 显示提示框
+            showCustomAlert("私聊提示", "该已存在于列表");
+        }
+        
+        // 继续到私聊页面
+        function continueToPrivateChat() {
+            // 关闭提示框
+            closeAlert();
+            
+            // 在实际应用中，这里会打开私聊页面并传递目标用户参数
+            // 现在使用一个占位符页面
+            const chatWindow = window.open('forum-pm.html', '_blank');
+            
+            // 如果浏览器阻止了弹窗
+            if (!chatWindow) {
+                alert('浏览器阻止了弹窗，请允许弹出窗口或手动打开 forum-pm.html');
+            }
+        }
+        
+        // 显示自定义提示框
+        function showCustomAlert(title, message) {
+            const alertBox = document.getElementById('pmAlert');
+            const alertTitle = alertBox.querySelector('.alert-title');
+            const alertMessage = document.getElementById('alertMessage');
+            
+            alertTitle.textContent = title;
+            alertMessage.textContent = message;
+            alertBox.classList.add('show');
+        }
+        
+        // 关闭提示框
+        function closeAlert() {
+            document.getElementById('pmAlert').classList.remove('show');
+        }
+        
+        // 页面加载完成后初始化
+        window.onload = function() {
+            initPage();
+        };
+        
+        // 点击提示框外部区域也可以关闭提示框
+        document.getElementById('pmAlert').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeAlert();
+            }
+        });
+        
+        // 按ESC键也可以关闭提示框
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeAlert();
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,954 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>真实经历：一场雪山上的死里逃生 - 七月半论坛</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* ========== 基本样式 - 调整为表世界色调 ========== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+        }
+        
+        body {
+            background-color: #f0f2f5;        /* 灰白色背景 */
+            color: #1e293b;                    /* 深灰色文字 */
+            min-height: 100vh;
+        }
+        
+        /* 顶部栏 - 白色背景，灰蓝色点缀 */
+        .forum-header {
+            background-color: #ffffff;
+            padding: 10px 20px;
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 60px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+        }
+        
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .header-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #4a6fa5;                    /* 灰蓝色 */
+            letter-spacing: 2px;
+            text-shadow: none;
+        }
+        
+        .close-btn {
+            background-color: #4a6fa5;          /* 灰蓝色 */
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 13px;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .close-btn:hover {
+            background-color: #3a5a87;
+            box-shadow: 0 2px 8px rgba(74, 111, 165, 0.3);
+        }
+        
+        /* Logo版头 - 浅蓝渐变，文字深色 */
+        .forum-logo-header {
+            height: 15vh;
+            min-height: 100px;
+            background: linear-gradient(135deg, #a0c4ff 0%, #7aa5d9 100%); /* 加深雾霾蓝 */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+            border-bottom: 1px solid #d4e2f0;
+            margin-top: 60px;
+        }
+        
+        .forum-name {
+            font-size: 36px;
+            font-weight: 900;
+            color: #1e293b;
+            text-shadow: 1px 1px 0 rgba(255,255,255,0.5);
+            margin-bottom: 5px;
+            letter-spacing: 3px;
+        }
+        
+        .forum-subtitle {
+            font-size: 14px;
+            color: #334155;
+            font-style: italic;
+        }
+        
+        /* 帖子标题区域 - 固定跟随滚动，白色背景 */
+        .post-title-bar {
+            position: sticky;
+            top: 60px;
+            background-color: #ffffff;
+            border-bottom: 1px solid #e2e8f0;
+            padding: 12px 20px;
+            z-index: 999;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.02);
+        }
+        
+        .post-title-main {
+            font-size: 20px;
+            font-weight: 700;
+            color: #1e293b;
+            text-align: center;
+        }
+        
+        .post-title-main b {
+            color: #4a6fa5;
+        }
+        
+        /* 帖子内容区域 - 加宽到1100px */
+        .post-content-area {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        /* 楼层样式 - 白色卡片 */
+        .post-floor {
+            background-color: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 16px;
+            padding: 15px;
+            margin-bottom: 15px;
+            transition: all 0.2s;
+        }
+        
+        .post-floor:hover {
+            border-color: #4a6fa5;
+            box-shadow: 0 4px 12px rgba(74, 111, 165, 0.08);
+        }
+        
+        .floor-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 12px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #4a6fa5, #2c4a73);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 16px;
+            border: 2px solid #4a6fa5;
+            margin-right: 12px;
+        }
+        
+        .user-info {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .user-name {
+            font-weight: 600;
+            color: #4a6fa5;
+            font-size: 14px;
+        }
+        
+        .floor-number {
+            font-size: 12px;
+            color: #64748b;
+            margin-top: 2px;
+        }
+        
+        .floor-content {
+            line-height: 1.6;
+            color: #1e293b;
+            font-size: 14px;
+            padding-left: 52px;
+        }
+        
+        /* 图片自适应 - 保证不溢出容器 */
+        .floor-content img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 10px 0;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+        }
+        
+        .floor-content p {
+            margin-bottom: 10px;
+        }
+        
+        .floor-content p:last-child {
+            margin-bottom: 0;
+        }
+        
+        /* 引用样式 */
+        .quote {
+            background-color: #f8fafc;
+            border-left: 3px solid #4a6fa5;
+            padding: 10px;
+            margin: 10px 0;
+            font-size: 13px;
+            color: #334155;
+            border-radius: 4px;
+        }
+        
+        .quote-author {
+            color: #4a6fa5;
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+        
+        /* 回帖输入区域 - 加宽到1100px */
+        .reply-area {
+            max-width: 1100px;
+            margin: 30px auto;
+            padding: 0 20px 40px;
+        }
+        
+        .reply-title {
+            font-size: 18px;
+            color: #4a6fa5;
+            margin-bottom: 15px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        
+        .reply-box {
+            background-color: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 16px;
+            padding: 15px;
+        }
+        
+        .reply-input {
+            width: 100%;
+            min-height: 120px;
+            background-color: #f8fafc;
+            border: 1px solid #cbd5e1;
+            border-radius: 12px;
+            padding: 12px;
+            color: #1e293b;
+            font-size: 14px;
+            resize: vertical;
+            margin-bottom: 15px;
+        }
+        
+        .reply-input:focus {
+            outline: none;
+            border-color: #4a6fa5;
+        }
+        
+        .reply-buttons {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+        
+        .reply-btn {
+            background-color: #4a6fa5;
+            color: white;
+            border: none;
+            border-radius: 30px;
+            padding: 8px 24px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .reply-btn:hover {
+            background-color: #3a5a87;
+        }
+        
+        .reply-btn.disabled {
+            background-color: #a0afc0;
+            color: white;
+            cursor: not-allowed;
+        }
+        
+        /* 特殊样式 - 楼主楼层 */
+        .louzhu-floor {
+            border-left: 4px solid #4a6fa5;
+        }
+    </style>
+</head>
+<body>
+    <!-- 顶部栏 -->
+    <div class="forum-header">
+        <div class="header-left">
+            <div class="header-title">论坛</div>
+        </div>
+        <button class="close-btn" onclick="closePost()">
+            <i class="fas fa-times"></i>
+            关闭窗口
+        </button>
+    </div>
+    
+    <!-- Logo版头 -->
+    <div class="forum-logo-header">
+        <div class="forum-name">七月半</div>
+        <div class="forum-subtitle">欢迎来到未知的世界</div>
+    </div>
+    
+    <!-- 帖子标题栏 - 固定跟随滚动 -->
+    <div class="post-title-bar">
+        <div class="post-title-main"><b>真实经历：一场雪山上的死里逃生</b></div>
+    </div>
+    
+    <!-- 帖子内容区域 (宽度已加宽) -->
+    <div class="post-content-area">
+        <!-- 一楼 -->
+        <div class="post-floor louzhu-floor snow-mountain">
+            <div class="floor-header">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info">
+                    <div class="user-name">山不在高</div>
+                    <div class="floor-number">#1 楼主</div>
+                </div>
+            </div>
+            <div class="floor-content">
+                <p>这是一年前的真实经历，但我到现在还记得清清楚楚，像昨天刚发生一样。</p>
+            </div>
+        </div>
+        
+        <!-- 二楼 -->
+        <div class="post-floor louzhu-floor snow-mountain">
+            <div class="floor-header">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info">
+                    <div class="user-name">山不在高</div>
+                    <div class="floor-number">#2 楼主</div>
+                </div>
+            </div>
+            <div class="floor-content">
+                <p>有些事，我必须写出来，才能稍微安心一点，也希望大家帮我分析分析，那到底是怎么回事。</p>
+            </div>
+        </div>
+        
+        <!-- 三楼 -->
+        <div class="post-floor">
+            <div class="floor-header">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info">
+                    <div class="user-name">鬼不觉</div>
+                    <div class="floor-number">#3</div>
+                </div>
+            </div>
+            <div class="floor-content">
+                <p>新ID？第一次发帖啊，是驴友吗？</p>
+            </div>
+        </div>
+        
+        <!-- 四楼 -->
+        <div class="post-floor">
+            <div class="floor-header">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info">
+                    <div class="user-name">咕噜咕噜</div>
+                    <div class="floor-number">#4</div>
+                </div>
+            </div>
+            <div class="floor-content">
+                <p>前排，感觉有故事。</p>
+            </div>
+        </div>
+        
+        <!-- 五楼 -->
+        <div class="post-floor louzhu-floor snow-mountain">
+            <div class="floor-header">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info">
+                    <div class="user-name">山不在高</div>
+                    <div class="floor-number">#5 楼主</div>
+                </div>
+            </div>
+            <div class="floor-content">
+                <p>嗯，我算是个喜欢探险的学生，家里条件还行，有空就往山里跑。</p>
+                <p>一年前，我跟一支登山队去了川省的贡山——不熟的朋友可能不知道，这是蜀地最高的山，特别陡，全是冰，天气说变就变，对我们这种爱好者来说，又危险又吸引人。</p>
+            </div>
+        </div>
+        
+        <!-- 六楼 -->
+        <div class="post-floor louzhu-floor snow-mountain">
+            <div class="floor-header">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info">
+                    <div class="user-name">山不在高</div>
+                    <div class="floor-number">#6 楼主</div>
+                </div>
+            </div>
+            <div class="floor-content">
+                <p>十月份，我们一队人在山下扎好营，开始往上爬。</p>
+                <p>准备了很久，但还是低估了这座山。爬到一半，大部分队友已经累得不行，决定留在营地休息。</p>
+                <p>只剩我和一个姓李的大哥还想冲顶。为了轻便，我们只带了很少的干粮和热水。这是我最后悔的决定。</p>
+            </div>
+        </div>
+        
+        <!-- 七楼 -->
+        <div class="post-floor louzhu-floor snow-mountain">
+            <div class="floor-header">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info">
+                    <div class="user-name">山不在高</div>
+                    <div class="floor-number">#7 楼主</div>
+                </div>
+            </div>
+            <div class="floor-content">
+                <p>当时山上还有另外七八个登山的人。两天后，我们快到山顶了，真的就只剩一百米左右。</p>
+                <p>结果天突然黑了，狂风卷着雪砸过来，什么都看不见。我和李哥没地方躲，只好钻进一个雪洞里。</p>
+            </div>
+        </div>
+        
+        <!-- 八楼 -->
+        <div class="post-floor louzhu-floor snow-mountain">
+            <div class="floor-header">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info">
+                    <div class="user-name">山不在高</div>
+                    <div class="floor-number">#8 楼主</div>
+                </div>
+            </div>
+            <div class="floor-content">
+                <p>暴风雪刮了一整天，外面零下三十度，我实在扛不住，想下山。可李哥还想等雪停继续冲。我们的食物已经快没了。</p>
+                <p>第三天，最坏的情况来了：雪把一切都埋了，山顶、下山的路，全都看不见。周围一片死寂，一个人影都没有。</p>
+            </div>
+        </div>
+        
+        <!-- 九楼 -->
+        <div class="post-floor louzhu-floor snow-mountain">
+            <div class="floor-header">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info">
+                    <div class="user-name">山不在高</div>
+                    <div class="floor-number">#9 楼主</div>
+                </div>
+            </div>
+            <div class="floor-content">
+                <p>我意识到不能再等了，想联系半山腰的队友，但手机完全没信号。更糟的是，李哥走着走着也倒下了，走不动了。</p>
+                <p>我不能看着他死，就把帐篷、剩下的食物和水留给他，自己先往下走，想找救援。</p>
+            </div>
+        </div>
+        
+        <!-- 十楼 -->
+        <div class="post-floor">
+            <div class="floor-header">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info">
+                    <div class="user-name">南柯一梦</div>
+                    <div class="floor-number">#10</div>
+                </div>
+            </div>
+            <div class="floor-content">
+                <p>查了一下，贡山死过的人比登顶的还多……楼主敢去还能回来，是真的命大。</p>
+            </div>
+        </div>
+        
+        <!-- 十一楼 -->
+        <div class="post-floor">
+            <div class="floor-header">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info">
+                    <div class="user-name">咕噜咕噜</div>
+                    <div class="floor-number">#11</div>
+                </div>
+            </div>
+            <div class="floor-content">
+                <p>这就是大佬的世界吗，佩服佩服</p>
+            </div>
+        </div>
+        
+        <!-- 十二楼 -->
+        <div class="post-floor louzhu-floor snow-mountain">
+            <div class="floor-header">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info">
+                    <div class="user-name">山不在高</div>
+                    <div class="floor-number">#12 楼主</div>
+                </div>
+            </div>
+            <div class="floor-content">
+                <div class="quote">
+                    <div class="quote-author">回复 南柯一梦 #10楼</div>
+                    查了一下，贡山死过的人比登顶的还多……楼主敢去还能回来，是真的命大。
+                </div>
+                <p>其实……连我自己都不确定，我到底是不是真的"回来"了。</p>
+            </div>
+        </div>
+        
+        <!-- 十三楼 -->
+        <div class="post-floor louzhu-floor snow-mountain">
+            <div class="floor-header">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info">
+                    <div class="user-name">山不在高</div>
+                    <div class="floor-number">#13 楼主</div>
+                </div>
+            </div>
+            <div class="floor-content">
+                <p>又走了半天，雪慢慢停了。</p>
+                <p>我忽然看到前面有人影，好几个人，都朝同一个方向走。我想追上他们，却怎么也追不上，只能一直跟着。</p>
+                <p>又走了很久，我低头看到雪地里自己的脚印，才发现，我一直在原地绕圈。</p>
+                <p>那些人影，根本不存在。从始至终，只有我一个人。</p>
+            </div>
+        </div>
+        
+        <!-- 十四楼 -->
+        <div class="post-floor louzhu-floor snow-mountain">
+            <div class="floor-header">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info">
+                    <div class="user-name">山不在高</div>
+                    <div class="floor-number">#14 楼主</div>
+                </div>
+            </div>
+            <div class="floor-content">
+                <p>我不敢细想，埋头凭感觉找方向。</p>
+                <p>但那时候，总觉得有什么在叫我，好像有个声音轻轻说："来这里……来这里……"</p>
+            </div>
+        </div>
+        
+        <!-- 十五楼 -->
+        <div class="post-floor louzhu-floor snow-mountain">
+            <div class="floor-header">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info">
+                    <div class="user-name">山不在高</div>
+                    <div class="floor-number">#15 楼主</div>
+                </div>
+            </div>
+            <div class="floor-content">
+                <p>不知道走了多久，天快黑时，我眼前居然出现了一个村子。你们敢相信吗，几千米的雪山上，居然有村庄？</p>
+                <p>我以为又是幻觉。但我走近时，清楚看见一个穿红衣服的女人站在槐树下，想我求救。</p>
+                <p>还没等我回答，一个表情诡异的男人突然冲过来，脸上挂着怪笑——</p>
+                <p>就在他要抓到我的时候，我手腕上妈妈给的护身符突然发烫，烧了起来。</p>
+                <p>再抬头，那男人不见了。</p>
+            </div>
+        </div>
+        
+        <!-- 十六楼 -->
+        <div class="post-floor">
+            <div class="floor-header">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info">
+                    <div class="user-name">笼中之雀</div>
+                    <div class="floor-number">#16</div>
+                </div>
+            </div>
+            <div class="floor-content">
+                <p>第一次听说这种经历……还好楼主没事，不然我今晚睡不着了。</p>
+            </div>
+        </div>
+        
+        <!-- 十七楼 -->
+        <div class="post-floor">
+            <div class="floor-header">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info">
+                    <div class="user-name">疯狂睡大觉</div>
+                    <div class="floor-number">#17</div>
+                </div>
+            </div>
+            <div class="floor-content">
+                <p>去年新闻是不是报过？贡山有个驴友失踪十几天，救援队都放弃了，结果自己走出来了……该不会就是你吧？</p>
+            </div>
+        </div>
+        
+        <!-- 十八楼 -->
+        <div class="post-floor">
+            <div class="floor-header">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info">
+                    <div class="user-name">小范先生</div>
+                    <div class="floor-number">#18</div>
+                </div>
+            </div>
+            <div class="floor-content">
+                <p>搜到了，还真有新闻，这下不得不信了。</p>
+            </div>
+        </div>
+        
+        <!-- 十九楼 -->
+        <div class="post-floor louzhu-floor snow-mountain">
+            <div class="floor-header">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info">
+                    <div class="user-name">山不在高</div>
+                    <div class="floor-number">#19 楼主</div>
+                </div>
+            </div>
+            <div class="floor-content">
+                <div class="quote">
+                    <div class="quote-author">回复 疯狂睡大觉 #17楼</div>
+                    去年新闻是不是报过？贡山有个驴友失踪十几天，救援队都放弃了，结果自己走出来了……该不会就是你吧？
+                </div>
+                <p>是我。但奇怪的是，我感觉自己在山上顶多待了七天，可他们说我已经失踪半个月，家里连丧事都准备好了……</p>
+            </div>
+        </div>
+        
+        <!-- 二十楼 -->
+        <div class="post-floor">
+            <div class="floor-header">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info">
+                    <div class="user-name">南柯一梦</div>
+                    <div class="floor-number">#20</div>
+                </div>
+            </div>
+            <div class="floor-content">
+                <p>差一点就能参加自己的葬礼了哈哈（没有不敬的意思）</p>
+            </div>
+        </div>
+        
+        <!-- 二十一楼 -->
+        <div class="post-floor">
+            <div class="floor-header">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info">
+                    <div class="user-name">破折号</div>
+                    <div class="floor-number">#21</div>
+                </div>
+            </div>
+            <div class="floor-content">
+                <p>简直是生存奇迹，怪不得能上新闻。</p>
+            </div>
+        </div>
+        
+        <!-- 二十二楼 -->
+        <div class="post-floor louzhu-floor snow-mountain">
+            <div class="floor-header">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info">
+                    <div class="user-name">山不在高</div>
+                    <div class="floor-number">#22 楼主</div>
+                </div>
+            </div>
+            <div class="floor-content">
+                <p>我在医院醒来后才知道，那次山上困了好几个人。李哥在我离开后不久就遇难了，还有几个人被雪埋了。</p>
+                <p>我是唯一的幸存者。</p>
+                <p>我立刻问救援队，有没有救出一个穿红衣服的女人？还说了那棵槐树。</p>
+                <p>但他们都说，根本没有槐树，也没有村庄，可能是我冻出幻觉了。</p>
+            </div>
+        </div>
+        
+        <!-- 二十三楼 -->
+        <div class="post-floor louzhu-floor snow-mountain">
+            <div class="floor-header">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info">
+                    <div class="user-name">山不在高</div>
+                    <div class="floor-number">#23 楼主</div>
+                </div>
+            </div>
+            <div class="floor-content">
+                <p>可我明明记得她的脸，也记得那个男人诡异的笑。</p>
+                <p>更记得在遇到她之前，好像整座山都在轻轻喊我，让我往某个方向走。</p>
+            </div>
+        </div>
+        
+        <!-- 二十四楼 -->
+        <div class="post-floor">
+            <div class="floor-header">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info">
+                    <div class="user-name">鬼不觉</div>
+                    <div class="floor-number">#24</div>
+                </div>
+            </div>
+            <div class="floor-content">
+                <p>太玄了，楼主遇到的难道是山神？</p>
+            </div>
+        </div>
+        
+        <!-- 二十五楼 -->
+        <div class="post-floor">
+            <div class="floor-header">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info">
+                    <div class="user-name">知足常乐</div>
+                    <div class="floor-number">#25</div>
+                </div>
+            </div>
+            <div class="floor-content">
+                <p>谁家山神还要人救啊……我倒觉得，可能是以前死在山上的人。</p>
+            </div>
+        </div>
+        
+        <!-- 二十六楼 -->
+        <div class="post-floor louzhu-floor snow-mountain">
+            <div class="floor-header">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info">
+                    <div class="user-name">山不在高</div>
+                    <div class="floor-number">#26 楼主</div>
+                </div>
+            </div>
+            <div class="floor-content">
+                <p>我也这么想。最近我在学画画，想试着把她的样子画出来，还有那棵槐树。</p>
+                <p>我总觉得，那个地方是真的存在的。</p>
+            </div>
+        </div>
+        
+        <!-- 二十七楼 -->
+        <div class="post-floor">
+            <div class="floor-header">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info">
+                    <div class="user-name">小范先生</div>
+                    <div class="floor-number">#27</div>
+                </div>
+            </div>
+            <div class="floor-content">
+                <p>说实话，我还是觉得是幻觉，人在那种环境下，大脑是会骗人的。</p>
+            </div>
+        </div>
+        
+        <!-- 二十八楼 -->
+        <div class="post-floor">
+            <div class="floor-header">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info">
+                    <div class="user-name">破折号</div>
+                    <div class="floor-number">#28</div>
+                </div>
+            </div>
+            <div class="floor-content">
+                <p>楼上又来泼冷水了，这么不相信有鬼，来什么灵异论坛啊</p>
+            </div>
+        </div>
+        
+        <!-- 二十九楼 -->
+        <div class="post-floor">
+            <div class="floor-header">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info">
+                    <div class="user-name">小范先生</div>
+                    <div class="floor-number">#29</div>
+                </div>
+            </div>
+            <div class="floor-content">
+                <p>合理怀疑而已，怎么，不可以？</p>
+            </div>
+        </div>
+        
+        <!-- 三十楼 -->
+        <div class="post-floor">
+            <div class="floor-header">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info">
+                    <div class="user-name">游客</div>
+                    <div class="floor-number">#30</div>
+                </div>
+            </div>
+            <div class="floor-content">
+                <p>慕名围观，楼主经历好精彩，有后续吗？</p>
+            </div>
+        </div>
+        
+        <!-- 三十一楼 -->
+        <div class="post-floor">
+            <div class="floor-header">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info">
+                    <div class="user-name">咕噜咕噜</div>
+                    <div class="floor-number">#31</div>
+                </div>
+            </div>
+            <div class="floor-content">
+                <p>我信，这世上解释不清的事多了去了</p>
+            </div>
+        </div>
+        
+        <!-- 三十二楼 -->
+        <div class="post-floor">
+            <div class="floor-header">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info">
+                    <div class="user-name">笼中之雀</div>
+                    <div class="floor-number">#32</div>
+                </div>
+            </div>
+            <div class="floor-content">
+                <p>楼主画好了可以发出来！说不定真有人认得。现在AI也能帮忙复原，一起找找看。</p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 回帖区域 (宽度已加宽) -->
+    <div class="reply-area">
+        <div class="reply-title">发表回复</div>
+        <div class="reply-box">
+            <textarea class="reply-input" placeholder="请输入回复内容..." id="replyInput"></textarea>
+            <div class="reply-buttons">
+                <button class="reply-btn disabled" id="submitReply">提交回复</button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // 初始化函数
+        function initializePost() {
+            setupReplyButton();
+            setupTitleBarScroll();
+            highlightLouzhuFloors();
+        }
+        
+        // 设置回帖按钮无反应
+        function setupReplyButton() {
+            const submitBtn = document.getElementById('submitReply');
+            const replyInput = document.getElementById('replyInput');
+            
+            submitBtn.onclick = function() {
+                return false;
+            };
+            
+            replyInput.onclick = function() {
+                return false;
+            };
+            
+            replyInput.onfocus = function() {
+                return false;
+            };
+        }
+        
+        // 设置滚动时标题栏的样式
+        function setupTitleBarScroll() {
+            const titleBar = document.querySelector('.post-title-bar');
+            let lastScrollTop = 0;
+            
+            window.addEventListener('scroll', function() {
+                const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                
+                if (scrollTop > lastScrollTop) {
+                    titleBar.style.boxShadow = '0 3px 10px rgba(0, 0, 0, 0.05)';
+                } else {
+                    titleBar.style.boxShadow = '0 3px 10px rgba(0, 0, 0, 0.02)';
+                }
+                
+                lastScrollTop = scrollTop;
+            });
+        }
+        
+        // 高亮显示楼主楼层
+        function highlightLouzhuFloors() {
+            const louzhuFloors = document.querySelectorAll('.louzhu-floor');
+            
+            louzhuFloors.forEach(floor => {
+                floor.addEventListener('mouseenter', function() {
+                    this.style.boxShadow = '0 6px 16px rgba(74, 111, 165, 0.15)';
+                    this.style.transform = 'translateY(-2px)';
+                });
+                
+                floor.addEventListener('mouseleave', function() {
+                    this.style.boxShadow = 'none';
+                    this.style.transform = 'translateY(0)';
+                });
+            });
+        }
+        
+        // 关闭帖子页面 - 尝试关闭窗口
+        function closePost() {
+            window.close();
+        }
+        
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closePost();
+            }
+        });
+        
+        window.onload = function() {
+            initializePost();
+        };
+    </script>
+</body>
+</html>

@@ -1,0 +1,271 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>结局一</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        @font-face {
+            font-family: 'PaperFont';
+            src: local('方正颜宋简体'), local('方正清刻简悦宋体'), local('SimSun'), local('STSong');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        body {
+            background-color: #f8f4e8;
+            background-image: 
+                linear-gradient(to right, rgba(139, 0, 0, 0.12) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(139, 0, 0, 0.12) 1px, transparent 1px);
+            background-size: 40px 40px;
+            font-family: 'PaperFont', 'SimSun', serif;
+            min-height: 100vh;
+            padding: 40px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .paper-card {
+            position: relative;
+            background-color: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(2px);
+            width: 100%;
+            max-width: 950px;
+            padding: 40px 45px 35px 45px;
+            border-radius: 4px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: #1e1e1e;
+        }
+
+        .double-border {
+            position: absolute;
+            top: 20px;
+            left: 25px;
+            right: 25px;
+            bottom: 20px;
+            border: 2px solid rgba(0, 0, 0, 0.2);
+            border-radius: 2px;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .double-border::before {
+            content: '';
+            position: absolute;
+            top: 8px;
+            left: 8px;
+            right: 8px;
+            bottom: 8px;
+            border: 1px solid rgba(0, 0, 0, 0.2);
+            border-radius: 1px;
+            pointer-events: none;
+        }
+
+        .story-container {
+            position: relative;
+            z-index: 2;
+            font-size: 18px;
+            line-height: 1.95;
+            color: #1e1e1e;
+            text-align: justify;
+            letter-spacing: 0.02em;
+            margin-bottom: 30px;
+        }
+
+        .story-paragraph {
+            margin-bottom: 1.2em;
+            text-indent: 2em;
+        }
+
+        .button-wrapper {
+            display: flex;
+            justify-content: center;
+            margin-top: 15px;
+            margin-bottom: 5px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .action-button {
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            font-family: 'PaperFont', 'SimSun', serif;
+            font-size: 32px;
+            font-weight: bold;
+            color: #000;
+            padding: 8px 30px;
+            position: relative;
+            transition: all 0.3s;
+            letter-spacing: 4px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .action-button:after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: #8b0000;
+            transform: scaleX(0.8);
+            opacity: 0.6;
+            transition: transform 0.3s, opacity 0.3s;
+        }
+
+        .action-button:hover {
+            transform: translateY(-4px);
+            color: #8b0000;
+        }
+
+        .action-button:hover:after {
+            transform: scaleX(1);
+            opacity: 1;
+            background-color: #8b0000;
+        }
+
+        .action-button i {
+            font-size: 28px;
+            transition: transform 0.2s;
+        }
+
+        .action-button:hover i {
+            transform: translateX(4px);
+        }
+
+        @media (max-width: 700px) {
+            body {
+                padding: 20px 15px;
+            }
+            .paper-card {
+                padding: 25px 25px 20px 25px;
+            }
+            .double-border {
+                top: 12px;
+                left: 12px;
+                right: 12px;
+                bottom: 12px;
+            }
+            .story-container {
+                font-size: 16px;
+                line-height: 1.85;
+            }
+            .action-button {
+                font-size: 28px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .paper-card {
+                padding: 20px 18px 15px 18px;
+            }
+            .double-border {
+                top: 10px;
+                left: 8px;
+                right: 8px;
+                bottom: 8px;
+            }
+            .story-container {
+                font-size: 15px;
+            }
+            .action-button {
+                font-size: 24px;
+                letter-spacing: 2px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="paper-card" id="paperCard">
+        <div class="double-border"></div>
+        <div class="story-container" id="storyContainer"></div>
+        <div class="button-wrapper">
+            <button class="action-button" id="nextBtn">
+                继续 <i class="fa-solid fa-arrow-right"></i>
+            </button>
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            // 定义三个部分，每部分内用 <br> 分隔自然段（根据用户提供的换行）
+            const storyParts = [
+                `你毫不犹豫地出发了。<br>因为太过急切，你没有告知其他人，独自一人驱车前往前往千福县。<br>导航指向的位置在复杂的群山中，而你的眼前，是茂密繁盛的原始森林。<br>但这不能阻挠你的脚步。<br>为了找回姐姐，你无视“禁止进入”的警示牌，翻过黄色的警戒线，避开巡逻的政府人员，成功走进了云留山的核心区域。<br>这里是人类的禁区。`,
+                
+                `你低估了“山”的诡谲。<br>森林中弥漫着浓稠的雨雾，让人看不清方向，只听到鸟叫虫鸣，以及不知名野兽的低吟。<br>山体遮蔽了外界的信号，现代科技手机被驯化为发光的石头，你只能按照那道画好的导航路线，努力朝着那个认定的方向前进。<br>你感觉自己走了很久很久，可是不知为何，屏幕上的终点仍然遥不可及。<br>当你终于察觉到异常，猛然低头，终于看清泥土上的鞋印，如出一辙的花纹，一层又一层，不知已然走过多少次。<br>头顶上，墨绿的树木已然连成天幕，看不见太阳。`,
+                
+                `未知的力量在戏耍你。<br>你迷失在了这片无人的禁区。<br>黑暗之中，你紧握着手机，借由那最后一点光亮，尝试找寻生路。<br>然而一切都来不及了。<br>无论你怎样挣扎、呼唤，回应你的，只有层层叠叠的树木，将你困死在这张绵延不断的绿色蛛网中。<br>终于，手机的电量耗尽，屏幕熄灭了。<br>你陷入了绝望。`
+            ];
+
+            const totalParts = storyParts.length; // 3
+            let currentPart = 0;
+
+            const storyContainer = document.getElementById('storyContainer');
+            const nextBtn = document.getElementById('nextBtn');
+
+            // 将一段文本（可能包含<br>）分割成多个自然段，作为带 .story-paragraph 的元素追加
+            function appendPart(index) {
+                const partText = storyParts[index];
+                const paragraphs = partText.split('<br>');
+                paragraphs.forEach(para => {
+                    const trimmed = para.trim();
+                    if (trimmed === '') return;
+                    const p = document.createElement('div');
+                    p.className = 'story-paragraph';
+                    p.textContent = trimmed;
+                    storyContainer.appendChild(p);
+                });
+            }
+
+            // 初始化显示第一部分
+            appendPart(0);
+            currentPart = 0;
+
+            // 更新按钮文字
+            function updateButton() {
+                if (currentPart === totalParts - 1) {
+                    nextBtn.innerHTML = '【结局一】达成 <i class="fa-solid fa-arrow-right"></i>';
+                } else {
+                    nextBtn.innerHTML = '继续 <i class="fa-solid fa-arrow-right"></i>';
+                }
+            }
+
+            // 点击处理
+            nextBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+
+                if (currentPart < totalParts - 1) {
+                    currentPart++;
+                    appendPart(currentPart);
+                    updateButton();
+
+                    // 滚动到新段落
+                    setTimeout(() => {
+                        const allParagraphs = document.querySelectorAll('.story-paragraph');
+                        if (allParagraphs.length > 0) {
+                            allParagraphs[allParagraphs.length - 1].scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                        }
+                    }, 50);
+                } else if (currentPart === totalParts - 1) {
+                    // 最后一部分已显示，点击跳转
+                    window.location.href = 'endnew-mishi.html'; // 请替换为实际下一页
+                }
+            });
+
+            updateButton();
+        })();
+    </script>
+</body>
+</html>

@@ -1,0 +1,17 @@
+﻿const mingyueye3 = [
+    { mingyueye: "我们杂志社有件事和南鄣有关，感觉应该让你知道。", delay: 2000 },
+    { mingyueye: "前几年，我的一个同事去南鄣走访调查，遇上了不好的事，差点没命。", delay: 2000 },
+    { player: "是关于《幸运生存者》的？" },
+    { mingyueye: "哎？你已经知道了？", delay: 2000 },
+    { player: "我在论坛查到了相关帖子。你说的同事，是那位叫何边的记者吗？" },
+    { mingyueye: "是他。自何边出事以后，“灵异怪谈”栏目就停了，直到最近杂志社整改，才由我接手重启。我翻阅了何边留下的资料，才知道更多内情。", delay: 2000 },
+    { mingyueye: "何边调查了当年节目的相关人员，尤其是那些失败的参赛者，一共48人，其中有三分之一已经去世了，三分之一穷困潦倒、疾病缠身，还有三分之一犯了事，蹲了监狱。总之没一个落着好的。", delay: 2000 },
+    { mingyueye: "这是太不正常了。何边察觉到事情不简单，找到了其中一个获胜者彭皓天。然后采访还没开始，就出了坠楼的事。我想，多半是他查的东西碰着什么真相了。", delay: 2000 },
+    { player: "确实奇怪。他还发现别的什么吗？我去论坛里搜一搜" },
+    { mingyueye: "何边的笔记里有张照片，是一个参赛者保存符咒。这东西我不太懂，你要是认识懂行的人，可以分析一下。", delay: 2000 },
+    { mingyueye: '<img class="message-photo" src="https://img.remit.ee/api/file/BQACAgUAAyEGAASHRsPbAAERE6BpmnCGIzXhvp2o0tN2Z9R6uydylgACIBoAAtjY2VRqMtTY8bIWWToE.jpg" alt="BQACAgUAAyEGAASHRsPbAAERE6BpmnCGIzXhvp2o0tN2Z9R6uydylgACIBoAAtjY2VRqMtTY8bIWWToE.jpg" />', delay: 1000 },
+    { mingyueye: "据说，每期节目前，延盛岛的村长都会按照当地习俗，主持大家签写一份契约。当时没人多想，但现在看，没准真有什么邪性。", delay: 2000 },
+    { player: "村长叫什么名字？" },
+    { mingyueye: "刘福来。", delay: 2000 },
+    { player: "行，我大概了解了。" },
+];

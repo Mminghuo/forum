@@ -1,0 +1,1337 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>私聊 - 论坛</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* ========== 基本样式 - 调整为主论坛色调 ========== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+        }
+        
+        body {
+            background-color: #f0f2f5;        /* 灰白色背景 */
+            color: #1e293b;                    /* 深灰色文字 */
+            min-height: 100vh;
+            /* 移除原背景径向渐变 */
+        }
+        
+        /* 顶部栏 - 白色背景，灰蓝色点缀 */
+        .forum-header {
+            background-color: #ffffff;
+            padding: 10px 20px;
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 60px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+        }
+        
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .header-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #4a6fa5;                    /* 灰蓝色 */
+            letter-spacing: 2px;
+            text-shadow: none;
+        }
+        
+        .close-btn {
+            background-color: #4a6fa5;          /* 灰蓝色 */
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 20px;                /* 圆角 */
+            cursor: pointer;
+            font-size: 13px;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .close-btn:hover {
+            background-color: #3a5a87;          /* 加深 */
+            box-shadow: 0 2px 8px rgba(74, 111, 165, 0.3);
+        }
+        
+        /* Logo版头 - 浅蓝渐变，文字深色 */
+        .forum-logo-header {
+            height: 12vh;
+            min-height: 80px;
+            background: linear-gradient(135deg, #a0c4ff 0%, #7aa5d9 100%); /* 加深雾霾蓝 */;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+            border-bottom: 1px solid #d4e2f0;
+        }
+        
+        .forum-name {
+            font-size: 28px;
+            font-weight: 900;
+            color: #1e293b;
+            text-shadow: 1px 1px 0 rgba(255,255,255,0.5);
+            margin-bottom: 5px;
+            letter-spacing: 3px;
+        }
+        
+        .forum-subtitle {
+            font-size: 12px;
+            color: #334155;
+            font-style: italic;
+        }
+        
+        /* 私聊主内容区域 */
+        .pm-main-content {
+            display: flex;
+            height: calc(100vh - 180px);
+            min-height: 500px;
+            padding: 15px;
+            gap: 15px;
+        }
+        
+        /* 左侧用户列表 - 白底卡片 */
+        .pm-user-list {
+            width: 280px;
+            background-color: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 16px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+        }
+        
+        .pm-user-list-header {
+            padding: 15px;
+            border-bottom: 1px solid #e2e8f0;
+            font-weight: 600;
+            color: #4a6fa5;                    /* 灰蓝色 */
+            font-size: 16px;
+        }
+        
+        .user-list {
+            flex: 1;
+            overflow-y: auto;
+        }
+        
+        .user-item {
+            padding: 12px 15px;
+            border-bottom: 1px solid #f0f2f5;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.2s;
+        }
+        
+        .user-item:hover {
+            background-color: #f8fafc;
+        }
+        
+        .user-item.active {
+            background-color: #e9f0f9;
+            border-left: 3px solid #4a6fa5;
+        }
+        
+        /* 默认头像样式 - 使用FontAwesome图标 */
+        .user-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #4a6fa5, #2c4a73);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 18px;
+        }
+        
+        .user-info {
+            flex: 1;
+        }
+        
+        .user-name {
+            font-weight: 600;
+            font-size: 14px;
+            color: #1e293b;
+            margin-bottom: 2px;
+        }
+        
+        .user-last-message {
+            font-size: 12px;
+            color: #64748b;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 180px;
+        }
+        
+        .unread-badge {
+            background-color: #4a6fa5;          /* 灰蓝色 */
+            color: white;
+            font-size: 10px;
+            padding: 2px 6px;
+            border-radius: 10px;
+            min-width: 18px;
+            text-align: center;
+        }
+        
+        /* 右侧聊天区域 - 白底卡片 */
+        .pm-chat-area {
+            flex: 1;
+            background-color: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 16px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+        }
+        
+        .chat-header {
+            padding: 15px;
+            border-bottom: 1px solid #e2e8f0;
+            font-weight: 600;
+            font-size: 16px;
+            color: #1e293b;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .chat-user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .chat-messages {
+            flex: 1;
+            padding: 15px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            background-color: #f9fcff;          /* 极浅蓝灰 */
+        }
+        
+        /* 消息样式 */
+        .message-container {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .message-container.me {
+            align-items: flex-end;
+        }
+        
+        .message-container.other {
+            align-items: flex-start;
+        }
+        
+        .message-sender {
+            font-size: 12px;
+            color: #64748b;
+            margin-bottom: 5px;
+            padding: 0 8px;
+        }
+        
+        .message-bubble {
+            max-width: 70%;
+            padding: 10px 14px;
+            border-radius: 18px;
+            font-size: 14px;
+            line-height: 1.4;
+            position: relative;
+            word-wrap: break-word;
+            background-color: #e9f0f9;          /* 浅灰蓝 */
+            border: 1px solid #cbd5e1;
+            color: #1e293b;
+        }
+        
+        .message-bubble.me {
+            border-bottom-right-radius: 4px;
+            background-color: #4a6fa5;           /* 灰蓝色 */
+            color: white;
+            border-color: #4a6fa5;
+        }
+        
+        .message-bubble.other {
+            border-bottom-left-radius: 4px;
+        }
+        
+        .message-bubble.admin {
+            border-bottom-left-radius: 4px;
+            background-color: #ffffff;
+            border: 1px solid #4a6fa5;
+        }
+        
+        .auto-reply-tag {
+            display: inline-block;
+            background-color: #a0afc0;
+            color: white;
+            font-size: 11px;
+            padding: 2px 6px;
+            border-radius: 4px;
+            margin-right: 8px;
+        }
+        
+        .data-lost {
+            color: #64748b;
+            font-style: italic;
+        }
+        
+        /* 超链接样式 */
+        .message-link {
+            color: #4a6fa5;
+            text-decoration: underline;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+        
+        .message-link:hover {
+            color: #3a5a87;
+        }
+        
+        /* 时间分割线 */
+        .time-divider {
+            display: flex;
+            align-items: center;
+            margin: 15px 0;
+        }
+        
+        .time-divider::before,
+        .time-divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background-color: #e2e8f0;
+        }
+        
+        .time-divider span {
+            padding: 0 10px;
+            font-size: 11px;
+            color: #94a3b8;
+        }
+        
+        /* 系统消息 */
+        .system-message {
+            text-align: center;
+            color: #64748b;
+            font-size: 12px;
+            padding: 10px;
+            font-style: italic;
+            margin: 10px 0;
+        }
+        
+        /* 等待回复提示 */
+        .waiting-reply {
+            text-align: center;
+            color: #64748b;
+            font-size: 12px;
+            padding: 10px;
+            font-style: italic;
+        }
+        
+        /* 消息输入区域 */
+        .message-input-area {
+            padding: 15px;
+            border-top: 1px solid #e2e8f0;
+            display: flex;
+            gap: 10px;
+            background-color: #ffffff;
+        }
+        
+        .message-input {
+            flex: 1;
+            background-color: #f8fafc;
+            border: 1px solid #cbd5e1;
+            border-radius: 24px;
+            padding: 10px 15px;
+            color: #1e293b;
+            font-size: 13px;
+            resize: none;
+            height: 60px;
+            outline: none;
+            transition: all 0.2s;
+        }
+        
+        .message-input:focus {
+            border-color: #4a6fa5;
+        }
+        
+        .send-btn {
+            background-color: #4a6fa5;
+            color: white;
+            border: none;
+            border-radius: 24px;
+            padding: 0 20px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.2s;
+            align-self: flex-end;
+            height: 60px;
+            width: 80px;
+        }
+        
+        .send-btn:hover {
+            background-color: #3a5a87;
+            box-shadow: 0 2px 8px rgba(74, 111, 165, 0.3);
+        }
+        
+        .send-btn:disabled {
+            background-color: #a0afc0;
+            cursor: not-allowed;
+            color: #ffffff;
+        }
+        
+        /* 空状态 */
+        .empty-chat {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            color: #64748b;
+            text-align: center;
+            padding: 40px;
+        }
+        
+        .empty-chat-icon {
+            font-size: 48px;
+            margin-bottom: 15px;
+            color: #cbd5e1;
+        }
+        
+        .empty-chat-text {
+            font-size: 15px;
+            margin-bottom: 8px;
+            color: #1e293b;
+        }
+        
+        .empty-chat-hint {
+            font-size: 13px;
+            color: #94a3b8;
+        }
+        
+        /* 在线人数显示 - 灰白色 */
+        .online-counter {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: #ffffffec;
+            backdrop-filter: blur(4px);
+            padding: 8px 15px;
+            border-top: 1px solid #e2e8f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            height: 45px;
+            z-index: 99;
+            color: #1e293b;
+        }
+        
+        .online-dot {
+            width: 8px;
+            height: 8px;
+            background-color: #2e7d32;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 0.7; }
+            50% { opacity: 1; }
+            100% { opacity: 0.7; }
+        }
+        
+        .online-number {
+            color: #2e7d32;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <!-- 顶部栏 -->
+    <div class="forum-header">
+        <div class="header-left">
+            <div class="header-title">私聊 - 论坛</div>
+        </div>
+        <button class="close-btn" onclick="closePMPage()">
+            <i class="fas fa-times"></i>
+            关闭窗口
+        </button>
+    </div>
+    
+    <!-- Logo版头 -->
+    <div class="forum-logo-header">
+        <div class="forum-name">私聊</div>
+        <div class="forum-subtitle">与坛友私下交流</div>
+    </div>
+    
+    <!-- 私聊主内容区域 -->
+    <div class="pm-main-content">
+        <!-- 左侧用户列表 -->
+        <div class="pm-user-list">
+            <div class="pm-user-list-header">私聊列表</div>
+            <div class="user-list" id="userList">
+                <!-- 用户列表会动态生成 -->
+            </div>
+        </div>
+        
+        <!-- 右侧聊天区域 -->
+        <div class="pm-chat-area">
+            <div class="chat-header" id="chatHeader">
+                <!-- 聊天头部会动态生成 -->
+            </div>
+            
+            <div class="chat-messages" id="chatMessages">
+                <!-- 聊天消息会动态生成 -->
+            </div>
+            
+            <!-- 消息输入区域 -->
+            <div class="message-input-area" id="messageInputArea">
+                <!-- 消息输入框会动态生成 -->
+            </div>
+        </div>
+    </div>
+    
+    <!-- 在线人数显示 -->
+    <div class="online-counter">
+        <div class="online-dot"></div>
+        <div>当前在线人数：<span class="online-number" id="onlineNumber">89</span> 人</div>
+    </div>
+
+    <script>
+        // ==================== 私聊数据 (完全保留，仅调整头像字段为图标类) ====================
+        const defaultPMData = {
+            currentUser: {
+                name: "我",
+                avatar: "fas fa-user-circle"      // 改为图标类
+            },
+            
+            users: [
+                {
+                    id: "admin",
+                    name: "管理员",
+                    avatar: "fas fa-shield-alt",   // 管理员用盾牌
+                    status: "自动回复",
+                    messages: [
+                        {
+                            sender: "admin",
+                            content: "欢迎加入本论坛。本论坛致力于真实怪谈分享，为杜绝虚假信息，请通过下方链接填写您的真实姓名与生辰八字。请放心，仅作实名验证，信息绝对保密。",
+                            isAutoReply: true
+                        },
+                        {
+                            sender: "admin", 
+                            content: "温小姐，您已完成注册。从命格来看，您与本论坛颇有缘分，欢迎随时分享您的经历。如遇困难，也可联系管理员求助。",
+                            isAutoReply: true
+                        },
+                        {
+                            sender: "admin",
+                            content: "本账号已开启自动回复，您可在下方提问，我们会尽力解答。",
+                            isAutoReply: true
+                        },
+                        {
+                            type: "divider",
+                            label: "·"
+                        },
+                        {
+                            sender: "admin",
+                            content: "您可以在\"管理入口\"输入以下八字真言查看隐藏贴：[数据丢失]",
+                            isAutoReply: true
+                        },
+                        {
+                            sender: "me",
+                            content: "[数据丢失]",
+                            isDataLost: true
+                        },
+                        {
+                            sender: "admin",
+                            content: "您的烦恼我们已经收到。请放宽心，静候佳音，在合适的时机一切自会解决。",
+                            isAutoReply: true
+                        }
+                    ],
+                    lastMessage: "您的烦恼我们已经收到。请放宽心，静候佳音，在合适的时机一切自会解决。",
+                    unread: 0,
+                    dialogueState: "initial"
+                },
+                {
+                    id: "ghostbujue",
+                    name: "鬼不觉",
+                    avatar: "fas fa-user",          // 普通用户用 user 图标
+                    status: "",
+                    messages: [
+                        {
+                            sender: "me",
+                            content: "打扰了，请问你最近有没有遇到什么奇怪的事？"
+                        },
+                        {
+                            sender: "ghostbujue",
+                            content: "没有啊，怎么突然这么问？"
+                        },
+                        {
+                            sender: "me",
+                            content: "有个记者在找怪谈的亲历者做采访，报酬挺不错的，我就帮忙问问。"
+                        },
+                        {
+                            sender: "ghostbujue",
+                            content: "还有这种好事？不过前几天你不是也发了求助帖吗，怎么不把自己的事跟他说？"
+                        },
+                        {
+                            sender: "me",
+                            content: "那个啊……可能只是我想多了，最近已经好多了。"
+                        },
+                        {
+                            type: "divider",
+                            label: "·"
+                        },
+                        {
+                            sender: "ghostbujue",
+                            content: "那个\"知足常乐\"发帖了，好像真的撞鬼了，你可以去看看"
+                        },
+                        {
+                            type: "waiting",
+                            sender: "ghostbujue"
+                        }
+                    ],
+                    lastMessage: "那个\"知足常乐\"发帖了，好像真的撞鬼了，你可以去看看",
+                    unread: 0
+                },
+                {
+                    id: "shanbuzaiqing",
+                    name: "山不在高",
+                    avatar: "fas fa-user",
+                    status: "",
+                    messages: [
+                        {
+                            sender: "me",
+                            content: "你好！看了你发的有关鳌太线的帖子，太传奇了。有个记者想做怪谈专题报道，你有兴趣接受采访吗？"
+                        },
+                        {
+                            type: "divider",
+                            label: "·"
+                        },
+                        {
+                            sender: "shanbuzaiqing",
+                            content: "抱歉不太上这个号。"
+                        },
+                        {
+                            sender: "shanbuzaiqing",
+                            content: "刚去看了帖子，确实是我发的，但不知道为什么，那段记忆特别模糊，像做梦一样。而且一想起来就有点恶心，我不太愿意再提，所以还是算了吧。"
+                        },
+                        {
+                            type: "waiting",
+                            sender: "shanbuzaiqing"
+                        }
+                    ],
+                    lastMessage: "刚去看了帖子，确实是我发的，但不知道为什么，那段记忆特别模糊，像做梦一样。而且一想起来就有点恶心，我不太愿意再提，所以还是算了吧。",
+                    unread: 0
+                },
+                {
+                    id: "miaomiaoshen",
+                    name: "喵喵神",
+                    avatar: "fas fa-user",
+                    status: "",
+                    messages: [
+                        {
+                            sender: "me",
+                            content: "你好，想问下你之前通灵那件事的后续？有个记者想做怪谈专题，可以把你的经历分享给他吗？"
+                        },
+                        {
+                            type: "waiting",
+                            sender: "me"
+                        }
+                    ],
+                    lastMessage: "你好，想问下你之前通灵那件事的后续？有个记者想做怪谈专题，可以把你的经历分享给他吗？",
+                    unread: 0
+                },
+                {
+                    id: "smile",
+                    name: "smile",
+                    avatar: "fas fa-user",
+                    status: "",
+                    messages: [
+                        {
+                            sender: "me",
+                            content: "打扰了，看到你帖子说遇到鬼敲门，请问解决了吗？我好像也遇到了类似的情况……"
+                        },
+                        {
+                            sender: "me",
+                            content: "另外想问问，可以接受记者采访吗？"
+                        },
+                        {
+                            type: "waiting",
+                            sender: "me"
+                        }
+                    ],
+                    lastMessage: "另外想问问，可以接受记者采访吗？",
+                    unread: 0
+                }
+            ],
+            
+            currentUserId: "admin"
+        };
+        
+        // 当前私聊数据
+        let pmData = {...defaultPMData};
+        
+        // 数据存储键
+        const STORAGE_KEYS = {
+            PM_DATA: 'forum_pm_data',
+            INITIALIZED: 'forum_pm_initialized'
+        };
+        
+        // 管理员对话状态处理器 (保持不变)
+        const adminDialogueHandler = {
+            processMessage: function(user, message) {
+                const msg = message.toLowerCase().trim();
+                const currentState = user.dialogueState || "initial";
+                
+                if (currentState === "initial") {
+                    return this.handleInitialState(msg);
+                } else if (currentState === "consulting") {
+                    return this.handleConsultingState(msg);
+                } else if (currentState === "hasQuestions") {
+                    return this.handleHasQuestionsState(msg);
+                }
+                return this.handleInitialState(msg);
+            },
+            
+            handleInitialState: function(msg) {
+                if (msg.includes("关于本论坛")) {
+                    return {
+                        responses: [
+                            "本论坛为灵异论坛，用户可以发帖讨论自己见闻的灵异故事。由经过管理员审核，本论坛内所有帖子内容无虚构，皆为真实发生之事。",
+                            "若您遇到灵异事件，请积极发帖，寻求解决之道。"
+                        ],
+                        newState: "initial"
+                    };
+                } else if (msg.includes("咨询问题")) {
+                    return {
+                        responses: [
+                            "正在检测账号信息……",
+                            "温小姐，您好，请问您有哪些问题要咨询？",
+                            "1.有所苦",
+                            "2.有所求"
+                        ],
+                        newState: "consulting"
+                    };
+                } else {
+                    return {
+                        responses: [
+                            "您要咨询什么？可尝试输入以下信息：",
+                            "1.关于本论坛",
+                            "2.咨询问题"
+                        ],
+                        newState: "initial"
+                    };
+                }
+            },
+            
+            handleConsultingState: function(msg) {
+                if (msg.includes("有所苦")) {
+                    return {
+                        responses: [
+                            "人为肉体凡胎，命为天地浮萍，弱小而无所抵挡，总不免苦海沉沦。",
+                            "若想摆脱此苦，不能一味逃避，而要主动寻求解决之法。",
+                            "您还有其他问题吗？",
+                            "1.有所求",
+                            "2.仍有疑惑"
+                        ],
+                        newState: "hasQuestions"
+                    };
+                } else if (msg.includes("有所求")) {
+                    return {
+                        responses: [
+                            "世事无常，总不能顺心，很多事情非人力所能及也。若有所求，当先求内心是否心诚。",
+                            "如是平心静气，或可见迷雾散尽，天地倏宽。",
+                            "您还有其他问题吗？",
+                            "1.有所苦",
+                            "2.仍有疑惑"
+                        ],
+                        newState: "hasQuestions"
+                    };
+                } else {
+                    return {
+                        responses: [
+                            "正在检测账号信息……",
+                            "温小姐，您好，请问您有哪些问题要咨询？",
+                            "1.有所苦",
+                            "2.有所求"
+                        ],
+                        newState: "consulting"
+                    };
+                }
+            },
+            
+            handleHasQuestionsState: function(msg) {
+                if (msg.includes("有所苦")) {
+                    return {
+                        responses: [
+                            "人为肉体凡胎，命为天地浮萍，弱小而无所抵挡，总不免苦海沉沦。",
+                            "若想摆脱此苦，不能一味逃避，而要主动寻求解决之法。",
+                            "您还有其他问题吗？",
+                            "1.有所求",
+                            "2.仍有疑惑"
+                        ],
+                        newState: "hasQuestions"
+                    };
+                } else if (msg.includes("有所求")) {
+                    return {
+                        responses: [
+                            "世事无常，总不能顺心，很多事情非人力所能及也。若有所求，当先求内心是否心诚。",
+                            "如是平心静气，或可见迷雾散尽，天地倏宽。",
+                            "您还有其他问题吗？",
+                            "1.有所苦",
+                            "2.仍有疑惑"
+                        ],
+                        newState: "hasQuestions"
+                    };
+                } else if (msg.includes("仍有疑惑")) {
+                    return {
+                        responses: [
+                            "您的苦求压过因果，为生命不可承受之重，非个人之力可以解脱。",
+                            "如果您需要进一步的帮助，可以进一步搜索本论坛的“<strong>合作机构</strong>”",
+                            "愿您早日摆脱苦恼。"
+                        ],
+                        newState: "initial"
+                    };
+                } else {
+                    return {
+                        responses: [
+                            "您还有其他问题吗？",
+                            "1.有所苦",
+                            "2.仍有疑惑"
+                        ],
+                        newState: "hasQuestions"
+                    };
+                }
+            }
+        };
+        
+        // 打开运契组织页面 (保持不变)
+        function openYunqiPage() {
+            alert("即将跳转到\"运契组织\"介绍页面");
+        }
+        
+        // 初始化函数
+        function initializePMPage() {
+            loadPMDataFromStorage();
+            checkURLParams();
+            renderUserList();
+            renderChatArea();
+            setupOnlineCounter();
+            setupMessageSending();
+        }
+        
+        // 从本地存储加载数据 (保持不变)
+        function loadPMDataFromStorage() {
+            try {
+                const isInitialized = localStorage.getItem(STORAGE_KEYS.INITIALIZED);
+                if (isInitialized === 'true') {
+                    const savedData = localStorage.getItem(STORAGE_KEYS.PM_DATA);
+                    if (savedData) {
+                        const parsedData = JSON.parse(savedData);
+                        if (parsedData && parsedData.users) {
+                            const mergedData = {
+                                ...defaultPMData,
+                                ...parsedData,
+                                users: mergeUsers(defaultPMData.users, parsedData.users)
+                            };
+                            pmData = mergedData;
+                            console.log('已从本地存储加载私聊数据');
+                            return;
+                        }
+                    }
+                }
+                pmData = {...defaultPMData};
+                savePMDataToStorage();
+                localStorage.setItem(STORAGE_KEYS.INITIALIZED, 'true');
+                console.log('使用默认私聊数据并初始化存储');
+            } catch (error) {
+                console.error('加载私聊数据失败，使用默认数据:', error);
+                pmData = {...defaultPMData};
+            }
+        }
+        
+        // 合并用户数据 (保持不变)
+        function mergeUsers(defaultUsers, savedUsers) {
+            const userMap = new Map();
+            defaultUsers.forEach(user => {
+                userMap.set(user.id, {...user});
+            });
+            if (savedUsers && Array.isArray(savedUsers)) {
+                savedUsers.forEach(savedUser => {
+                    if (userMap.has(savedUser.id)) {
+                        const existingUser = userMap.get(savedUser.id);
+                        const mergedMessages = mergeMessages(existingUser.messages, savedUser.messages);
+                        userMap.set(savedUser.id, {
+                            ...existingUser,
+                            messages: mergedMessages,
+                            lastMessage: savedUser.lastMessage || existingUser.lastMessage,
+                            status: savedUser.status || existingUser.status,
+                            unread: savedUser.unread || 0,
+                            hasReplied: savedUser.hasReplied !== undefined ? savedUser.hasReplied : existingUser.hasReplied,
+                            dialogueState: savedUser.dialogueState || existingUser.dialogueState
+                        });
+                    } else {
+                        userMap.set(savedUser.id, {...savedUser});
+                    }
+                });
+            }
+            return Array.from(userMap.values());
+        }
+        
+        // 合并消息记录 (保持不变)
+        function mergeMessages(defaultMessages, savedMessages) {
+            if (!savedMessages || savedMessages.length === 0) {
+                return defaultMessages;
+            }
+            const messageMap = new Map();
+            defaultMessages.forEach(message => {
+                const key = getMessageKey(message);
+                if (key) {
+                    messageMap.set(key, {...message});
+                }
+            });
+            savedMessages.forEach(message => {
+                const key = getMessageKey(message);
+                if (key) {
+                    messageMap.set(key, {...message});
+                } else {
+                    let exists = false;
+                    if (message.type === "system" || message.type === "divider" || message.type === "waiting") {
+                        exists = checkSimilarMessageExists(defaultMessages, message);
+                    }
+                    if (!exists) {
+                        const newKey = `msg_${Date.now()}_${Math.random()}`;
+                        messageMap.set(newKey, {...message});
+                    }
+                }
+            });
+            return Array.from(messageMap.values());
+        }
+        
+        function getMessageKey(message) {
+            if (message.type) {
+                if (message.type === "system") {
+                    return `system_${message.content}`;
+                } else if (message.type === "divider") {
+                    return `divider_${message.label}`;
+                } else if (message.type === "waiting") {
+                    return `waiting_${message.sender}`;
+                }
+            } else if (message.sender && message.content) {
+                const contentKey = message.content.substring(0, 50).replace(/\s+/g, '_');
+                return `${message.sender}_${contentKey}`;
+            }
+            return null;
+        }
+        
+        function checkSimilarMessageExists(messages, newMessage) {
+            if (!newMessage.type) return false;
+            for (const msg of messages) {
+                if (msg.type === newMessage.type) {
+                    if (newMessage.type === "system" && msg.content === newMessage.content) {
+                        return true;
+                    } else if (newMessage.type === "divider" && msg.label === newMessage.label) {
+                        return true;
+                    } else if (newMessage.type === "waiting" && msg.sender === newMessage.sender) {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+        
+        function savePMDataToStorage() {
+            try {
+                localStorage.setItem(STORAGE_KEYS.PM_DATA, JSON.stringify(pmData));
+                localStorage.setItem(STORAGE_KEYS.INITIALIZED, 'true');
+                console.log('私聊数据已保存');
+            } catch (error) {
+                console.error('保存私聊数据失败:', error);
+            }
+        }
+        
+        function checkURLParams() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const targetUser = urlParams.get('user');
+            
+            if (targetUser) {
+                const userExists = pmData.users.some(user => user.id === targetUser);
+                if (!userExists) {
+                    const newUser = {
+                        id: targetUser,
+                        name: targetUser,
+                        avatar: "fas fa-user",      // 使用默认用户图标
+                        status: "",
+                        hasReplied: false,
+                        messages: [
+                            {
+                                type: "system",
+                                content: "您已开始与" + targetUser + "的私聊。"
+                            },
+                            {
+                                type: "waiting",
+                                sender: "me"
+                            }
+                        ],
+                        lastMessage: "您已开始与" + targetUser + "的私聊。",
+                        unread: 0
+                    };
+                    pmData.users.push(newUser);
+                    savePMDataToStorage();
+                    console.log('添加新用户到私聊列表:', targetUser);
+                    
+                    if (targetUser === "知足常乐") {
+                        setTimeout(() => {
+                            sendZuzhuchangleAutoReply(newUser);
+                        }, 1000);
+                    }
+                } else {
+                    console.log('用户已存在，直接跳转到聊天窗口:', targetUser);
+                }
+                pmData.currentUserId = targetUser;
+                savePMDataToStorage();
+            }
+        }
+        
+        function sendZuzhuchangleAutoReply(user) {
+            const waitingIndex = user.messages.findIndex(msg => msg.type === "waiting" && msg.sender === "me");
+            if (waitingIndex !== -1) {
+                user.messages.splice(waitingIndex, 1);
+            }
+            user.messages.push({
+                sender: user.id,
+                content: "你好，我是知足常乐！你找我有事情吗？"
+            });
+            user.lastMessage = "你好，我是知足常乐！你找我有事情吗？";
+            setTimeout(() => {
+                user.messages.push({
+                    sender: user.id,
+                    content: "如果是有关鬼怪邪祟的事情，由于在这里说话不便，您可以通过我主页的，将我添加到聊天软件。"
+                });
+                user.lastMessage = "如果是有关鬼怪邪祟的事情，由于在这里说话不便，您可以通过我主页的，将我添加到聊天软件。";
+                user.hasReplied = true;
+                if (pmData.currentUserId === user.id) {
+                    renderChatMessages(user);
+                }
+                renderUserList();
+                savePMDataToStorage();
+            }, 1000);
+            renderUserList();
+            savePMDataToStorage();
+            if (pmData.currentUserId === user.id) {
+                renderChatMessages(user);
+            }
+        }
+        
+        // 渲染用户列表 (修改头像部分，使用图标类)
+        function renderUserList() {
+            const userList = document.getElementById('userList');
+            userList.innerHTML = '';
+            
+            const adminUser = pmData.users.find(user => user.id === "admin");
+            if (adminUser) {
+                const userElement = createUserElement(adminUser);
+                userList.appendChild(userElement);
+            }
+            
+            const otherUsers = pmData.users
+                .filter(user => user.id !== "admin")
+                .sort((a, b) => a.name.localeCompare(b.name));
+            
+            otherUsers.forEach(user => {
+                const userElement = createUserElement(user);
+                userList.appendChild(userElement);
+            });
+        }
+        
+        // 创建用户列表项元素 (头像使用图标)
+        function createUserElement(user) {
+            const userElement = document.createElement('div');
+            userElement.className = `user-item ${user.id === pmData.currentUserId ? 'active' : ''}`;
+            userElement.dataset.userId = user.id;
+            
+            // 根据用户角色决定图标类，管理员已经存为 fas fa-shield-alt，其他为 fas fa-user
+            // 如果数据中没有 avatar 字段，则默认用 user
+            const iconClass = user.avatar || 'fas fa-user';
+            
+            userElement.innerHTML = `
+                <div class="user-avatar"><i class="${iconClass}"></i></div>
+                <div class="user-info">
+                    <div class="user-name">${user.name}</div>
+                    <div class="user-last-message">${user.lastMessage}</div>
+                </div>
+                ${user.unread > 0 ? `<div class="unread-badge">${user.unread}</div>` : ''}
+            `;
+            
+            userElement.onclick = () => {
+                switchUser(user.id);
+            };
+            
+            return userElement;
+        }
+        
+        // 切换当前选中的用户 (保持不变)
+        function switchUser(userId) {
+            pmData.currentUserId = userId;
+            
+            document.querySelectorAll('.user-item').forEach(item => {
+                if (item.dataset.userId === userId) {
+                    item.classList.add('active');
+                } else {
+                    item.classList.remove('active');
+                }
+            });
+            
+            renderChatArea();
+            
+            const user = pmData.users.find(u => u.id === userId);
+            if (user) {
+                user.unread = 0;
+                savePMDataToStorage();
+            }
+            
+            renderUserList();
+        }
+        
+        // 渲染聊天区域 (保持不变)
+        function renderChatArea() {
+            const currentUser = pmData.users.find(user => user.id === pmData.currentUserId);
+            
+            if (!currentUser) {
+                document.getElementById('chatHeader').innerHTML = `
+                    <div class="chat-user-info">
+                        <div>选择聊天对象</div>
+                    </div>
+                `;
+                
+                document.getElementById('chatMessages').innerHTML = `
+                    <div class="empty-chat">
+                        <div class="empty-chat-icon">
+                            <i class="far fa-comments"></i>
+                        </div>
+                        <div class="empty-chat-text">请从左侧选择聊天对象</div>
+                        <div class="empty-chat-hint">或从用户主页点击私聊按钮开始新的对话</div>
+                    </div>
+                `;
+                
+                document.getElementById('messageInputArea').innerHTML = '';
+                return;
+            }
+            
+            document.getElementById('chatHeader').innerHTML = `
+                <div class="chat-user-info">
+                    <div>${currentUser.name}</div>
+                </div>
+            `;
+            
+            renderChatMessages(currentUser);
+            
+            const isSendDisabled = !(currentUser.id === "admin" || currentUser.id === "知足常乐");
+            
+            document.getElementById('messageInputArea').innerHTML = `
+                <textarea class="message-input" id="messageInput" placeholder="${isSendDisabled ? '无法发送信息。' : '输入消息...'}"></textarea>
+                <button class="send-btn" id="sendBtn" onclick="sendMessage()" ${isSendDisabled ? 'disabled' : ''}>发送</button>
+            `;
+            
+            if (isSendDisabled) {
+                const messageInput = document.getElementById('messageInput');
+                messageInput.addEventListener('click', function() {
+                    alert("无法发送信息");
+                });
+            }
+        }
+        
+        // 渲染聊天消息 (保持不变)
+        function renderChatMessages(user) {
+            const chatMessages = document.getElementById('chatMessages');
+            chatMessages.innerHTML = '';
+            
+            if (!user.messages || user.messages.length === 0) {
+                chatMessages.innerHTML = `
+                    <div class="empty-chat">
+                        <div class="empty-chat-icon">
+                            <i class="far fa-comment-dots"></i>
+                        </div>
+                        <div class="empty-chat-text">暂无聊天记录</div>
+                        <div class="empty-chat-hint">开始与${user.name}对话吧</div>
+                    </div>
+                `;
+                return;
+            }
+            
+            user.messages.forEach((message, index) => {
+                if (message.type === "system") {
+                    const systemElement = document.createElement('div');
+                    systemElement.className = 'system-message';
+                    systemElement.textContent = message.content;
+                    chatMessages.appendChild(systemElement);
+                    return;
+                }
+                
+                if (message.type === "divider") {
+                    const divider = document.createElement('div');
+                    divider.className = 'time-divider';
+                    divider.innerHTML = `<span>${message.label}</span>`;
+                    chatMessages.appendChild(divider);
+                    return;
+                }
+                
+                if (message.type === "waiting") {
+                    let waitingText = message.sender === "me" ? "等待回复" : "无回复";
+                    const waitingDiv = document.createElement('div');
+                    waitingDiv.className = 'waiting-reply';
+                    waitingDiv.textContent = waitingText;
+                    chatMessages.appendChild(waitingDiv);
+                    return;
+                }
+                
+                const isMe = message.sender === "me";
+                const isAdmin = message.sender === "admin";
+                
+                const messageContainer = document.createElement('div');
+                messageContainer.className = `message-container ${isMe ? 'me' : 'other'}`;
+                
+                const senderElement = document.createElement('div');
+                senderElement.className = 'message-sender';
+                if (isMe) {
+                    senderElement.textContent = "我";
+                } else if (isAdmin) {
+                    senderElement.textContent = "管理员";
+                } else {
+                    senderElement.textContent = user.name;
+                }
+                messageContainer.appendChild(senderElement);
+                
+                const messageBubble = document.createElement('div');
+                messageBubble.className = `message-bubble ${isMe ? 'me' : isAdmin ? 'admin' : 'other'}`;
+                
+                let content = message.content;
+                if (message.isDataLost) {
+                    content = `<span class="data-lost">[数据丢失]</span>`;
+                } else if (message.isAutoReply) {
+                    content = `<span class="auto-reply-tag">[自动回复]</span>${content}`;
+                }
+                
+                messageBubble.innerHTML = content;
+                messageContainer.appendChild(messageBubble);
+                
+                chatMessages.appendChild(messageContainer);
+            });
+            
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+        
+        // 设置在线人数定时更新 (保持不变)
+        function setupOnlineCounter() {
+            updateOnlineNumber();
+            setInterval(updateOnlineNumber, 5 * 60 * 1000);
+        }
+        
+        function updateOnlineNumber() {
+            const onlineNumber = document.getElementById('onlineNumber');
+            const randomNumber = Math.floor(Math.random() * 51) + 50;
+            onlineNumber.textContent = randomNumber;
+        }
+        
+        function setupMessageSending() {
+            document.addEventListener('keydown', function(e) {
+                const messageInput = document.getElementById('messageInput');
+                if (e.key === 'Enter' && !e.shiftKey && messageInput && document.activeElement === messageInput) {
+                    e.preventDefault();
+                    sendMessage();
+                }
+            });
+        }
+        
+        function sendMultipleMessages(user, messages, delay = 1000) {
+            let index = 0;
+            function sendNextMessage() {
+                if (index < messages.length) {
+                    const message = messages[index];
+                    user.messages.push({
+                        sender: "admin",
+                        content: message,
+                        isAutoReply: true
+                    });
+                    user.lastMessage = message;
+                    renderChatMessages(user);
+                    renderUserList();
+                    index++;
+                    if (index < messages.length) {
+                        setTimeout(sendNextMessage, delay);
+                    } else {
+                        savePMDataToStorage();
+                    }
+                }
+            }
+            setTimeout(sendNextMessage, 1000);
+        }
+        
+        function sendMessage() {
+            const messageInput = document.getElementById('messageInput');
+            const message = messageInput.value.trim();
+            
+            if (!message) return;
+            
+            const currentUser = pmData.users.find(user => user.id === pmData.currentUserId);
+            if (!currentUser) return;
+            
+            if (currentUser.id !== "admin" && currentUser.id !== "知足常乐") {
+                alert("无法发送信息");
+                return;
+            }
+            
+            currentUser.messages.push({
+                sender: "me",
+                content: message
+            });
+            currentUser.lastMessage = message;
+            messageInput.value = '';
+            
+            renderChatMessages(currentUser);
+            
+            if (currentUser.id === "admin") {
+                const adminResponse = adminDialogueHandler.processMessage(currentUser, message);
+                currentUser.dialogueState = adminResponse.newState;
+                sendMultipleMessages(currentUser, adminResponse.responses, 800);
+            }
+            
+            renderUserList();
+            savePMDataToStorage();
+        }
+        
+        function closePMPage() {
+            savePMDataToStorage();
+            window.close();
+        }
+        
+        window.onload = initializePMPage;
+        window.addEventListener('beforeunload', function() {
+            savePMDataToStorage();
+        });
+    </script>
+</body>
+</html>

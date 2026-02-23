@@ -1,0 +1,607 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>王玉萍提名南鄣市人民政府市长 - 万家号</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
+            background-color: #f4f4f4;
+            color: #222;
+            line-height: 1.6;
+        }
+
+        /* 顶部导航栏 — 改“万家新闻”为“万家号”，右侧加文件图标及登录注册 */
+        .top-nav {
+            background-color: #ff6f00;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+        }
+
+        .home-link {
+            color: #fff;
+            font-size: 16px;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            cursor: pointer;       /* 可点击但无跳转 */
+        }
+
+        .separator {
+            color: #fff;
+            margin: 0 15px;
+            font-weight: bold;
+        }
+
+        .site-name {
+            color: #fff;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        /* 右侧操作区：文件图标 + 登录/注册 */
+        .nav-right {
+            margin-left: auto;
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            color: #fff;
+        }
+
+        .file-icon {
+            color: #fff;
+            font-size: 20px;
+            cursor: pointer;       /* 可点击无反应 */
+        }
+
+        .nav-right a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 15px;
+            cursor: pointer;       /* 可点击无跳转 */
+        }
+
+        /* 主内容区 */
+        .content-container {
+            max-width: 800px;
+            margin: 30px auto;
+            background-color: #fff;
+            padding: 30px 40px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+
+        .article-header {
+            text-align: center;
+            padding-bottom: 25px;
+            border-bottom: 1px solid #eee;
+            margin-bottom: 30px;
+        }
+
+        .article-title {
+            font-size: 30px;
+            font-weight: bold;
+            color: #222;
+            margin-bottom: 20px;
+            line-height: 1.4;
+        }
+
+        .article-meta {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        /* 发布者：诡事说 + 小字“用户上传” */
+        .publisher {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            margin-right: 15px;
+            font-size: 18px;
+            color: #333;
+            line-height: 1.2;
+        }
+
+        .publisher span {
+            font-size: 18px;
+            font-weight: 500;
+        }
+
+        .user-upload {
+            font-size: 12px;
+            color: #999;
+            font-weight: normal;
+            margin-top: 2px;
+        }
+
+        .publish-time {
+            color: #999;
+            font-size: 14px;
+            margin-right: auto;    /* 将关注按钮推到右侧 */
+        }
+
+        .follow-btn {
+            background-color: #3385ff;
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 4px;
+            font-size: 14px;
+            cursor: pointer;       /* 可点击无交互 */
+        }
+
+        /* 文章正文 */
+        .article-content {
+            font-size: 18px;
+            line-height: 1.8;
+        }
+
+        .article-content p {
+            margin-bottom: 25px;
+            text-indent: 2em;
+        }
+
+        /* ---------- 图片区域：比正文窄一圈，绝不溢出 ---------- */
+        .article-image {
+            margin: 35px 0;
+            text-align: center;
+        }
+
+        .article-image img {
+            width: 85%;            /* 比正文窄一圈 */
+            max-width: 700px;
+            height: auto;
+            display: block;
+            margin: 0 auto 10px;
+            border-radius: 8px;
+            border: 1px solid #e0e6ed;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+            background-color: #f8f8f8;
+        }
+
+        .image-caption {
+            font-size: 14px;
+            color: #666;
+            text-align: center;
+            width: 85%;
+            margin: 0 auto;
+            font-style: italic;
+        }
+
+        /* 左侧固定工具栏 — 全部设为可点击（指针）无交互 */
+        .side-toolbar {
+            position: fixed;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 15px 10px;
+            z-index: 100;
+        }
+
+        .side-tool {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 15px 0;
+            color: #666;
+            font-size: 12px;
+            cursor: pointer;       /* 手型，无实际功能 */
+        }
+
+        .side-tool i {
+            font-size: 24px;
+            margin-bottom: 5px;
+            color: #666;
+        }
+
+        /* 评论区 */
+        .comments-section {
+            margin-top: 50px;
+            padding-top: 30px;
+            border-top: 1px solid #eee;
+        }
+
+        .comments-title {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 25px;
+            color: #222;
+        }
+
+        .comment-input-area {
+            display: flex;
+            align-items: flex-end;
+            margin-bottom: 40px;
+        }
+
+        .comment-input {
+            flex: 1;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 15px;
+            font-size: 16px;
+            color: #666;
+            background-color: #f9f9f9;
+            min-height: 80px;
+            resize: none;
+        }
+
+        .comment-submit {
+            background-color: #3385ff;
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 4px;
+            font-size: 16px;
+            margin-left: 15px;
+            cursor: pointer;       /* 可点击但无响应 */
+            height: 50px;
+        }
+
+        /* 底部信息 */
+        .footer {
+            background-color: #fff;
+            border-top: 1px solid #e0e0e0;
+            padding: 30px 20px;
+            text-align: center;
+            color: #666;
+            font-size: 14px;
+            margin-top: 50px;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: 15px 0;
+        }
+
+        .footer-links a {
+            color: #666;
+            text-decoration: none;
+            cursor: pointer;       /* 可点击，无跳转 */
+        }
+
+        /* 响应式 */
+        @media (max-width: 768px) {
+            .content-container {
+                padding: 20px;
+                margin: 15px;
+            }
+
+            .article-title {
+                font-size: 24px;
+            }
+
+            .article-content {
+                font-size: 16px;
+            }
+
+            .article-image img {
+                width: 95%;        /* 移动端依然保持窄于文字 */
+            }
+
+            .image-caption {
+                width: 95%;
+            }
+
+            .side-toolbar {
+                display: none;
+            }
+
+            .article-meta {
+                flex-wrap: wrap;
+                justify-content: flex-start;
+                gap: 10px;
+            }
+
+            .publish-time {
+                margin-right: 0;
+            }
+
+            .follow-btn {
+                margin-left: 0;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- 顶部导航栏 — 万家号 + 右侧文件图标 + 登录/注册（均可点击无交互） -->
+    <div class="top-nav">
+        <a href="javascript:void(0);" class="home-link">
+            <i class="fas fa-home"></i>
+            <span style="margin-left: 5px;">首页</span>
+        </a>
+        <div class="separator">|</div>
+        <div class="site-name">万家号</div>   <!-- 原“万家新闻”改为“万家号” -->
+
+        <!-- 右侧文件栏符号 + 登录/注册 -->
+        <div class="nav-right">
+            <i class="fas fa-file-alt file-icon"></i>   <!-- 文件栏图标 -->
+            <a href="javascript:void(0);">登录</a>
+            <a href="javascript:void(0);">注册</a>
+        </div>
+    </div>
+
+    <!-- 左侧固定工具栏：全部增加手型，无交互 -->
+    <div class="side-toolbar">
+        <div class="side-tool">
+            <i class="far fa-thumbs-up"></i>
+            <span>点赞</span>
+        </div>
+        <div class="side-tool">
+            <i class="far fa-bookmark"></i>
+            <span>收藏</span>
+        </div>
+        <div class="side-tool">
+            <i class="fas fa-share-alt"></i>
+            <span>分享</span>
+        </div>
+    </div>
+
+    <!-- 主内容区 -->
+    <div class="content-container">
+        <div class="article-header">
+            <h1 class="article-title">王玉萍提名南鄣市人民政府市长</h1>
+
+            <div class="article-meta">
+                <!-- “诡事说”下方加一行小字“用户上传” -->
+                <div class="publisher">
+                    <span>来源：南清都市报</span>
+                </div>
+                <div class="publish-time">2026-2-25 15:21</div>
+                <button class="follow-btn">关注</button>
+            </div>
+        </div>
+
+        <div class="article-content">
+            <p>2026年2月25日上午，南鄣市全市领导干部会议召开。会议宣布了省委关于我市市委、市政府主要领导同志职务调整的决定：王玉萍同志任我市市委副书记、市长提名人选。</p>
+            <p>王玉萍在会上表示，将坚决拥护、完全服从省委决定。她强调，将紧紧依靠市四套班子，精诚团结、竭尽全力，带领全市广大干部群众真抓实干，奋力开创南鄣高质量发展新局面。王玉萍表示，将始终把发展作为第一要务，聚焦改革创新，聚力攻坚克难，大力推进三大攻坚战，加快构建具有地域特色的现代产业体系，全力推动南鄣跨越发展；始终坚持以人民为中心，集中资源和力量办好民生实事，不断增强群众的获得感、安全感；始终坚守清廉底线，营造风清气正的政治生态，以实际行动回报人民的重托。</p>
+
+             <hr>            
+              <div class="article-disclaimer">
+                  <p>（来源：南鄣市人民政府官网）</p>
+              </div>
+        </div>
+
+        <!-- 评论区 -->
+        <div class="comments-section">
+            <div class="comments-title">评论</div>
+            <div class="comment-input-area">
+                <textarea class="comment-input" placeholder="发表神妙评论..." readonly></textarea>
+                <button class="comment-submit">评论</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 底部信息 — 所有链接仅可点击，无实际跳转 -->
+    <div class="footer">
+        <div class="footer-links">
+            <a href="javascript:void(0);">关于我们</a>
+            <a href="javascript:void(0);">广告服务</a>
+            <a href="javascript:void(0);">联系我们</a>
+            <a href="javascript:void(0);">网站地图</a>
+        </div>
+        <div>Copyright © 2024 万家新闻 版权所有</div>  <!-- 底部保留原“万家新闻”，未强制修改 -->
+    </div>
+
+<style>
+#hb-chat-toast {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    background: rgba(32, 32, 32, 0.95);
+    color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.4);
+    padding: 20px 15px 15px;
+    width: 300px;
+    z-index: 9999;
+    display: none;
+    border: 1px solid rgba(255,255,255,0.1);
+    animation: hbSlideIn 0.3s ease-out;
+    backdrop-filter: blur(10px);
+}
+@keyframes hbSlideIn {
+    from { transform: translateY(20px); opacity: 0; }
+    to   { transform: translateY(0);    opacity: 1; }
+}
+#hb-chat-toast .toast-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+#hb-chat-toast .toast-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #fff;
+    font-weight: bold;
+    font-size: 14px;
+}
+#hb-chat-toast .toast-title i { color: #4CAF50; font-size: 18px; }
+#hb-chat-toast .toast-close {
+    background: none; border: none; color: #aaa;
+    font-size: 16px; cursor: pointer; transition: color 0.2s;
+}
+#hb-chat-toast .toast-close:hover { color: #fff; }
+#hb-chat-toast .toast-body {
+    color: rgba(255,255,255,0.9);
+    font-size: 14px;
+    line-height: 1.5;
+    margin-bottom: 15px;
+}
+#hb-chat-toast .toast-btns {
+    display: flex;
+    gap: 10px;
+}
+#hb-chat-toast .toast-btn {
+    flex: 1;
+    padding: 8px 15px;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.2s;
+}
+#hb-chat-toast .toast-btn.later {
+    background: rgba(60,60,60,0.8);
+    color: #e0e0e0;
+    border: 1px solid #444;
+}
+#hb-chat-toast .toast-btn.later:hover { border-color: #8b0000; color: #8b0000; }
+#hb-chat-toast .toast-btn.open {
+    background: #4CAF50;
+    color: white;
+    font-weight: bold;
+}
+#hb-chat-toast .toast-btn.open:hover { background: #3d8b40; }
+
+/* 中间弹窗样式 */
+#hb-center-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    z-index: 10000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+}
+#hb-center-modal .modal-content {
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+    padding: 40px;
+    max-width: 500px;
+    width: 90%;
+    text-align: center;
+    animation: hbModalFadeIn 0.3s ease-out;
+}
+@keyframes hbModalFadeIn {
+    from { opacity: 0; transform: scale(0.9); }
+    to   { opacity: 1; transform: scale(1); }
+}
+#hb-center-modal .modal-title {
+    font-size: 24px;
+    font-weight: bold;
+    color: #222;
+    margin-bottom: 20px;
+}
+#hb-center-modal .modal-text {
+    font-size: 16px;
+    color: #333;
+    line-height: 1.6;
+    margin-bottom: 30px;
+}
+#hb-center-modal .modal-btn {
+    background: #4CAF50;
+    color: white;
+    border: none;
+    padding: 12px 30px;
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+#hb-center-modal .modal-btn:hover {
+    background: #3d8b40;
+}
+</style>
+
+<div id="hb-chat-toast">
+    <div class="toast-header">
+        <div class="toast-title">
+            <i class="fas fa-comment-dots"></i>
+            聊天软件通知
+        </div>
+        <button class="toast-close" id="hb-toast-close"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="toast-body">明烛天青发来了新消息</div>
+    <div class="toast-btns">
+        <button class="toast-btn later" id="hb-toast-later">稍后</button>
+        <button class="toast-btn open" id="hb-toast-open">查看消息</button>
+    </div>
+</div>
+
+<!-- 中间弹窗 -->
+<div id="hb-center-modal">
+    <div class="modal-content">
+        <div class="modal-title">恭喜！您完成了此次调查！</div>
+        <div class="modal-text">
+            此为结局五【明天】。本游戏一共有五种结局。建议从"万家地图"页面开始，尝试做出不同的选择。<br><br>
+            如果您喜欢本游戏，还请帮忙宣传，感谢！
+        </div>
+        <button class="modal-btn" id="hb-modal-close">确定</button>
+    </div>
+</div>
+
+<script>
+    (function() {
+        try {
+            // 检查是否首次访问
+            var toastKey = 'endnew_mingtian2_toast_shown';
+            if (!localStorage.getItem(toastKey)) {
+                localStorage.setItem(toastKey, 'true');
+                setTimeout(function() {
+                    document.getElementById('hb-chat-toast').style.display = 'block';
+                }, 1500);
+            }
+
+            // 关闭提示窗
+            document.getElementById('hb-toast-close').addEventListener('click', function() {
+                document.getElementById('hb-chat-toast').style.display = 'none';
+            });
+            document.getElementById('hb-toast-later').addEventListener('click', function() {
+                document.getElementById('hb-chat-toast').style.display = 'none';
+            });
+
+            // 打开中间弹窗
+            document.getElementById('hb-toast-open').addEventListener('click', function() {
+                document.getElementById('hb-chat-toast').style.display = 'none';
+                document.getElementById('hb-center-modal').style.display = 'flex';
+            });
+
+            // 关闭中间弹窗
+            document.getElementById('hb-modal-close').addEventListener('click', function() {
+                document.getElementById('hb-center-modal').style.display = 'none';
+            });
+
+            // 点击弹窗外部关闭
+            document.getElementById('hb-center-modal').addEventListener('click', function(e) {
+                if (e.target === this) {
+                    this.style.display = 'none';
+                }
+            });
+        } catch(e) {
+            console.error('提示窗功能初始化失败:', e);
+        }
+    })();
+</script>
+</body>
+</html>
+

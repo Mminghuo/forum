@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>万家地图 · 云留山自然保护区</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+        }
+
+        body {
+            height: 100vh;
+            background-color: #f0f2f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .app {
+            width: 80.00%;
+            max-width: 750px;
+            min-width: 320px;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background-color: transparent;
+            box-shadow: 0 0 30px rgba(60, 80, 40, 0.2);
+            border-radius: 0;
+        }
+
+        .top-bar {
+            height: 70px;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 22px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            flex-shrink: 0;
+            z-index: 30;
+            color: #000000;
+        }
+
+        .home-icon {
+            font-size: 26px;
+            color: #000000;
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 30px;
+            background: rgba(0, 0, 0, 0.02);
+            cursor: default;
+        }
+
+        .title-text {
+            font-size: 22px;
+            font-weight: 600;
+            color: #000000;
+            letter-spacing: 0.5px;
+            background: rgba(255,255,250,0.5);
+            padding: 6px 24px;
+            border-radius: 40px;
+        }
+
+        .close-icon {
+            font-size: 32px;
+            color: #000000;
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 30px;
+            background: rgba(0, 0, 0, 0.02);
+            cursor: default;
+        }
+
+        .map-container {
+            flex: 1;
+            position: relative;
+            background-color: #d2e8ba;
+            overflow: hidden;
+            width: 100%;
+            z-index: 1;
+        }
+
+        #mapCanvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: block;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .place-card {
+            position: absolute;
+            bottom: 24px;
+            left: 20px;
+            right: 20px;
+            background-color: #ffffff;
+            border-radius: 32px;
+            box-shadow: 0 16px 32px rgba(0, 0, 0, 0.15);
+            z-index: 50;
+            padding: 22px 24px 22px 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            border: 1px solid rgba(0, 0, 0, 0.06);
+            color: #000000;
+        }
+
+        .card-title {
+            font-size: 22px;
+            font-weight: 700;
+            color: #000000;
+            line-height: 1.2;
+        }
+
+        .card-sub {
+            font-size: 15px;
+            color: #000000;
+            opacity: 0.8;
+            letter-spacing: 0.2px;
+        }
+
+        .distance-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #f2f8ec;
+            padding: 10px 16px;
+            border-radius: 50px;
+            font-size: 16px;
+            color: #000000;
+        }
+
+        .distance-left {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 500;
+            color: #000000;
+        }
+
+        .distance-left i {
+            font-size: 18px;
+            color: #000000;
+            opacity: 0.7;
+        }
+
+        .car-time {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 500;
+            color: #000000;
+            background: #e3efd9;
+            padding: 5px 18px;
+            border-radius: 40px;
+        }
+
+        .car-time i {
+            font-size: 18px;
+            color: #000000;
+        }
+
+        .action-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin-top: 6px;
+        }
+
+        .icon-btn {
+            flex: 1;
+            height: 56px;
+            background-color: #edf6e8;
+            border-radius: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-size: 16px;
+            font-weight: 500;
+            color: #000000;
+            border: none;
+            cursor: pointer;
+            transition: background 0.1s;
+            user-select: none;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+        }
+
+        .icon-btn i {
+            font-size: 20px;
+            color: #000000;
+        }
+
+        .icon-btn:active {
+            background-color: #dae8d0;
+        }
+
+        .nav-btn {
+            flex: 1.2;
+            height: 56px;
+            background-color: #1f8f5a;
+            border-radius: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-size: 18px;
+            font-weight: 600;
+            color: #ffffff;
+            border: none;
+            box-shadow: 0 6px 14px rgba(30, 100, 40, 0.3);
+            cursor: pointer;
+            transition: background 0.15s;
+        }
+
+        .nav-btn i {
+            font-size: 20px;
+            color: #ffffff;
+        }
+
+        .nav-btn:active {
+            background-color: #16734a;
+        }
+
+        .separator {
+            height: 1px;
+            background: #e0ecd6;
+            margin: 4px 0 0;
+        }
+
+        .modal-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.3);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 200;
+            backdrop-filter: blur(3px);
+        }
+
+        .modal-box {
+            background-color: #ffffff;
+            border-radius: 36px;
+            width: 80%;
+            max-width: 280px;
+            padding: 28px 20px;
+            box-shadow: 0 30px 40px rgba(0, 20, 0, 0.3);
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .modal-option {
+            height: 64px;
+            border-radius: 40px;
+            background-color: #f0f7ea;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            font-weight: 600;
+            color: #000000;
+            cursor: pointer;
+            transition: background 0.15s;
+            border: 1px solid rgba(0, 0, 0, 0.04);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
+        }
+
+        .modal-option:active {
+            background-color: #ddebd1;
+        }
+
+        @media (max-width: 450px) {
+            .app {
+                width: 100%;
+                max-width: none;
+            }
+            .place-card {
+                padding: 18px 16px;
+                left: 12px;
+                right: 12px;
+            }
+            .icon-btn {
+                height: 48px;
+                font-size: 14px;
+            }
+            .nav-btn {
+                height: 48px;
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="app">
+        <div class="top-bar">
+            <div class="home-icon"><i class="fa-solid fa-house"></i></div>
+            <div class="title-text">万家地图</div>
+        <div class="close-icon"><i class="fa-solid fa-xmark"></i></div>
+    </div>
+
+    <div class="map-container" id="mapContainer">
+        <canvas id="mapCanvas"></canvas>
+
+        <div class="place-card" id="placeCard">
+            <div class="card-title">云留山自然保护区</div>
+            <div class="card-sub">福建省南鄣市千福县</div>
+
+                <div class="distance-row">
+                    <span class="distance-left">
+                        <i class="fa-regular fa-folder"></i> 据您 235.2 km
+                    </span>
+                    <span class="car-time">
+                        <i class="fa-regular fa-clock"></i> 10小时
+                    </span>
+                </div>
+
+                <div class="action-row">
+                    <div class="icon-btn inert" id="shareBtn">
+                        <i class="fa-regular fa-share-from-square"></i> 分享
+                    </div>
+                    <div class="icon-btn inert" id="favBtn">
+                        <i class="fa-regular fa-star"></i> 收藏
+                    </div>
+                    <div class="icon-btn inert" id="taxiBtn">
+                        <i class="fa-solid fa-taxi"></i> 打车
+                    </div>
+                    <div class="nav-btn" id="navBtn">
+                        <i class="fa-regular fa-compass"></i> 导航
+                    </div>
+                </div>
+                <div class="separator"></div>
+            </div>
+
+            <div class="modal-overlay" id="navModal">
+                <div class="modal-box">
+                    <div class="modal-option" id="goOption">出发</div>
+                    <div class="modal-option" id="waitOption">再等等</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 小青鱼新消息提示框 -->
+    <style>
+    #xqy-toast {
+        position: fixed;
+        bottom: 30px;
+        right: 30px;
+        background: rgba(32, 32, 32, 0.95);
+        color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.4);
+        padding: 20px 15px 15px;
+        width: 300px;
+        z-index: 9999;
+        display: none;
+        border: 1px solid rgba(255,255,255,0.1);
+        backdrop-filter: blur(10px);
+        animation: xqySlideIn 0.3s ease-out;
+    }
+    @keyframes xqySlideIn {
+        from { transform: translateY(20px); opacity: 0; }
+        to   { transform: translateY(0);    opacity: 1; }
+    }
+    #xqy-toast .xqy-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 12px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+    #xqy-toast .xqy-title {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        color: #fff;
+        font-weight: bold;
+        font-size: 14px;
+    }
+    #xqy-toast .xqy-title i { color: #4CAF50; font-size: 18px; }
+    #xqy-toast .xqy-close {
+        background: none; border: none; color: #aaa;
+        font-size: 16px; cursor: pointer; transition: color 0.2s;
+    }
+    #xqy-toast .xqy-close:hover { color: #fff; }
+    #xqy-toast .xqy-body {
+        color: rgba(255,255,255,0.9);
+        font-size: 14px;
+        line-height: 1.5;
+        margin-bottom: 15px;
+    }
+    #xqy-toast .xqy-btns {
+        display: flex;
+        gap: 10px;
+    }
+    #xqy-toast .xqy-btn {
+        flex: 1;
+        padding: 8px 15px;
+        border-radius: 4px;
+        border: none;
+        cursor: pointer;
+        font-size: 14px;
+        transition: all 0.2s;
+    }
+    #xqy-toast .xqy-btn.later {
+        background: rgba(60,60,60,0.8);
+        color: #e0e0e0;
+        border: 1px solid #444;
+    }
+    #xqy-toast .xqy-btn.later:hover { border-color: #07c160; color: #07c160; }
+    #xqy-toast .xqy-btn.open {
+        background: #07c160;
+        color: white;
+        font-weight: bold;
+    }
+    #xqy-toast .xqy-btn.open:hover { background: #06ad56; }
+    </style>
+
+    <div id="xqy-toast">
+        <div class="xqy-header">
+            <div class="xqy-title">
+                <i class="fa-solid fa-comment-dots"></i>
+                聊天软件通知
+            </div>
+            <button class="xqy-close" id="xqy-close-btn"><i class="fa-solid fa-times"></i></button>
+        </div>
+        <div class="xqy-body">小青鱼发来了新消息</div>
+        <div class="xqy-btns">
+            <button class="xqy-btn later" id="xqy-later-btn">稍后</button>
+            <button class="xqy-btn open" id="xqy-open-btn">查看消息</button>
+        </div>
+    </div>
+
+    <script>
+        // 小青鱼提示框控制
+        function showXiaoqingyuToast() {
+            var toast = document.getElementById('xqy-toast');
+            if (toast) toast.style.display = 'block';
+        }
+        document.getElementById('xqy-close-btn').addEventListener('click', function() {
+            document.getElementById('xqy-toast').style.display = 'none';
+        });
+        document.getElementById('xqy-later-btn').addEventListener('click', function() {
+            document.getElementById('xqy-toast').style.display = 'none';
+        });
+        document.getElementById('xqy-open-btn').addEventListener('click', function() {
+            document.getElementById('xqy-toast').style.display = 'none';
+            window.open('chat.html', '_blank');
+        });
+
+        // 设置小青鱼触发标志（参考forum-manage.html的逻辑）
+        function setXiaoqingyuTriggerFlag() {
+            try {
+                // 1. 写入独立标志键（chat.html的storage事件监听这个键）
+                //    这会实时通知已经打开的chat.html标签页
+                localStorage.setItem('zhangyinshanu_chatTriggered', 'true');
+                
+                // 2. 同时更新chatGameState里的标志（兼容旧逻辑）
+                let chatGameState = localStorage.getItem('chatGameState');
+                if (chatGameState) {
+                    const parsedState = JSON.parse(chatGameState);
+                    parsedState.xiaoqingyuTriggered = true;
+                    localStorage.setItem('chatGameState', JSON.stringify(parsedState));
+                }
+                
+                // 3. 设置独立的触发标志
+                localStorage.setItem('xiaoqingyu_triggered', 'true');
+            } catch (e) {
+                console.error('设置小青鱼触发标志失败:', e);
+            }
+        }
+
+        // 页面加载时触发小青鱼脚本（仅第一次进入时）
+        (function() {
+            try {
+                // 检查是否是第一次进入zhangyinshanu页面
+                const zhangyinshanuVisited = localStorage.getItem('zhangyinshanu_visited');
+                if (!zhangyinshanuVisited) {
+                    // 第一次进入，触发小青鱼消息
+                    localStorage.setItem('zhangyinshanu_visited', 'true');
+                    setXiaoqingyuTriggerFlag();
+                }
+            } catch(err) {
+                console.error('写入小青鱼触发标志失败:', err);
+            }
+        })();
+    </script>
+
+    <script>
+        (function() {
+            var mapContainer = document.getElementById('mapContainer');
+            var canvas = document.getElementById('mapCanvas');
+            var placeCard = document.getElementById('placeCard');
+            var navBtn = document.getElementById('navBtn');
+            var modalOverlay = document.getElementById('navModal');
+            var goOption = document.getElementById('goOption');
+            var waitOption = document.getElementById('waitOption');
+            var inertBtns = document.querySelectorAll('.icon-btn.inert');
+
+            function drawMap(ctx, width, height) {
+                ctx.fillStyle = '#d9efcb';
+                ctx.fillRect(0, 0, width, height);
+                ctx.save();
+                ctx.strokeStyle = 'rgba(255, 255, 255, 0.3)';
+                ctx.lineWidth = 1.5;
+                ctx.shadowColor = 'rgba(100, 130, 80, 0.15)';
+                ctx.shadowBlur = 5;
+
+                for (var y = 10; y < height; y += 42) {
+                    ctx.beginPath();
+                    for (var x = 0; x <= width; x += 12) {
+                        var offsetY = Math.sin(x * 0.02 + y * 0.008) * 8 + Math.cos(x * 0.015) * 5;
+                        if (x === 0) ctx.moveTo(x, y + offsetY);
+                        else ctx.lineTo(x, y + offsetY);
+                    }
+                    ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
+                    ctx.stroke();
+                }
+
+                for (var x2 = 10; x2 < width; x2 += 45) {
+                    ctx.beginPath();
+                    for (var y2 = 0; y2 <= height; y2 += 12) {
+                        var offsetX = Math.sin(y2 * 0.025 + x2 * 0.01) * 9 + Math.cos(y2 * 0.018) * 6;
+                        if (y2 === 0) ctx.moveTo(x2 + offsetX, y2);
+                        else ctx.lineTo(x2 + offsetX, y2);
+                    }
+                    ctx.strokeStyle = 'rgba(255, 255, 255, 0.18)';
+                    ctx.stroke();
+                }
+
+                ctx.lineWidth = 2.2;
+                for (var i = 0; i < 16; i++) {
+                    var startX = 20 + Math.random() * (width - 60);
+                    var startY = 20 + Math.random() * (height - 60);
+                    var cp1x = startX + 40 + Math.random() * 100;
+                    var cp1y = startY + 30 + Math.random() * 70;
+                    var cp2x = startX + 70 + Math.random() * 130;
+                    var cp2y = startY - 10 + Math.random() * 110;
+                    var endX = startX + 110 + Math.random() * 160;
+                    var endY = startY + 40 + Math.random() * 130;
+                    ctx.beginPath();
+                    ctx.moveTo(startX, startY);
+                    ctx.bezierCurveTo(cp1x, cp1y, cp2x, cp2y, endX, endY);
+                    ctx.strokeStyle = 'rgba(255, 255, 255, ' + (0.12 + Math.random() * 0.15) + ')';
+                    ctx.stroke();
+                }
+
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.1)';
+                ctx.shadowBlur = 8;
+                for (var s = 0; s < 22; s++) {
+                    var cx = 15 + Math.random() * (width - 30);
+                    var cy = 15 + Math.random() * (height - 30);
+                    ctx.beginPath();
+                    var edges = 4 + Math.floor(Math.random() * 5);
+                    for (var j = 0; j < edges; j++) {
+                        var angle = (j / edges) * Math.PI * 2 + Math.random() * 0.5;
+                        var radius = 10 + Math.random() * 28;
+                        var px = cx + Math.cos(angle) * radius;
+                        var py = cy + Math.sin(angle) * radius;
+                        if (j === 0) ctx.moveTo(px, py);
+                        else ctx.lineTo(px, py);
+                    }
+                    ctx.closePath();
+                    ctx.fill();
+                }
+
+                ctx.shadowBlur = 2;
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.28)';
+                for (var p = 0; p < 70; p++) {
+                    ctx.beginPath();
+                    ctx.arc(Math.random() * width, Math.random() * height, 2 + Math.random() * 5, 0, 2 * Math.PI);
+                    ctx.fill();
+                }
+                ctx.restore();
+
+                var centerX = width / 2;
+                var centerY = height / 2;
+                var r = 22;
+                ctx.shadowColor = '#3f6b3f';
+                ctx.shadowBlur = 15;
+                ctx.beginPath();
+                ctx.arc(centerX, centerY, r * 0.9, 0, 2 * Math.PI);
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.4)';
+                ctx.fill();
+                ctx.shadowBlur = 12;
+                ctx.shadowColor = '#1e5f8e';
+                ctx.beginPath();
+                ctx.arc(centerX, centerY, r * 0.55, 0, 2 * Math.PI);
+                ctx.fillStyle = '#2a7fc9';
+                ctx.fill();
+                ctx.shadowBlur = 8;
+                ctx.shadowColor = '#ffffff';
+                ctx.beginPath();
+                ctx.arc(centerX, centerY, r * 0.2, 0, 2 * Math.PI);
+                ctx.fillStyle = '#ffffff';
+                ctx.fill();
+                ctx.shadowBlur = 4;
+                ctx.strokeStyle = 'white';
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                ctx.arc(centerX, centerY, r * 0.7, 0, 2 * Math.PI);
+                ctx.stroke();
+                ctx.shadowBlur = 0;
+                ctx.shadowColor = 'transparent';
+            }
+
+            function resizeAndDraw() {
+                if (!mapContainer) return;
+                var rect = mapContainer.getBoundingClientRect();
+                var w = rect.width;
+                var h = rect.height;
+                if (w === 0 || h === 0) {
+                    requestAnimationFrame(resizeAndDraw);
+                    return;
+                }
+                canvas.width = w;
+                canvas.height = h;
+                var ctx = canvas.getContext('2d');
+                if (ctx) drawMap(ctx, w, h);
+            }
+
+            if (window.ResizeObserver) {
+                var ro = new ResizeObserver(function() { resizeAndDraw(); });
+                ro.observe(mapContainer);
+            } else {
+                window.addEventListener('resize', function() { resizeAndDraw(); });
+            }
+            requestAnimationFrame(function() { resizeAndDraw(); });
+
+            // 触发小青鱼对话（写入 localStorage 标志）
+            function triggerXiaoqingyu() {
+                try {
+                    localStorage.setItem('xiaoqingyu_triggered', 'true');
+                    var chatGameState = localStorage.getItem('chatGameState');
+                    if (chatGameState) {
+                        var parsedState = JSON.parse(chatGameState);
+                        parsedState.xiaoqingyuTriggered = true;
+                        localStorage.setItem('chatGameState', JSON.stringify(parsedState));
+                    }
+                } catch(err) {
+                    console.error('写入小青鱼触发标志失败:', err);
+                }
+            }
+
+            // 读取游戏状态，判断结局
+            function getEndingUrl() {
+                try {
+                    var state = JSON.parse(localStorage.getItem('chatGameState') || '{}');
+                    var stage4My = state.mingyueyeStage4Complete || false;
+                    var stage4Zz = state.zhizuchangleStage4Complete || false;
+                    var tianZunWarningDone = state.tianZunWarningDone || false;
+
+                    // 未经历天尊警告 -> end1
+                    if (!tianZunWarningDone) {
+                        return 'end1.html';
+                    }
+
+                    // 经历天尊警告后执迷不悟，但未完成四阶段对话 -> end1
+                    if (!stage4My && !stage4Zz) return 'end1.html';
+
+                    // 经历天尊警告后，根据四阶段完成情况判断
+                    if (stage4My && stage4Zz) return 'end5.html';
+                    if (stage4Zz && !stage4My) return 'end3.html';
+                    if (stage4My && !stage4Zz) return 'end4.html';
+                    return 'end3.html';
+                } catch(e) {
+                    return 'end1.html';
+                }
+            }
+
+            // 点击导航按钮时，显示出发/再等等弹窗
+            navBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                modalOverlay.style.display = 'flex';
+            });
+
+            // 点击"出发"
+            goOption.addEventListener('click', function(e) {
+                e.stopPropagation();
+                var endUrl = getEndingUrl();
+                window.open(endUrl, '_blank');
+                modalOverlay.style.display = 'none';
+            });
+
+            // 点击"再等等" -> 触发小青鱼，显示右下角提示框（仅第一次点击时显示）
+            waitOption.addEventListener('click', function(e) {
+                e.stopPropagation();
+                modalOverlay.style.display = 'none';
+                // 触发小青鱼对话
+                triggerXiaoqingyu();
+                // 检查是否是第一次点击"再等等"
+                const waitClicked = localStorage.getItem('zhangyinshanu_wait_clicked');
+                if (!waitClicked) {
+                    // 第一次点击，显示右下角提示框
+                    showXiaoqingyuToast();
+                    // 记录已点击"再等等"
+                    localStorage.setItem('zhangyinshanu_wait_clicked', 'true');
+                    // 记录提示框已显示（用于新游戏初始化）
+                    localStorage.setItem('xiaoqingyu_toast_shown', 'true');
+                }
+            });
+
+            // 点击遮罩关闭弹窗
+            modalOverlay.addEventListener('click', function(e) {
+                if (e.target === modalOverlay) {
+                    modalOverlay.style.display = 'none';
+                }
+            });
+
+            // 无交互按钮
+            inertBtns.forEach(function(btn) {
+                btn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                });
+            });
+
+            placeCard.addEventListener('click', function(e) {
+                e.stopPropagation();
+            });
+        })();
+    </script>
+</body>
+</html>
+

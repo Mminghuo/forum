@@ -1,0 +1,356 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>九华高中女生离奇失踪，是否与"网络邪教"有关？ - 新浪网</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Microsoft YaHei", "SimHei", sans-serif;
+            background-color: #f4f5f7;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* 顶部导航栏 */
+        .top-nav {
+            background-color: #e60012;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+        }
+
+        .hot-focus {
+            color: #fff;
+            font-size: 16px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 6px;  /* 图标与文字间距 */
+        }
+
+        .nav-links {
+            display: flex;
+            margin-left: auto;
+            gap: 25px;
+        }
+
+        .nav-links a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        /* 第二导航栏 */
+        .second-nav {
+            background-color: #fff;
+            border-bottom: 1px solid #e0e0e0;
+            padding: 10px 20px;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .second-nav a {
+            color: #666;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        /* 主内容区 */
+        .content-container {
+            max-width: 900px;
+            margin: 20px auto;
+            background-color: #fff;
+            padding: 30px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        /* ----- 粘性标题栏 (滚动固定) ----- */
+        .article-title {
+            position: sticky;
+            top: 0;
+            background: #fff;
+            z-index: 200;
+            text-align: center;
+            font-size: 28px;
+            font-weight: bold;
+            color: #222;
+            margin: 0 0 20px 0;
+            padding: 15px 0 10px;
+            line-height: 1.4;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+            border-bottom: 1px solid #f0f0f0;
+            transition: box-shadow 0.2s;
+        }
+
+        .article-meta {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            color: #999;
+            font-size: 14px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eee;
+            margin-bottom: 25px;
+        }
+
+        .article-content {
+            font-size: 18px;
+            line-height: 1.8;
+        }
+
+        .article-content p {
+            margin-bottom: 22px;
+            text-indent: 2em;
+        }
+
+        /* ----- 图片区域：比正文窄一圈，绝不溢出 ----- */
+        .article-image {
+            margin: 25px 0;
+            text-align: center;
+        }
+
+        /* 真实图片样式——固定比文字窄，居中，圆角，轻边框 */
+        .article-image img {
+            width: 85%;              /* 窄于正文 */
+            max-width: 700px;        /* 避免过大，与原占位符一致 */
+            height: auto;
+            display: block;
+            margin: 0 auto 10px;     /* 水平居中，下方留白 */
+            border-radius: 6px;
+            border: 1px solid #eaeef2;
+            background-color: #f9f9f9; /* 图片加载前后占位 */
+        }
+
+        /* 图片下方说明文字同样窄于正文 */
+        .image-caption {
+            font-size: 14px;
+            color: #666;
+            text-align: center;
+            width: 85%;
+            margin: 0 auto;
+            font-style: italic;
+        }
+
+        /* 底部操作栏 */
+        .article-footer {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .share-icons, .report-icon, .comments-section {
+            display: flex;
+            align-items: center;
+        }
+
+        .icon-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-right: 25px;
+            color: #666;
+            font-size: 12px;
+            cursor: pointer;        /* 可点击但无交互 */
+        }
+
+        .icon-item i {
+            font-size: 20px;
+            margin-bottom: 5px;
+        }
+
+        .report-icon .icon-item {
+            margin-right: 0;
+            cursor: pointer;
+        }
+
+        .comments-section {
+            color: #e60012;
+            font-size: 14px;
+            cursor: pointer;        /* 手型，点击无跳转 */
+        }
+
+        /* 新浪页面底部 */
+        .sina-footer {
+            background-color: #fff;
+            border-top: 1px solid #e0e0e0;
+            padding: 30px 20px;
+            text-align: center;
+            color: #666;
+            font-size: 12px;
+            margin-top: 40px;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: 15px 0;
+        }
+
+        .footer-links a {
+            color: #666;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        /* 响应式 */
+        @media (max-width: 768px) {
+            .content-container {
+                padding: 20px;
+                margin: 10px;
+            }
+
+            .article-title {
+                font-size: 24px;
+                padding: 12px 0 8px;
+            }
+
+            .article-content {
+                font-size: 16px;
+            }
+
+            .article-image img {
+                width: 95%;         /* 移动端同样保持窄于文字 */
+            }
+
+            .image-caption {
+                width: 95%;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .article-footer {
+                flex-direction: column;
+                gap: 20px;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- 顶部导航栏 · 热点关注左侧加关注图标（星形） -->
+    <div class="top-nav">
+        <div class="hot-focus">
+            <i class="fas fa-star"></i> 热点关注
+        </div>
+        <div class="nav-links">
+            <a href="javascript:void(0);">新闻</a>
+            <a href="javascript:void(0);">体育</a>
+            <a href="javascript:void(0);">财经</a>
+            <a href="javascript:void(0);">娱乐</a>
+            <a href="javascript:void(0);">科技</a>
+            <a href="javascript:void(0);">博客</a>
+            <a href="javascript:void(0);">图片</a>
+            <a href="javascript:void(0);">专栏</a>
+            <a href="javascript:void(0);">更多</a>
+        </div>
+    </div>
+
+    <!-- 第二导航栏 (面包屑) 链接均无跳转 -->
+    <div class="second-nav">
+        <a href="javascript:void(0);">新闻中心</a> &gt; 
+        <a href="javascript:void(0);">国内新闻</a> &gt; 正文
+    </div>
+
+    <!-- 主内容区 -->
+    <div class="content-container">
+        <!-- 标题添加 [热议] 红色前缀，整个标题栏具有粘性固定效果 -->
+        <h1 class="article-title">
+            <span style="color: #e60012; margin-right: 8px;">[热议]</span>
+            九华高中女生离奇失踪，是否与"网络邪教"有关？
+        </h1>
+
+        <div class="article-meta">
+            <span>2025年8月19日，22:30</span>
+            <span>作者：《奇闻调查》</span>
+        </div>
+
+        <div class="article-content">
+            <p>近日，有网友发布寻人启事，称一名九华高中的女学生赵梓萱在晚自习离家后失踪。据知情人士披露，赵梓萱与数月前九华高中集体自杀事件的死者是同班同学，这让她的失踪很快在网络引发关注。</p>
+
+            <p>据家属反映，监控显示，赵梓萱在晚自习结束后并未像往常一样回家，而是独自走向学校后方一条小巷，之后就没了踪迹。由于小巷内监控缺失，无法得知赵梓萱走进去之后究竟如何"消失"，其具体去向至今不明。</p>
+
+            <!-- 图片1：插入真实图片，宽度固定窄于正文，无溢出 -->
+            <div class="article-image">
+                <img src="https://img.remit.ee/api/file/BQACAgUAAyEGAASHRsPbAAEQ4jtpjVWQehbawrobSefSv1edb0ICdQACUBsAAoLCaFR6pSbu6o3cKzoE.png"
+                     alt="九华高中后巷监控缺失区域示意图">
+                <div class="image-caption">九华高中后巷监控缺失区域示意图</div>
+            </div>
+
+            <p>有目击同学回忆，赵梓萱失踪前举止颇为怪异。当晚巷口灯光昏暗，该同学见她往少有人行的方向走去，便驻足询问她"去哪里"。赵梓萱回答"要去另一个世界"，还反问对方是否同行。目击者称，赵梓萱当时的语气很奇怪，"毫无起伏"。但因对方性格内向、独来独往，彼此并不熟悉，也就没有继续追问，以"家长来接"为由拒绝了。随后，赵梓萱走入巷中。</p>
+
+            <p>根据九华高中的卫星地图，我们可以看到，赵梓萱失踪的这条小巷长约20米，宽4米，两侧是高墙，中间并无其他岔路，也无下水道等隐藏出口。小巷通往的唯一地方，就是九华高中后面乱葬岗。这一事实，不仅给警方的侦查工作带来困难，也为案件增添了令人不安的诡异迷雾。</p>
+
+            <!-- 此处第二个图片占位符已完全删除，只保留文字段落 -->
+            
+            <p>近日，我们进一步走访了九华高中的师生。据了解，赵梓萱性格安静内向，平日里喜爱接触"灵异"相关的内容。集体自杀事件发生后，她一度受到影响，经常独自一人喃喃自语。很多同学都注意到，她曾将手机偷偷带来学校，似乎沉迷于某个论坛。</p>
+
+            <p>赵梓萱的情况令人联想到另一起失踪案。2018年，南鄣市东明中学的一名学生小高（化名）受网络"聊天室"内容的影响，产生"自杀"念头，因而逃学离家，半个月后才被警方在千福县山区寻回。该案最终被定性为网络邪教组织传播有害信息、引诱未成年人，相关组织已被制裁。</p>
+
+            <p>如今，7年过去了，又一名高中生失踪，同样留下"去另一个世界"这样仿佛自杀的话语——这是否意味着，二者之间存在某种关联？赵梓萱的失踪，是否也与网络"邪教"组织有关？</p>
+
+            <p>基于上述猜测，记者在尝试联系东明中学事件相关人员的同时，也将相关线索提交警方。然而，经过一周的调查，警方遗憾告知，赵梓萱的手机、电脑等设备中均未发现同学所称的"灵异论坛"记录，更无从寻找其中的"邪教"踪迹。</p>
+
+            <p>我们的猜想未能得到证实，有关赵梓萱下落的线索再次中断。</p>
+
+            <p>截至目前，赵梓萱已失踪90天，下落依然不明。警方表示调查仍在进行中，也呼吁公众如有线索及时上报。</p>
+        </div>
+
+        <!-- 底部操作栏：所有按钮均可点击但无交互 (指针样式已设) -->
+        <div class="article-footer">
+            <div class="share-icons">
+                <div class="icon-item">
+                    <i class="fab fa-weixin"></i>
+                    <span>微信</span>
+                </div>
+                <div class="icon-item">
+                    <i class="fab fa-weibo"></i>
+                    <span>微博</span>
+                </div>
+                <div class="icon-item">
+                    <i class="fas fa-link"></i>
+                    <span>复制链接</span>
+                </div>
+            </div>
+
+            <div class="report-icon">
+                <div class="icon-item">
+                    <i class="fas fa-flag"></i>
+                    <span>举报</span>
+                </div>
+            </div>
+
+            <div class="comments-section">
+                最新评论（329）<span style="margin-left: 10px; color: #666;">点击查看</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- 新浪页面底部：所有链接均无实际跳转 -->
+    <div class="sina-footer">
+        <div class="footer-links">
+            <a href="javascript:void(0);">关于新浪</a>
+            <a href="javascript:void(0);">广告服务</a>
+            <a href="javascript:void(0);">联系我们</a>
+            <a href="javascript:void(0);">招聘信息</a>
+            <a href="javascript:void(0);">网站律师</a>
+            <a href="javascript:void(0);">通行证注册</a>
+            <a href="javascript:void(0);">产品答疑</a>
+        </div>
+    </div>
+</body>
+</html>

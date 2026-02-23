@@ -1,0 +1,192 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>考察记录 · 七月半论坛</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* ========== 基本样式（与论坛保持一致） ========== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+        }
+        
+        body {
+            background-color: #0a0a0a;
+            color: #e0e0e0;
+            min-height: 100vh;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(20, 20, 20, 0.7) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(10, 10, 10, 0.7) 0%, transparent 20%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-top: 20px; /* 移除顶部栏，仅保留少量上边距 */
+        }
+
+        /* ========== 主容器 ========== */
+        .archive-container {
+            width: 75%;
+            max-width: 1000px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        @media (max-width: 1000px) {
+            .archive-container {
+                width: 95%;
+            }
+        }
+
+        /* 卡片通用样式 */
+        .card {
+            background-color: rgba(20, 20, 20, 0.9);
+            border: 1px solid #333;
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+        }
+
+        /* 标题卡片（温妍 考察记录 + 记录人） */
+        .title-card {
+            text-align: left;
+            padding: 30px 25px;
+        }
+        .main-title {
+            font-size: 32px;
+            font-weight: 700;
+            color: #ffffff;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+        .record-author {
+            font-size: 16px;
+            color: #aaa;
+            font-style: italic;
+        }
+
+        /* 日记卡片 */
+        .diary-card {
+            padding: 20px 25px;
+        }
+        .diary-content {
+            font-size: 15px;
+            line-height: 1.8;
+            color: #e0e0e0;
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+
+        /* 最后一条日记的红色样式 */
+        .last-diary .diary-content {
+            color: #8b0000;
+        }
+    </style>
+</head>
+<body>
+    <!-- 主内容区（顶部栏已移除） -->
+    <div class="archive-container">
+        <!-- 标题卡片：温妍 考察记录 / 记录人：于梦欣 -->
+        <div class="card title-card">
+            <div class="main-title">温妍 考察记录</div>
+            <div class="record-author">记录人：于梦欣</div>
+        </div>
+
+        <!-- 日记卡片 1 -->
+        <div class="card diary-card">
+            <div class="diary-content">——
+我不明白什么是祭体。她和陈菲年纪相仿，只小了几个月。
+尊者告诉我，这世上每个人都不是孤独存在的，总有人与你相似——或许外貌，或许性情，甚至是魂灵。而祭体，就是那个与陈菲灵魂相近的人。只要引导得当，陈菲便能在她身上重获新生。
+只要能换回陈菲，我什么都愿意尝试。</div>
+        </div>
+
+        <!-- 日记卡片 2 -->
+        <div class="card diary-card">
+            <div class="diary-content">——
+是我太过思念陈菲，还是事实当真如此？这些日子相处下来，有许多瞬间，我几乎以为她就是陈菲。她会像陈菲一样，温柔地握着我的手，对我露出笑容。我去问尊者，他说这说明一切都在按计划进行，说明我们没有找错人。</div>
+        </div>
+
+        <!-- 日记卡片 3 -->
+        <div class="card diary-card">
+            <div class="diary-content">——
+她真的就是陈菲。
+今天，我跟她讲起小时候的事，没有提陈菲的名字，可她听着听着就哭了。她说我那些年过得辛苦，说那时候我还那么小，却那么坚强勇敢。她说，如果早一点遇见，如果那时候她能在身边，一定会陪着我、鼓励我，和我一起熬过去。
+这些话，陈菲也说过。
+难道世上真有这样的事？她就是陈菲的“分身”，是另一个陈菲。我们所做的一切，正是在让陈菲复活。</div>
+        </div>
+
+        <!-- 日记卡片 4 -->
+        <div class="card diary-card">
+            <div class="diary-content">——
+今天是她的生日。我准备了礼物，蛋糕特意选了陈菲爱吃的口味，她果然也很喜欢。
+晚些时候，她妹妹打来电话，是个高三的小姑娘，学习很好。她聊起家人的时候，脸上露出了温暖幸福的神情，是我从未见过的。</div>
+        </div>
+
+        <!-- 日记卡片 5 -->
+        <div class="card diary-card">
+            <div class="diary-content">——
+我错了。
+她不是陈菲。我早该明白的，却一直自欺欺人到今天。
+她叫温妍，有一个懂事的妹妹，一个勤劳朴实的母亲。家里不算富裕，但每个人都深爱着彼此。她和陈菲不一样，也和我不一样。就算她真的像尊者说的那样，是与陈菲灵魂相似的人，那也不是陈菲。不同的际遇，不同的羁绊，便是完全不同的人生。
+我想念的陈菲，是世上唯一的陈菲。任何人都无法替代。
+这让我忍不住怀疑尊者，怀疑他说的那些话。天尊真的存在吗？我把这些疑虑告诉他，他只是淡然一笑，说我这些担忧都是自寻烦恼。只要照着天尊的指引去做，自然会有神迹让我相信。</div>
+        </div>
+
+        <!-- 日记卡片 6 -->
+        <div class="card diary-card">
+            <div class="diary-content">——
+温妍说，总觉得有人跟着她，半夜常听到敲门声，像是有什么东西。我看不见，也听不见。可我知道，那是天尊的侍者来了。
+我照尊者的吩咐，在她身边放符咒，趁她不在时翻动她的东西。她的精神状态一天天变差，夜里总是惊醒，说做了噩梦。我便趁机建议她去论坛发帖求助，再顺理成章地引导她供奉天尊。
+这就是经文里说的“浸养”吗？也许，是陈菲的神识与天尊相通，才会让凡人感知到那些存在。此刻我终于相信，天尊真的能帮我实现心愿。</div>
+        </div>
+
+        <!-- 日记卡片 7 -->
+        <div class="card diary-card">
+            <div class="diary-content">——
+今天我陪温妍去了医院。医生检查不出什么，只是开了些精神类的药物，还做了心理咨询。我问她感觉怎么样，她勉强笑着说好些了。我知道，她是不想让我担心。
+她是个好人。不管是不是“另一个陈菲”，她都是一个很好的人。可我一直在骗她。
+如果陈菲真的回来了，她会怎么样？会消失吗？</div>
+        </div>
+
+        <!-- 日记卡片 8 -->
+        <div class="card diary-card">
+            <div class="diary-content">——
+为什么没有早点遇见温妍？如果早些认识，她和陈菲，说不定会成为很好的朋友。</div>
+        </div>
+
+        <!-- 日记卡片 9 -->
+        <div class="card diary-card">
+            <div class="diary-content">——
+尊者说不能再拖了。祭体既已备好，就该尽快带她去祭祀之地。
+可不知道为什么，我迟迟下不了决心。是我心软了吗？难道我对陈菲的爱，就这么浅薄，才不到半年就磨没了？
+还是尊者一句话点醒了我。他说，我所贪恋的，不过是虚妄的幻影。温妍终究不是陈菲，我们只是合住的室友罢了。若不做这场祭祀，她早晚也会离开我。到那时，我便真的什么也不剩了。
+我不会再犹豫了。只要能让陈菲回到我身边，我可以舍弃一切。</div>
+        </div>
+
+        <!-- 日记卡片 10 -->
+        <div class="card diary-card">
+            <div class="diary-content">——
+我告诉温妍，南鄣云留山有尊“<strong>宝幡神像</strong>”很灵验，可以带她去拜拜，兴许能帮她把心里的困扰解开。她本不信这些，但拗不过我，便答应了。她很信任我，以为这只是一次散的旅行，还认认真真查了攻略，说是难得的机会。
+她不知道，她再也没可能回来。
+但我很快就能见到陈菲了。</div>
+        </div>
+
+        <!-- 日记卡片 11（最后一条，红色） -->
+        <div class="card diary-card last-diary">
+            <div class="diary-content"><strong>普世广愿，惠慈长生。</strong></div>
+        </div>
+    </div>
+
+    <script>
+        // 关闭窗口功能已移除（因为顶部栏已删除），但保留一个空函数以防万一
+        function closeWindow() {
+            // 无操作
+        }
+    </script>
+</body>
+</html>

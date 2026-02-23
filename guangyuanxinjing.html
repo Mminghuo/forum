@@ -1,0 +1,152 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>《惠慈天尊圆满广愿心经》· 祸福相济 · 原典</title>
+    <style>
+        /* 全局氛围：深灰底、衬线字体，仿原PDF阅读器 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #3e3e3e;
+            font-family: "SimSun", "宋体", "Times New Roman", serif;
+            line-height: 1.7;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        /* 单页视图，居中展示 */
+        .pdf-viewer {
+            display: flex;
+            justify-content: center;
+            max-width: 100%;
+            margin: 0 auto;
+        }
+
+        /* 一页白底，纸张质感，宽度略增以容下全文，内边距舒朗 */
+        .pdf-page {
+            background: #fff;
+            color: #1e1e1e;
+            width: 780px;          /* 比原版加宽，确保整段故事一页容下 */
+            min-height: 900px;     /* 高度自适应，留白自然 */
+            padding: 48px 56px;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
+            border: 1px solid #bababa;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        /* ----- 页眉：每页最上方，经名居中，细线衬底 ----- */
+        .page-header {
+            font-size: 15px;
+            color: #4d4d4d;
+            text-align: center;
+            letter-spacing: 3px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #c0c0c0;
+            margin-bottom: 28px;
+            font-weight: normal;
+            flex-shrink: 0;
+        }
+
+        /* 正文主体区域，自动撑满，将页脚推到底部 */
+        .content-body {
+            flex: 1 0 auto;
+        }
+
+        /* 标题：祸福相济 — 居中，略古拙 */
+        .article-title {
+            font-size: 26px;
+            font-weight: bold;
+            color: #2a2a2a;
+            text-align: center;
+            margin-bottom: 28px;
+            margin-top: 8px;
+            letter-spacing: 4px;
+            border-bottom: 1px dashed #aaa;
+            padding-bottom: 15px;
+            font-family: "SimSun", "Songti SC", serif;
+        }
+
+        /* 正文段落：首行缩进2字符，行距疏朗，字体稍大易读 */
+        .text-paragraph {
+            font-size: 17.5px;
+            text-indent: 2em;
+            margin-bottom: 1.3em;
+            text-align: justify;
+            word-break: break-word;
+            line-height: 1.85;
+        }
+
+        /* 页脚：页码置于最下方正中央，无额外装饰 */
+        .page-footer {
+            flex-shrink: 0;
+            text-align: center;
+            font-size: 15px;
+            color: #5a5a5a;
+            margin-top: 30px;
+            padding-top: 12px;
+            border-top: 1px solid #d6d6d6;
+            letter-spacing: 2px;
+        }
+
+        /* 完全移除古籍滤镜及无用图片样式，只留最干净阅读核心 */
+        @media (max-width: 860px) {
+            .pdf-page {
+                width: 95%;
+                padding: 32px 28px;
+            }
+            .article-title {
+                font-size: 24px;
+            }
+            .text-paragraph {
+                font-size: 16.5px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="pdf-viewer">
+        <!-- █████████████████ 仅一页，完整收录《祸福相济》全文 █████████████████ -->
+        <div class="pdf-page">
+            <!-- 页眉：惠慈天尊圆满广愿心经  （每页最上） -->
+            <div class="page-header">《惠慈天尊圆满广愿心经》</div>
+
+            <!-- 主体内容区（flex:1，保证页脚自然沉底） -->
+            <div class="content-body">
+
+                <!-- 以下段落严格依照原文意群拆分，保留所有叙述细节 -->
+                <p class="text-paragraph">北宋时，<strong>南鄣</strong>有黄姓举子，累试不第，遂诚心祷于天尊。未几，其宅中忽起大火，延烧栋宇，唯黄生安然独存，人皆异之。</p>
+
+                <p class="text-paragraph">黄生知蒙天尊庇佑，朝夕虔礼，恳请开示。后感于冥通，知己运将转，科甲可期，乃发宏愿：若得登第，必广扬天尊圣号，普济世人。</p>
+
+                <p class="text-paragraph">是年南鄣大旱，三月无雨，饥民相食，死者塞途。应考诸生多饥乏失态，独黄生神气清明，答卷如流。元符三年（1100年），果中进士。此后宦途通达，累迁中奉大夫、开府司仪曹事、将作少监等职，徽、钦二帝皆曾召见咨议。</p>
+
+                <p class="text-paragraph">黄生既遂夙愿，身居显要，遂生骄慢之心。尝与同僚妄语：“吾有今日，皆凭己力勤学所致，神佛之说，不堪为信。”所请天尊神像亦掩置柜中，久未抚扫，尘封日久。</p>
+
+                <p class="text-paragraph">宣和初年，陕西、河东地大震，黄生奉旨巡察，因匿灾不报获罪贬谪。是夜，梦天尊现怒容，斥曰：“汝受福不知，背誓忘恩，今收所赐。若不悔改，灾厄立至。”黄生惊寤，汗透重衣，遂恭请圣像入庙，恳求庙祝代为禳解，自身长跪坛前三日，涕泣忏悔，誓愿重拾初心。天尊鉴其悔过之诚，乃许延续福缘。</p>
+
+                <p class="text-paragraph">靖康间，金人南侵，康王即位。黄氏以拥立之功擢中书侍郎，后至丞相，权倾一时。其深念此皆天尊慈护，乃于南鄣主持修建天尊殿宇，普传信仰，更发心开凿山壁，镌刻圣容。</p>
+
+                <p class="text-paragraph">时值动乱之世，百姓流离，闻天尊慈愿，皈依者日众。天尊感黄生弘法之功，敕封为“<strong>广愿侍者</strong>”。黄生自此久得顺遂，虽逢乱世，安然栖身，寿考而终，福德绵长。</p>
+
+                <p class="text-paragraph"><strong>此即“广愿”感应之验也。后之信徒，当以此镜，常怀信愿，勿违初心。</strong></p>
+            </div>
+
+            <!-- 页脚：页码移至最下方正中，干净纯粹 -->
+            <div class="page-footer">第143页</div>
+        </div>
+    </div>
+    <!-- 完全去除图片占位、古籍滤镜；整篇故事一页容纳，宽度适当增加 -->
+</body>
+</html>

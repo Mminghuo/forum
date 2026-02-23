@@ -1,0 +1,422 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>寻访和美乡村：千福县"长寿村"的文化与信仰 - 南鄣文明网</title>
+    <style>
+        /* ---------- 全局重置 无交互 ---------- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
+            background-color: #fff;
+            color: #222;
+            line-height: 1.6;
+            max-width: 1200px;         /* 加宽以适应右侧栏 */
+            margin: 0 auto;
+            padding: 20px 25px 40px;
+        }
+
+        /* 完全移除交互行为：所有指针默认，无下划线，无颜色变化 */
+        span, div, p, h1, h2, h3, .nav-item, .footer-text {
+            cursor: default;
+        }
+
+        /* ---------- 南鄣文明网头部（纯文字） ---------- */
+        .baidu-header {
+            display: flex;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #e4e4e4;
+            margin-bottom: 15px;
+        }
+
+        .baidu-logo {
+            font-weight: bold;
+            font-size: 22px;
+            color: #3385ff;
+            margin-right: 25px;
+            letter-spacing: 1px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 24px;
+        }
+
+        .nav-item {
+            font-size: 15px;
+            color: #555;
+            text-decoration: none;  /* 无下划线 */
+            font-weight: 400;
+        }
+
+        /* ---------- 面包屑：当前位置 ---------- */
+        .breadcrumb {
+            font-size: 14px;
+            color: #888;
+            margin-bottom: 12px;
+            padding-bottom: 5px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        .breadcrumb span {
+            color: #666;
+        }
+
+        /* ---------- 文章头部 ---------- */
+        .article-header {
+            margin-bottom: 25px;
+        }
+
+        .article-title {
+            font-size: 30px;
+            font-weight: bold;
+            line-height: 1.4;
+            margin-bottom: 18px;
+            color: #1a1a1a;
+        }
+
+        .article-meta {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .publisher-info {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .publisher-name {
+            font-size: 16px;
+            color: #3385ff;          /* 南鄣文明网标识色 */
+            font-weight: 500;
+        }
+
+        .publish-date {
+            color: #999;
+            font-size: 14px;
+        }
+
+        /* 移除关注按钮，替换为静态来源 */
+
+        /* ---------- 两列布局：左侧正文 + 右侧竖栏 ---------- */
+        .content-grid {
+            display: flex;
+            gap: 40px;
+            margin-top: 10px;
+            align-items: flex-start;
+        }
+
+        /* 左侧文章主区域 */
+        .article-main {
+            flex: 1;                /* 占据剩余宽度 */
+            min-width: 0;          /* 防止溢出 */
+        }
+
+        /* ---------- 文章内容样式 ---------- */
+        .article-content {
+            font-size: 18px;
+            line-height: 1.85;
+            color: #2c2c2c;
+        }
+
+        .article-content p {
+            margin-bottom: 24px;
+            text-indent: 2em;
+            letter-spacing: 0.3px;
+        }
+
+        /* ---------- 图片区域：固定比正文窄一圈 ---------- */
+        .article-image {
+            margin: 30px 0;
+            text-align: center;
+        }
+
+        .image-placeholder {
+            width: 85%;             /* 比左侧文章宽度窄15% */
+            max-width: 700px;       /* 最大宽度限制，确保不会过宽 */
+            height: auto;
+            min-height: 280px;
+            background-color: #f4f6f9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #6c757d;
+            font-size: 17px;
+            margin: 0 auto 12px;    /* 居中显示 */
+            border-radius: 8px;
+            border: 1px solid #eaeef2;
+            padding: 20px;
+            font-style: italic;
+            line-height: 1.5;
+            word-break: break-word;
+        }
+
+        .image-caption {
+            font-size: 14px;
+            color: #777;
+            text-align: center;
+            font-style: italic;
+            letter-spacing: 0.5px;
+            width: 85%;
+            margin: 0 auto;
+        }
+
+        /* ---------- 引用样式 ---------- */
+        .quote {
+            background-color: #f9f9f9;
+            border-left: 4px solid #c0cbd4;
+            padding: 20px 25px;
+            margin: 30px 0;
+            font-style: italic;
+            color: #4a4a4a;
+            line-height: 1.7;
+            font-size: 17px;
+        }
+
+        /* ---------- 右侧边栏（竖栏样式：竖线标题 + 纯文字） ---------- */
+        .sidebar {
+            width: 260px;
+            flex-shrink: 0;
+            background-color: #fafbfc;
+            padding: 22px 18px;
+            border-radius: 10px;
+            border: 1px solid #edf0f2;
+        }
+
+        .sidebar-section {
+            margin-bottom: 35px;
+        }
+
+        .sidebar-section:last-child {
+            margin-bottom: 0;
+        }
+
+        /* 竖着的文字效果：左边框竖线，模拟“竖栏标题” */
+        .sidebar-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #2c3e50;
+            border-left: 6px solid #3385ff;   /* 醒目的竖线 */
+            padding-left: 14px;
+            line-height: 1.3;
+            margin-bottom: 20px;
+            letter-spacing: 0.8px;
+        }
+
+        .rec-list, .topic-list {
+            list-style: none;
+            padding-left: 6px;
+        }
+
+        .rec-list li, .topic-list li {
+            font-size: 15px;
+            color: #444;
+            padding: 10px 0 10px 10px;
+            border-bottom: 1px dashed #e2e6e9;
+            line-height: 1.5;
+            transition: none;       /* 无交互 */
+            cursor: default;
+        }
+
+        .rec-list li:last-child, .topic-list li:last-child {
+            border-bottom: none;
+        }
+
+        /* 纯文字，不加任何链接样式 */
+        .rec-list li span, .topic-list li span {
+            color: #444;
+            text-decoration: none;
+        }
+
+        /* ---------- 底部版权信息（完全替换原footer） ---------- */
+        .site-footer {
+            margin-top: 55px;
+            padding-top: 28px;
+            border-top: 2px solid #e9ecef;
+            font-size: 15px;
+            color: #5e6870;
+            text-align: center;
+            background-color: #fff;
+        }
+
+        .footer-text {
+            line-height: 1.9;
+            word-spacing: 4px;
+            color: #5a626b;
+        }
+
+        .footer-text span {
+            margin: 0 6px;
+            color: #4f5b66;
+        }
+
+        /* 移除所有悬停效果、指针变化 */
+        .nav-item:hover,
+        .rec-list li:hover,
+        .topic-list li:hover,
+        .sidebar-title:hover,
+        .footer-text:hover {
+            color: inherit;
+            background-color: transparent;
+            text-decoration: none;
+            cursor: default;
+        }
+
+        /* 响应式优化：小屏幕时右侧栏移到下方 */
+        @media (max-width: 900px) {
+            .content-grid {
+                flex-direction: column;
+            }
+            .sidebar {
+                width: 100%;
+                margin-top: 30px;
+            }
+            .article-image .image-placeholder {
+                width: 95%;        /* 窄边效果依然保留 */
+            }
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 15px 15px;
+            }
+            .article-title {
+                font-size: 26px;
+            }
+            .article-content {
+                font-size: 17px;
+            }
+            .baidu-header {
+                flex-wrap: wrap;
+            }
+            .nav-links {
+                margin-top: 8px;
+                gap: 18px;
+            }
+        }
+
+        /* 完全移除a标签样式——本页面已无任何链接，所有导航均用span */
+        /* 确保没有任何下划线或pointer事件 */
+        a, button, .follow-btn {
+            display: none;      /* 原有关注按钮已移除，此处无对应元素，仅做安全重置 */
+        }
+    </style>
+</head>
+<body>
+    <!-- 南鄣文明网头部（纯文字导航，无链接） -->
+    <div class="baidu-header">
+        <div class="baidu-logo">南鄣文明网</div>
+        <div class="nav-links">
+            <span class="nav-item">首页</span>
+            <span class="nav-item">国内</span>
+            <span class="nav-item">国际</span>
+            <span class="nav-item">社会</span>
+            <span class="nav-item">财经</span>
+            <span class="nav-item">科技</span>
+        </div>
+    </div>
+
+    <!-- 当前位置：面包屑 南鄣文明网＞时政＞正文 -->
+    <div class="breadcrumb">
+        <span>南鄣文明网</span> ＞ <span>时政</span> ＞ <span>正文</span>
+    </div>
+
+    <!-- 文章头部信息 -->
+    <div class="article-header">
+        <h1 class="article-title">寻访和美乡村：千福县"长寿村"的文化与信仰</h1>
+        <div class="article-meta">
+            <div class="publisher-info">
+                <span class="publisher-name">南鄣文明网</span>
+                <span class="publish-date">2025年5月10日 08:30</span>
+            </div>
+            <!-- 关注按钮已移除，纯文字呈现 -->
+        </div>
+    </div>
+
+    <!-- 核心：两列布局（左侧正文 + 右侧竖栏） -->
+    <div class="content-grid">
+        <!-- 左侧：文章主体，包含图片与文字 -->
+        <div class="article-main">
+            <div class="article-content">
+                <p>2025年5月8日，"寻梦和美乡村"全媒体报道组穿越重重山峦，终于抵达深藏在闽东南群山褶皱中的<strong>昌运村</strong>。这里不仅是千福县自然生态保存最完整的原始次生林区，自然气息浓厚，更因"长寿村"之名远近流传。据统计，村中千余人口里，70岁以上长者超过200人。我们此行，正是为了探寻这些"人间祥瑞"的生命密码。</p>
+                
+                <!-- 固定插入图片：宽度比新闻正文窄一圈，居中显示 -->
+                <div class="article-image">
+                    <img src="https://img.remit.ee/api/file/BQACAgUAAyEGAASHRsPbAAEQ4dJpjT6fh_Aj0tdYHKAuSSlnf_FMWwACkRoAAoLCaFSoemMcMVLrcjoE.png" 
+                             alt="昌运村风景实拍" 
+                             class="real-image">
+                    <div class="image-caption">
+                        —— 云雾缭绕的昌运村 ——
+                    </div>
+                </div>
+                
+                <p>抵达昌运村不久，衣着古朴的村长刘福来热情地接待了我们，知晓来意后，主动带领我们走访村中的高寿老人。即便早有耳闻，亲眼所见时，我们依然感到不可思议——昌运村内，百岁以上老人竟有三十位之多。要知道，在全国范围内，百岁老人亦属凤毛麟角。更令人称奇的是，这些老人虽银发苍苍，却精神矍铄、思维清晰，行走坐卧不见龙钟之态，看上去不过七十许，实在难以相信他们已跨越世纪。长寿村之名，当真名不虚传。</p>
+                
+                <p>究竟是何原因，孕育出如此众多的百岁长寿者呢？从自然环境来看，昌运村被山峦环抱，面向大海，构成了一个得天独厚的"金盆地"。此山森林覆盖率超过70%，几乎未经开发，是一处难得的、人类少有涉足的原始净地。也正因如此，昌运村的空气清冽如泉，水质甘醇，为我们提供了一个直观的答案。</p>
+                
+                <p>这一猜想得到了刘村长的肯定。不仅如此，他对我们说，当初村落迁址于此，还因为这里"山深路隐"，交通不便，外人即使知道村子的存在，也很难找到，容易迷失在深山之中。对此，我们深以为然，若非有政府向导引路，只怕就连我们也会在群山中迷失。而这，恰恰暗合了村民世代延续的生活哲学——远离尘嚣，守静归真。</p>
+                
+                <p>"昌运村的先祖，正是在这样的文化指引下，长久隐于山林，远离尘嚣，方躲过了历史上多次战乱与动荡，形成了稳定的家族传承。"</p>
+
+                <p>据了解，昌运村村民崇奉"天尊"，有与山相伴、避世隐居的传统。昌运村的先祖，正是在这样的文化指引下，长久隐于山林，远离尘嚣，方躲过了历史上多次战乱与动荡，形成了稳定的家族传承。即便外界已然天翻地覆，这里的人们依然保持着朴素的生活节奏。对祖训的遵从和监守，也是他们文化的一部分。千福县政府对此也予以充分尊重，尽量不去打扰这片土地的宁静。我们此次采访，也是在多次沟通、获得村民同意后才得以成行。</p>
+                
+                <p>当今社会已然高度开放，互联网的兴起更是让人与人之间的距离跨越了地域。信息如潮，让人们畅所欲言、交流思想的同时，却也带来了观点对立、网络暴力、电信诈骗等各种问题。许多人在舆论的轰炸与观点的交锋中逐渐失去内心的安宁。从这个角度而言，昌运村的"避世"文化，或许并非盲目的故步自封，而是一种与自我、与自然达成的和谐。他们能够在这一隅山水间守护内心的清静，谁又能说不是一种幸福呢？大抵正因如此，昌运村的老人们才能长寿。</p>
+                
+                <p>除此之外，我们还了解到昌运村一种极为特殊的习俗——"活葬"，亦称"<strong>长生葬</strong>"。即在老人病重未逝之时举办葬礼。在这时候，老人会穿寿衣躺在棺材之中，停灵一日后起灵，送行，队伍以纸扎"开路神"引导，孝眷拉白布"拔麻尾"挽留。队伍前往昌运村后山深处的禁地安置。待一天之后，也就是活葬的第三天，方可离开棺材。如果不出差错，此时老人已然"脱胎换骨"，重获新生。旧有的衰腐之气一扫而光，便可延年益寿。</p>
+                
+                <p>我们不禁疑问：若是按此活葬，老人需在棺材内躺三日，期间如何坚持下去？刘村长说，昌运村有天尊赐福，每当活葬，都会准备好相应的祭品。老人能否坚持三日，正要看祭品之优劣。当我们何为祭品之时，刘村长笑而不语。我们意识到这或许是村庄长寿的核心秘密，便不再追问。</p>
+                
+                <p>经过为期两天的走访调查，我们对长寿村有了深入的了解，与当地村民结下了友谊。临别时，刘村长握紧我们的手，希望此篇报道能让更多人了解昌运村，并邀请我们将来再访。此时我们才得知，刘村长今年已八十高龄。或许不久的将来，他也将依俗举行那场"生者之葬"。</p>
+                
+                <p>昌运村的人相信，隆重的葬礼可以"以生拒死"，用众人的生气掩去将逝者的死气。活葬越盛大、参与的人越多，就越有可能瞒过无常，帮助老人续写人间岁月。因此，每一次"活葬"都是全村乃至周边村落共同的仪式，热闹如节庆。</p>
+                
+                <p>望着刘村长真诚的双眼，我们郑重答应，待他那一天到来，我们必会再度踏入这片山峦，见证那一场生命与习俗之间庄重而温暖的对话。</p>
+                
+                <p>有关"长寿村"的故事，为我们打开了一扇通往另一种生命哲学的窗。这里的长寿不仅来自山水，更来自文化与信仰的力量。希望这篇报道能够让更多的人知道、了解昌运村，并对其产生兴趣。本报将持续关注这片土地，也欢迎读者与我们一同期待，下一次相遇，或许就在那场古老而神秘的仪式之中。</p>
+            </div>
+        </div>
+
+        <!-- 右侧竖栏：“相关推荐”“专题栏目” 纯文字，无交互，竖线标题 -->
+        <div class="sidebar">
+            <!-- 相关推荐模块 -->
+            <div class="sidebar-section">
+                <div class="sidebar-title">相关推荐</div>
+                <ul class="rec-list">
+                    <li><span>· 百岁老人刘阿婆：每日粗茶淡饭，七十年不下山</span></li>
+                    <li><span>· 南鄣民间信仰图谱：从祖先崇拜到自然神</span></li>
+                </ul>
+            </div>
+            <!-- 专题栏目模块 -->
+            <div class="sidebar-section">
+                <div class="sidebar-title">专题栏目</div>
+                <ul class="topic-list">
+                    <li><span>· 民间信仰 · 田野调查</span></li>
+                    <li><span>· 守静归真 · 隐逸文化</span></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- 页面最底端：网站信息（纯文字，完全无链接） -->
+    <div class="site-footer">
+        <div class="footer-text">
+            制作单位：南鄣文明网股份有限公司  版权所有：南鄣市人民政府  合作伙伴：南鄣泰永集团
+        </div>
+        <div class="footer-text" style="margin-top: 12px; font-size: 14px; color: #8a939b;">
+            © 南鄣文明网 · 时政新闻部 · 仅用于解密游戏展示
+        </div>
+    </div>
+
+    <!-- 无任何脚本，无交互链接，所有文字均不可点击 -->
+</body>
+</html>

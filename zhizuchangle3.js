@@ -1,0 +1,16 @@
+﻿const zhizuchangle3 = [
+    { player: "有时间吗？看看这张图片" },
+    { player: '<img class="message-photo" src="https://img.remit.ee/api/file/BQACAgUAAyEGAASHRsPbAAERE6BpmnCGIzXhvp2o0tN2Z9R6uydylgACIBoAAtjY2VRqMtTY8bIWWToE.jpg" alt="BQACAgUAAyEGAASHRsPbAAERE6BpmnCGIzXhvp2o0tN2Z9R6uydylgACIBoAAtjY2VRqMtTY8bIWWToE.jpg" />' },
+    { zhizuchangle: "嗯？从哪儿弄来的？", delay: 2000 },
+    { player: "一个综艺节目的契约，我怀疑它跟论坛内幕有关。" },
+    { zhizuchangle: "这图案像是道家那类“转运符”？不太确定，你可以搜一搜。一般是给自己转运的，挺常见的一种符咒。", delay: 2000 },
+    { zhizuchangle: "但是，如果用在契约上，可就相当于把自己的运气献出去，最后汇聚到一个人身上。", delay: 2000 },
+    { player: "……原来，这才是真正的“运契”。" },
+    { zhizuchangle: "看来南鄣那边，真有什么了不得的东西。我师傅先前警告过我别去南鄣，说会有殃灾，我当时还不信。", delay: 2000 },
+    { player: "很危险吗？" },
+    { zhizuchangle: "确实不一般，我也是头一回碰上。", delay: 2000 },
+    { zhizuchangle: "这样吧，你生日多少，我给你算一卦，看看是凶是吉。", delay: 2000 },
+    { player: "2008年2月10日。" },
+    { zhizuchangle: "这么信我吗？那我可真算了", delay: 2000 },
+    { zhizuchangle: "不太妙，可能会遇到危险。你当心点，要是遇到不对劲的事，稳住心神，别被引诱，避免中圈套。", delay: 2000 },
+];

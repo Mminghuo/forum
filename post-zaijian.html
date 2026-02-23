@@ -1,0 +1,1047 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>怎样才能再见到死去的人？- 七月半论坛</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* 基本样式 - 与论坛保持一致 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+        }
+        
+        body {
+            background-color: #0a0a0a;
+            color: #e0e0e0;
+            min-height: 100vh;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(20, 20, 20, 0.7) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(10, 10, 10, 0.7) 0%, transparent 20%);
+        }
+        
+        /* 顶部栏 - 与论坛保持一致 */
+        .forum-header {
+            background-color: rgba(15, 15, 15, 0.9);
+            padding: 10px 20px;
+            border-bottom: 1px solid #333;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            backdrop-filter: blur(10px);
+            height: 60px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+        }
+        
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .header-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #8b0000;
+            text-shadow: 0 0 10px rgba(139, 0, 0, 0.5);
+            letter-spacing: 2px;
+        }
+        
+        .close-btn {
+            background-color: #8b0000;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 13px;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .close-btn:hover {
+            background-color: #a00000;
+            box-shadow: 0 0 10px rgba(139, 0, 0, 0.5);
+        }
+        
+        /* Logo版头 */
+        .forum-logo-header {
+            height: 15vh;
+            min-height: 100px;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+            border-bottom: 1px solid #333;
+            margin-top: 60px; /* 顶部栏高度 */
+        }
+        
+        .forum-name {
+            font-size: 36px;
+            font-weight: 900;
+            color: #8b0000;
+            text-shadow: 0 0 15px rgba(139, 0, 0, 0.7);
+            margin-bottom: 5px;
+            letter-spacing: 3px;
+        }
+        
+        .forum-subtitle {
+            font-size: 14px;
+            color: #aaa;
+            font-style: italic;
+        }
+        
+        /* 帖子标题区域 - 固定跟随滚动 */
+        .post-title-bar {
+            position: sticky;
+            top: 60px; /* 在顶部栏下方 */
+            background-color: rgba(20, 20, 20, 0.95);
+            border-bottom: 1px solid #333;
+            padding: 12px 20px;
+            z-index: 999;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.5);
+        }
+        
+        .post-title-main {
+            font-size: 20px;
+            font-weight: 700;
+            color: #e0e0e0;
+            text-align: center;
+        }
+        
+        .post-title-main b {
+            color: #8b0000;
+        }
+        
+        /* 帖子内容区域 - 加宽至1000px */
+        .post-content-area {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        /* 楼层样式 */
+        .post-floor {
+            background-color: rgba(30, 30, 30, 0.8);
+            border: 1px solid #333;
+            border-radius: 4px;
+            padding: 15px;
+            margin-bottom: 15px;
+            transition: all 0.3s;
+        }
+        
+        .post-floor:hover {
+            border-color: #444;
+        }
+        
+        .floor-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 12px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #333;
+        }
+        
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #8b0000, #4a0000);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 16px;
+            border: 2px solid #8b0000;
+            margin-right: 12px;
+        }
+        
+        .user-info {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .user-name {
+            font-weight: 600;
+            color: #8b0000;
+            font-size: 14px;
+        }
+        
+        .floor-number {
+            font-size: 12px;
+            color: #666;
+            margin-top: 2px;
+        }
+        
+        .floor-content {
+            line-height: 1.6;
+            color: #e0e0e0;
+            font-size: 14px;
+            padding-left: 52px; /* 头像宽度 + 边距 */
+        }
+        
+        .floor-content p {
+            margin-bottom: 10px;
+        }
+        
+        .floor-content p:last-child {
+            margin-bottom: 0;
+        }
+        
+        /* 确保所有图片不溢出楼层容器 */
+        .floor-content img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            border: 1px solid #444;
+            border-radius: 4px;
+            margin: 10px 0;
+        }
+
+        /* 数据丢失楼层样式 */
+        .data-lost {
+            background-color: rgba(40, 30, 30, 0.8);
+            border: 1px dashed #666;
+            color: #888;
+            font-style: italic;
+            text-align: center;
+            padding: 20px;
+        }
+        
+        /* 引用样式 */
+        .quote {
+            background-color: rgba(20, 20, 20, 0.8);
+            border-left: 3px solid #8b0000;
+            padding: 10px;
+            margin: 10px 0;
+            font-size: 13px;
+            color: #aaa;
+        }
+        
+        .quote-author {
+            color: #8b0000;
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+        
+        /* 回帖区域 - 加宽至1000px */
+        .reply-area {
+            max-width: 1000px;
+            margin: 30px auto;
+            padding: 0 20px 40px;
+        }
+        
+        .reply-title {
+            font-size: 18px;
+            color: #8b0000;
+            margin-bottom: 15px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #333;
+        }
+        
+        .reply-box {
+            background-color: rgba(30, 30, 30, 0.8);
+            border: 1px solid #333;
+            border-radius: 4px;
+            padding: 15px;
+        }
+        
+        .reply-input {
+            width: 100%;
+            min-height: 120px;
+            background-color: rgba(20, 20, 20, 0.8);
+            border: 1px solid #444;
+            border-radius: 4px;
+            padding: 12px;
+            color: #e0e0e0;
+            font-size: 14px;
+            resize: vertical;
+            margin-bottom: 15px;
+        }
+        
+        .reply-input:focus {
+            outline: none;
+            border-color: #8b0000;
+        }
+        
+        .reply-buttons {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+        
+        .reply-btn {
+            background-color: #8b0000;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 8px 20px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .reply-btn:hover {
+            background-color: #a00000;
+        }
+        
+        .reply-btn.disabled {
+            background-color: #333;
+            color: #666;
+            cursor: not-allowed;
+        }
+        
+        /* 特殊样式 - 楼主楼层 */
+        .louzhu-floor {
+            border-left: 3px solid #8b0000;
+        }
+    </style>
+</head>
+<body>
+    <!-- 顶部栏 -->
+    <div class="forum-header">
+        <div class="header-left">
+            <div class="header-title">论坛</div>
+        </div>
+        <button class="close-btn" onclick="closePost()">
+            <i class="fas fa-times"></i>
+            关闭窗口
+        </button>
+    </div>
+    
+    <!-- Logo版头 -->
+    <div class="forum-logo-header">
+        <div class="forum-name">七月半</div>
+        <div class="forum-subtitle">欢迎来到未知的世界</div>
+    </div>
+
+    <!-- 帖子标题栏 - 固定跟随滚动 -->
+    <div class="post-title-bar">
+        <div class="post-title-main"><b>怎样才能再见到死去的人？</b></div>
+    </div>
+    
+    <!-- 帖子内容区域 -->
+    <div class="post-content-area">
+        <!-- 一楼 -->
+        <div class="post-floor louzhu-floor">
+            <div class="floor-header">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info">
+                    <div class="user-name">一线牵</div>
+                    <div class="floor-number">#1 楼主</div>
+                </div>
+            </div>
+            <div class="floor-content">
+                <p>有人知道怎么才能再见到已经死去的人吗？不管什么方法都行，只要能让我再见到她。</p>
+            </div>
+        </div>
+        
+        <!-- 二楼 -->
+        <div class="post-floor">
+            <div class="floor-header">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info">
+                    <div class="user-name">破折号</div>
+                    <div class="floor-number">#2</div>
+                </div>
+            </div>
+            <div class="floor-content">
+                <p>emmm……通灵游戏？笔仙？恐怖片老演员了，就是容易招来不好的东西。论坛里不少作死的，楼主想加入吗？</p>
+            </div>
+        </div>
+        
+        <!-- 三楼 -->
+        <div class="post-floor">
+            <div class="floor-header">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info">
+                    <div class="user-name">喵喵神</div>
+                    <div class="floor-number">#3</div>
+                </div>
+            </div>
+            <div class="floor-content">
+                <p>你想见谁啊？是发生什么事了吗？</p>
+            </div>
+        </div>
+        
+        <!-- 四楼 -->
+        <div class="post-floor louzhu-floor">
+            <div class="floor-header">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info">
+                    <div class="user-name">一线牵</div>
+                    <div class="floor-number">#4 楼主</div>
+                </div>
+            </div>
+            <div class="floor-content">
+                <p>一周前，我朋友在南鄣市出事了。</p>
+                <p>那天暴雨，街上淹了水。过桥的时候河水突然冲上来，她把我推到岸上，自己却被卷走了。一切发生得太快，我根本来不及拉住她。救援队找到她的时候，已经没呼吸了。</p>
+            </div>
+        </div>
+        
+        <!-- 五楼 -->
+        <div class="post-floor">
+            <div class="floor-header">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info">
+                    <div class="user-name">花生真好吃</div>
+                    <div class="floor-number">#5</div>
+                </div>
+            </div>
+            <div class="floor-content">
+                <p>什么河啊？难道有水鬼？</p>
+            </div>
+        </div>
+        
+        <!-- 六楼 -->
+        <div class="post-floor">
+            <div class="floor-header">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info">
+                    <div class="user-name">沙丁鱼骨</div>
+                    <div class="floor-number">#6</div>
+                </div>
+            </div>
+            <div class="floor-content">
+                <p>南鄣市？听起来像×河……传说里面有河伯，每年都有人淹死在那。</p>
+            </div>
+        </div>
+        
+        <!-- 七楼 -->
+        <div class="post-floor">
+            <div class="floor-header">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info">
+                    <div class="user-name">燕子回时</div>
+                    <div class="floor-number">#7</div>
+                </div>
+            </div>
+            <div class="floor-content">
+                <p>我好像看到过新闻，你朋友是叫陈菲吗？那个女大学生。</p>
+            </div>
+        </div>
+        
+        <!-- 八楼 -->
+        <div class="post-floor louzhu-floor">
+            <div class="floor-header">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info">
+                    <div class="user-name">一线牵</div>
+                    <div class="floor-number">#8 楼主</div>
+                </div>
+            </div>
+            <div class="floor-content">
+                <div class="quote">
+                    <div class="quote-author">回复 燕子回时 #7楼</div>
+                    我好像看到过新闻，你朋友是叫陈菲吗？那个女大学生。
+                </div>
+                <p>是。</p>
+            </div>
+        </div>
+        
+        <!-- 九楼 -->
+        <div class="post-floor">
+            <div class="floor-header">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info">
+                    <div class="user-name">咕噜咕噜</div>
+                    <div class="floor-number">#9</div>
+                </div>
+            </div>
+            <div class="floor-content">
+                <p>太倒霉了……楼主节哀。</p>
+            </div>
+        </div>
+        
+        <!-- 十楼 -->
+        <div class="post-floor louzhu-floor">
+            <div class="floor-header">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info">
+                    <div class="user-name">一线牵</div>
+                    <div class="floor-number">#10 楼主</div>
+                </div>
+            </div>
+            <div class="floor-content">
+                <p>我到底要怎么做才能再见到她？真的没办法了，神也不在我身边，我什么都做不了。我还有好多话没跟她说，我好后悔。</p>
+            </div>
+        </div>
+        
+        <!-- 十一楼 -->
+        <div class="post-floor">
+            <div class="floor-header">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info">
+                    <div class="user-name">破折号</div>
+                    <div class="floor-number">#11</div>
+                </div>
+            </div>
+            <div class="floor-content">
+                <p>这种天灾，确实谁也没办法……</p>
+            </div>
+        </div>
+        
+        <!-- 十二楼 -->
+        <div class="post-floor">
+            <div class="floor-header">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info">
+                    <div class="user-name">南柯一梦</div>
+                    <div class="floor-number">#12</div>
+                </div>
+            </div>
+            <div class="floor-content">
+                <p>说这些都没用，楼主明显是太想她了，才来这儿求助。</p>
+            </div>
+        </div>
+        
+        <!-- 十三楼 -->
+        <div class="post-floor">
+            <div class="floor-header">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info">
+                    <div class="user-name">沙丁鱼骨</div>
+                    <div class="floor-number">#13</div>
+                </div>
+            </div>
+            <div class="floor-content">
+                <div class="quote">
+                    <div class="quote-author">回复 楼主 #10楼</div>
+                    我到底要怎么做才能再见到她？真的没办法了，神也不在我身边，我什么都做不了。我还有好多话没跟她说，我好后悔。
+                </div>
+                <p>什么神？感觉楼主也有点奇怪。</p>
+            </div>
+        </div>
+        
+        <!-- 十四楼 -->
+        <div class="post-floor">
+            <div class="floor-header">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info">
+                    <div class="user-name">燕子回时</div>
+                    <div class="floor-number">#14</div>
+                </div>
+            </div>
+            <div class="floor-content">
+                <p>楼主要不讲讲你的故事吧，说出来可能会好受点。</p>
+            </div>
+        </div>
+        
+        <!-- 十五楼 -->
+        <div class="post-floor louzhu-floor">
+            <div class="floor-header">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info">
+                    <div class="user-name">一线牵</div>
+                    <div class="floor-number">#15 楼主</div>
+                </div>
+            </div>
+            <div class="floor-content">
+                <p>在我老家，每个村子都有供奉的小庙，很多没名字，但都是真神。我小时候爸妈离婚，没人管我，爷爷奶奶就把我放在庙里。庙祝说我和神有缘，我就认了神像做干娘。只要诚心许愿，神就能听见。</p>
+            </div>
+        </div>
+        
+        <!-- 十六楼 -->
+        <div class="post-floor louzhu-floor">
+            <div class="floor-header">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info">
+                    <div class="user-name">一线牵</div>
+                    <div class="floor-number">#16 楼主</div>
+                </div>
+            </div>
+            <div class="floor-content">
+                <p>小时候我经常去庙里，拜一拜，心里求妈妈能回来。只要掷出三次圣杯，妈妈就真的会回来。那是我最期待的事，妈妈回来会带我走一阵子。每次我爸都借机要钱，妈妈给了钱才能带我走。妈妈会生气，不想给，但只要我站在门口喊"妈妈"，她就会叹口气，把钱塞给我爸，然后拉着我的手离开。</p>
+                <p>妈妈的手很暖，牵着我的时候，像回到很久以前，三四岁的时候，她带我在院子里晒太阳。也许更早以前，我们还没分开的时候，用脐带连着，谁也不能把我们分开。</p>
+            </div>
+        </div>
+        
+        <!-- 十七楼 -->
+        <div class="post-floor">
+            <div class="floor-header">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info">
+                    <div class="user-name">花生真好吃</div>
+                    <div class="floor-number">#17</div>
+                </div>
+            </div>
+            <div class="floor-content">
+                <p>认神像做干娘？这么玄乎？</p>
+            </div>
+        </div>
+        
+        <!-- 十八楼 -->
+        <div class="post-floor">
+            <div class="floor-header">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info">
+                    <div class="user-name">沙丁鱼骨</div>
+                    <div class="floor-number">#18</div>
+                </div>
+            </div>
+            <div class="floor-content">
+                <p>听说过，有些地方会让小孩认有灵性的东西做亲人，比如老树、石头，应该差不多。</p>
+            </div>
+        </div>
+        
+        <!-- 十九楼 -->
+        <div class="post-floor louzhu-floor">
+            <div class="floor-header">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info">
+                    <div class="user-name">一线牵</div>
+                    <div class="floor-number">#19 楼主</div>
+                </div>
+            </div>
+            <div class="floor-content">
+                <p>初中时妈妈再婚了，彻底离开了这座城市，也离开了我。在我爸眼里，我更没用了，他喝多了就骂我没用，留不住妈妈，或者骂我赔钱货。我再求妈妈回来，怎么掷圣杯都没用了。</p>
+                <p>连神也拉不回一个不想回头的人。于是我又向神许愿，求一份属于我的爱。</p>
+            </div>
+        </div>
+        
+        <!-- 二十楼 -->
+        <div class="post-floor louzhu-floor">
+            <div class="floor-header">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info">
+                    <div class="user-name">一线牵</div>
+                    <div class="floor-number">#20 楼主</div>
+                </div>
+            </div>
+            <div class="floor-content">
+                <p>我初中时认识的陈菲，同班同学。她学习好，皮肤白，个子高，眼睛又黑又亮，不戴眼镜。我因为穿得差被同学瞧不起时，是她站出来，牵着我的手说想和我做朋友。我那时脾气倔，觉得她假惺惺，问她为什么。她说，因为我看起来特别坚强。</p>
+            </div>
+        </div>
+        
+        <!-- 二十一楼 -->
+        <div class="post-floor louzhu-floor">
+            <div class="floor-header">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info">
+                    <div class="user-name">一线牵</div>
+                    <div class="floor-number">#21 楼主</div>
+                </div>
+            </div>
+            <div class="floor-content">
+                <p>你们知道吗，陈菲特别自以为是。她根本不了解我，连我名字都叫不全，却一口咬定我们会成为最好的朋友。眼神亮闪闪的，一点也不嫌我身上的泥点，也不怕我冷脸。她身上有股淡淡的花香。</p>
+                <p>那是我第一次知道茉莉花的味道，后来我就喜欢上了茉莉。</p>
+            </div>
+        </div>
+        
+        <!-- 二十二楼 -->
+        <div class="post-floor louzhu-floor">
+            <div class="floor-header">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info">
+                    <div class="user-name">一线牵</div>
+                    <div class="floor-number">#22 楼主</div>
+                </div>
+            </div>
+            <div class="floor-content">
+                <p>本来我对什么都无所谓，长相、成绩，都无所谓。但陈菲信我，拉着我去逛街，明明只比我大一岁，却像个姐姐一样，悄悄照顾我的自尊，帮我挑便宜又好看的衣服。</p>
+                <p>每次考完试，她还装模作样叹气，说想和我上同一所高中，然后一把抢过我的卷子，一道题一道题地讲，一遍遍说老师常说的那句话：你不是学不会，就是没认真学。</p>
+            </div>
+        </div>
+        
+        <!-- 二十三楼 -->
+        <div class="post-floor louzhu-floor">
+            <div class="floor-header">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info">
+                    <div class="user-name">一线牵</div>
+                    <div class="floor-number">#23 楼主</div>
+                </div>
+            </div>
+            <div class="floor-content">
+                <p>"要努力学习啊——"这话陈菲说了无数遍。知道我家情况后，她又加了一句："我们一起走出去。"那是个放学的傍晚，我们坐在操场秋千上，晃了好久。我不想回家，她就陪我到天黑，跟我说了她的事。</p>
+                <p>我才知道，陈菲不是我以为的富家小姐。她是被父母丢掉的，被一对没孩子的夫妻收养。她说养母对她很好，什么都有，每年生日都办得很热闹。她一直以为自己是亲生的，直到小学六年级，养母怀孕了。弟弟出生后，爸妈就没那么多精力管她了。陈菲说，她是靠拼命考第一，给养父母争面子，才没被送去福利院。</p>
+            </div>
+        </div>
+        
+        <!-- 二十四楼 -->
+        <div class="post-floor louzhu-floor">
+            <div class="floor-header">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info">
+                    <div class="user-name">一线牵</div>
+                    <div class="floor-number">#24 楼主</div>
+                </div>
+            </div>
+            <div class="floor-content">
+                <p>也许是同病相怜，也许是别的什么。从那天起，我牵着陈菲的手，好像找回了那根断掉的脐带，也第一次找到了活着的意义——就是和她一起走出去。在她的帮助下，我考上了重点高中，和她一起过了三年。</p>
+                <p>关于未来，关于小县城外面的世界，都是陈菲和我一起做的梦。</p>
+            </div>
+        </div>
+        
+        <!-- 二十五楼 -->
+        <div class="post-floor">
+            <div class="floor-header">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info">
+                    <div class="user-name">咕噜咕噜</div>
+                    <div class="floor-number">#25</div>
+                </div>
+            </div>
+            <div class="floor-content">
+                <p>唉，真是个好姑娘，太可惜了。</p>
+            </div>
+        </div>
+        
+        <!-- 二十六楼 -->
+        <div class="post-floor louzhu-floor">
+            <div class="floor-header">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info">
+                    <div class="user-name">一线牵</div>
+                    <div class="floor-number">#26 楼主</div>
+                </div>
+            </div>
+            <div class="floor-content">
+                <p>我曾以为我们会像她说的那样，永远是最好的朋友。高考后我们上了不同的大学，只有放假才能见面。每次见面，我都觉得陈菲离我越来越远。她有了更丰富的经历，交了新朋友。以前的陈菲，表面坚强，但我知道她心里和我一样有伤。</p>
+                <p>现在她在慢慢好起来，不再提过去，也不再为父母不爱她而难过。她比我先跨出去，拥抱了更大的世界。可我还在阴影里。我一直以为，我和陈菲会有同一个未来，那是我人生唯一的目标。</p>
+            </div>
+        </div>
+        
+        <!-- 二十七楼 -->
+        <div class="post-floor louzhu-floor">
+            <div class="floor-header">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info">
+                    <div class="user-name">一线牵</div>
+                    <div class="floor-number">#27 楼主</div>
+                </div>
+            </div>
+            <div class="floor-content">
+                <p>当陈菲有天打电话，兴奋地说她交了男朋友时，我的整个世界都在晃。我没法平静说话，又怕吓到她，只好躲着。大三暑假，我第一次没去找陈菲，回了老家。</p>
+                <p>庙祝已经很老了，看我回来，问了句怪话："还顺利吗？"我居然听懂了，他是在问我许的愿怎么样了。我摇头说不顺利。庙祝叹气说，世间缘分，聚散有时，强求不来。</p>
+                <p>可我不接受。某种执念困住了我，让我没法想象没有陈菲的未来。我又跪下来求，求神让她留在我身边——这是个自私的愿望，连神都懒得听。我从早跪到晚，一次圣杯都没掷出来。庙祝说，这种事神也帮不了，只能靠我自己。我懂了，必须我自己做点什么，不能光靠求神。</p>
+            </div>
+        </div>
+        
+        <!-- 二十八楼 -->
+        <div class="post-floor">
+            <div class="floor-header">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info">
+                    <div class="user-name">南柯一梦</div>
+                    <div class="floor-number">#28</div>
+                </div>
+            </div>
+            <div class="floor-content">
+                <p>等等……楼主是男生还是女生？我有点懵。</p>
+            </div>
+        </div>
+        
+        <!-- 二十九楼 -->
+        <div class="post-floor louzhu-floor">
+            <div class="floor-header">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info">
+                    <div class="user-name">一线牵</div>
+                    <div class="floor-number">#29 楼主</div>
+                </div>
+            </div>
+            <div class="floor-content">
+                <p>我犹豫了很久，终于下定决心。上个寒假，我主动约陈菲去南鄣市玩，想跟她表白。出发前我最后问了一次神，答案还是不行。我以为神的意思是陈菲不会答应我，却不知道，真正的意思是——我们会生死两隔。</p>
+            </div>
+        </div>
+        
+        <!-- 三十楼 -->
+        <div class="post-floor louzhu-floor">
+            <div class="floor-header">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info">
+                    <div class="user-name">一线牵</div>
+                    <div class="floor-number">#30 楼主</div>
+                </div>
+            </div>
+            <div class="floor-content">
+                <p>那场大雨过后，我的梦也跟着碎了。</p>
+                <p>我连夜坐火车回老家，想再求求山神，却听说南鄣暴雨那天，村里也下了雨，发了山洪，庙被冲垮了，连庙祝都遇难了。我不顾别人眼光，跪在地上疯了一样用手扒土，想找到神像。但什么都没了。神不会再回应我了，陈菲也不在了。</p>
+            </div>
+        </div>
+        
+        <!-- 三十一楼 -->
+        <div class="post-floor louzhu-floor">
+            <div class="floor-header">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info">
+                    <div class="user-name">一线牵</div>
+                    <div class="floor-number">#31 楼主</div>
+                </div>
+            </div>
+            <div class="floor-content">
+                <p>这世上，我什么都没剩了。只要能再见到她，我什么都愿意给。</p>
+            </div>
+        </div>
+        
+        <!-- 三十二楼 -->
+        <div class="post-floor">
+            <div class="floor-header">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info">
+                    <div class="user-name">燕子回时</div>
+                    <div class="floor-number">#32</div>
+                </div>
+            </div>
+            <div class="floor-content">
+                <p>明白了……确实让人难受。但就算通灵成功，也只是暂时的，治标不治本，楼主还是试着走出来吧。</p>
+            </div>
+        </div>
+        
+        <!-- 三十三楼 -->
+        <div class="post-floor">
+            <div class="floor-header">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info">
+                    <div class="user-name">破折号</div>
+                    <div class="floor-number">#33</div>
+                </div>
+            </div>
+            <div class="floor-content">
+                <p>建议楼主去看看心理医生。</p>
+            </div>
+        </div>
+        
+        <!-- 三十四楼 - 数据丢失 -->
+        <div class="post-floor data-lost">
+            <div class="floor-header">
+                <div class="user-avatar">
+                    <i class="fas fa-question"></i>
+                </div>
+                <div class="user-info">
+                    <div class="user-name">系统</div>
+                    <div class="floor-number">#34</div>
+                </div>
+            </div>
+            <div class="floor-content">
+                [此楼数据丢失]
+            </div>
+        </div>
+        
+        <!-- 三十五楼 -->
+        <div class="post-floor louzhu-floor">
+            <div class="floor-header">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info">
+                    <div class="user-name">一线牵</div>
+                    <div class="floor-number">#35 楼主</div>
+                </div>
+            </div>
+            <div class="floor-content">
+                <p>我找到办法了。</p>
+            </div>
+        </div>
+        
+        <!-- 三十六楼 -->
+        <div class="post-floor louzhu-floor">
+            <div class="floor-header">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info">
+                    <div class="user-name">一线牵</div>
+                    <div class="floor-number">#36 楼主</div>
+                </div>
+            </div>
+            <div class="floor-content">
+                <p>我很快就能再见到她。</p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 回帖区域 -->
+    <div class="reply-area">
+        <div class="reply-title">发表回复</div>
+        <div class="reply-box">
+            <textarea class="reply-input" placeholder="请输入回复内容..." id="replyInput"></textarea>
+            <div class="reply-buttons">
+                <button class="reply-btn disabled" id="submitReply">提交回复</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 返回论坛按钮已删除 -->
+    
+    <script>
+        // 初始化函数
+        function initializePost() {
+            // 设置回帖按钮无反应
+            setupReplyButton();
+            
+            // 设置滚动时标题栏的样式
+            setupTitleBarScroll();
+            
+            // 添加楼主楼层悬停效果
+            highlightLouzhuFloors();
+            
+            // 添加一些解密游戏相关的交互
+            addPuzzleInteractions();
+        }
+        
+        // 设置回帖按钮无反应
+        function setupReplyButton() {
+            const submitBtn = document.getElementById('submitReply');
+            const replyInput = document.getElementById('replyInput');
+            
+            // 提交按钮点击无反应
+            submitBtn.onclick = function() {
+                // 什么都不做 - 无反应
+                return false;
+            };
+            
+            // 输入框点击也无反应（防止触发任何操作）
+            replyInput.onclick = function() {
+                // 什么都不做 - 无反应
+                return false;
+            };
+            
+            // 输入框获得焦点时也无反应
+            replyInput.onfocus = function() {
+                // 什么都不做 - 无反应
+                return false;
+            };
+        }
+        
+        // 设置滚动时标题栏的样式
+        function setupTitleBarScroll() {
+            const titleBar = document.querySelector('.post-title-bar');
+            let lastScrollTop = 0;
+            
+            window.addEventListener('scroll', function() {
+                const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                
+                // 根据滚动方向调整标题栏透明度
+                if (scrollTop > lastScrollTop) {
+                    // 向下滚动
+                    titleBar.style.backgroundColor = 'rgba(20, 20, 20, 0.85)';
+                } else {
+                    // 向上滚动
+                    titleBar.style.backgroundColor = 'rgba(20, 20, 20, 0.95)';
+                }
+                
+                lastScrollTop = scrollTop;
+            });
+        }
+        
+        // 高亮显示楼主楼层
+        function highlightLouzhuFloors() {
+            const louzhuFloors = document.querySelectorAll('.louzhu-floor');
+            
+            // 为每个楼主楼层添加悬停效果
+            louzhuFloors.forEach(floor => {
+                floor.addEventListener('mouseenter', function() {
+                    this.style.boxShadow = '0 0 15px rgba(139, 0, 0, 0.7)';
+                    this.style.transform = 'translateY(-2px)';
+                });
+                
+                floor.addEventListener('mouseleave', function() {
+                    this.style.boxShadow = 'none';
+                    this.style.transform = 'translateY(0)';
+                });
+            });
+        }
+        
+        // 关闭帖子页面 - 直接关闭窗口
+        function closePost() {
+            window.close();
+        }
+        
+        // 按ESC键也可以关闭窗口
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closePost();
+            }
+        });
+        
+        // 初始化
+        window.onload = function() {
+            initializePost();
+            
+            // 自动滚动到页面顶部
+            window.scrollTo(0, 0);
+        };
+    </script>
+</body>
+</html>

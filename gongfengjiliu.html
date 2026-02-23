@@ -1,0 +1,288 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>管理 · 供奉记录</title>
+    <style>
+        /* ===== 全局黑底，无滚动条，秘密滤镜 ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100vh;
+            overflow: hidden;        /* 固定一页，无滚动条 */
+            background-color: black;
+            font-family: "Courier New", monospace, "Microsoft YaHei", sans-serif;
+            position: relative;
+        }
+
+        /* 秘密数据滤镜：半透明红网格 + 微模糊 */
+        body::after {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            background: repeating-linear-gradient(45deg, rgba(255, 0, 0, 0.02) 0px, rgba(255, 0, 0, 0.02) 2px, transparent 2px, transparent 8px);
+            z-index: 10;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px 25px 0;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ===== 主标题 ===== */
+        .main-title {
+            color: #ff4d4d;
+            font-size: 36px;
+            font-weight: bold;
+            letter-spacing: 12px;
+            text-shadow: 0 0 12px rgba(255, 0, 0, 0.8);
+            text-align: center;
+            margin: 20px 0 25px 0;
+            padding-bottom: 12px;
+            border-bottom: 2px solid #a00;
+            width: 100%;
+            max-width: 1200px;
+        }
+
+        /* ===== 按钮组：深红底、白字，无发光 ===== */
+        .button-group {
+            display: flex;
+            gap: 50px;
+            justify-content: center;
+            margin-bottom: 30px;
+            flex-shrink: 0;
+        }
+
+        .btn {
+            background-color: #8b0000;      /* 深红色底 */
+            color: white;                  /* 白色文字 */
+            border: 2px solid #5a0000;     /* 深红边框，默认不明显 */
+            padding: 14px 42px;
+            font-size: 26px;
+            font-weight: bold;
+            letter-spacing: 10px;
+            cursor: pointer;
+            transition: 0.1s ease;
+            border-radius: 0;
+            font-family: inherit;
+            box-shadow: none;              /* 移除所有发光阴影 */
+            text-shadow: none;            /* 移除文字发光 */
+        }
+
+        .btn:hover {
+            background-color: #6d0000;      /* 悬停略微提亮，仍保持深红 */
+            border-color: #8b0000;
+            box-shadow: none;
+        }
+
+        .btn.active {
+            background-color: #8b0000;      /* 与默认一致 */
+            border: 2px solid #ff3333;     /* 激活时外边框变亮红色 */
+            box-shadow: none;
+            text-shadow: none;
+        }
+
+        /* ===== 表格容器 ===== */
+        .table-container {
+            width: 100%;
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .table-wrapper {
+            width: 100%;
+            max-width: 1400px;
+            display: none;
+            overflow: visible;
+            justify-content: center;
+            /* 添加背景图片：居中、不重复、包含完整图片 */
+            background-image: url('https://img.remit.ee/api/file/BQACAgUAAyEGAASHRsPbAAERE8hpmnN2li8zyBiXBkPB5rKGRjKXmQACTRoAAtjY2VRU-u4M61D6_ToE.png');
+            background-position: center center;
+            background-repeat: no-repeat;
+            background-size: contain;       /* 保证整张图片可见，并居中 */
+        }
+
+        .table-wrapper.active {
+            display: flex;
+        }
+
+        /* 表格样式：纯红线条，文字居中，进一步收窄宽度 */
+        table {
+            width: 75%;                 /* 比之前更窄 */
+            border-collapse: collapse;
+            color: #ffffff;
+            border: 2px solid #c00;
+            background-color: transparent;  /* 表格整体透明，让背景图片透出 */
+            table-layout: fixed;
+            word-break: break-word;
+            margin: 0 auto;
+            font-size: 16px;
+        }
+
+        th, td {
+            border: 1px solid #e60012;
+            padding: 12px 6px;
+            text-align: center;
+            vertical-align: middle;
+            color: #ff9999;
+            /* 原黑色背景改为半透明，以便背景图片隐约可见，同时保持文字清晰 */
+            background-color: rgba(0, 0, 0, 0.75);
+        }
+
+        th {
+            color: #ffbbbb;
+            font-weight: bold;
+            background-color: rgba(28, 0, 0, 0.8);  /* 保留深红调，半透明 */
+            border-bottom: 2px solid #c00;
+            letter-spacing: 2px;
+        }
+
+        /* 考察名单备注列左对齐，便于阅读 */
+        .table-wrapper:nth-child(2) td:last-child {
+            text-align: left;
+            padding-left: 12px;
+        }
+
+        td:empty::before {
+            content: " ";
+        }
+
+        @media (max-width: 1000px) {
+            .main-title { font-size: 28px; letter-spacing: 8px; }
+            .btn { font-size: 22px; padding: 10px 30px; }
+            table { font-size: 14px; width: 90%; }  /* 窄屏更宽一些 */
+        }
+    </style>
+</head>
+<body>
+    <div class="main-title">管理 · 供奉记录</div>
+
+    <div class="button-group">
+        <div id="btnOffering" class="btn active">供奉名单</div>
+        <div id="btnInvestigate" class="btn">考察名单</div>
+    </div>
+
+    <div class="table-container">
+        <!-- 供奉名单表格（已删除“以下封存”行） -->
+        <div id="offeringTable" class="table-wrapper active">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>供奉人</th>
+                        <th>性别</th>
+                        <th>供奉方式</th>
+                        <th>供奉状态</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>破折号</td><td>杨薇</td><td>女</td><td>线上请愿</td><td>进行中</td></tr>
+                    <tr><td>笼中之雀</td><td>杜雨晴</td><td>女</td><td>线上请愿</td><td>已完成</td></tr>
+                    <tr><td>落雨</td><td>郑晓雯</td><td>女</td><td>线上请愿</td><td>已完成</td></tr>
+                    <tr><td>温水青</td><td>温妍</td><td>女</td><td>线上请愿</td><td>进行中</td></tr>
+                    <tr><td>smile</td><td>王泽</td><td>男</td><td>线上请愿</td><td>已完成</td></tr>
+                    <tr><td>一线牵</td><td>于▇▇</td><td>女</td><td>线下请愿</td><td>进行中</td></tr>
+                    <tr><td>喵喵神</td><td>赵梓萱</td><td>女</td><td>线上请愿</td><td>已完成</td></tr>
+                    <tr><td>天涯共此时hcx</td><td>胡长兴</td><td>男</td><td>线上请愿</td><td>已完成</td></tr>
+                    <tr><td>这里好黑啊</td><td>刘美佳</td><td>女</td><td>线上请愿</td><td>已完成</td></tr>
+                    <!-- 以下封存行已删除，直接接续星号行 -->
+                    <tr><td>***</td><td>***</td><td>***</td><td>***</td><td>***</td></tr>
+                    <tr><td>***</td><td>***</td><td>***</td><td>***</td><td>***</td></tr>
+                    <tr><td>***</td><td>***</td><td>***</td><td>***</td><td>***</td></tr>
+                    <tr><td>***</td><td>***</td><td>***</td><td>***</td><td>***</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- 考察名单表格 -->
+        <div id="investigateTable" class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>特质</th>
+                        <th>评价</th>
+                        <th>是否发帖</th>
+                        <th>是否请愿</th>
+                        <th>备注</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>知足常乐</td>
+                        <td>天生灵媒。有望成为最理想的宿体。</td>
+                        <td>重点用户</td>
+                        <td>是</td>
+                        <td>否</td>
+                        <td>举止异常，似在打探论坛信息，转入危险用户名单<br>禁用其账号部分功能</td>
+                    </tr>
+                    <tr>
+                        <td>山不在高</td>
+                        <td>曾于贡山死里逃生，对天尊灵能有所感知。</td>
+                        <td>潜在用户</td>
+                        <td>是</td>
+                        <td>否</td>
+                        <td>继续关注</td>
+                    </tr>
+                    <tr>
+                        <td>鬼不觉</td>
+                        <td>在▇▇村中参与过▇▇祭</td>
+                        <td>重点用户</td>
+                        <td>是</td>
+                        <td>是</td>
+                        <td>有奇运护身，无从下手<br>暂停关注</td>
+                    </tr>
+                    <tr><td>***</td><td>***</td><td>***</td><td>***</td><td>***</td><td>***</td></tr>
+                    <tr><td>***</td><td>***</td><td>***</td><td>***</td><td>***</td><td>***</td></tr>
+                    <tr><td>***</td><td>***</td><td>***</td><td>***</td><td>***</td><td>***</td></tr>
+                    <tr><td>***</td><td>***</td><td>***</td><td>***</td><td>***</td><td>***</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            const btnOffering = document.getElementById('btnOffering');
+            const btnInvestigate = document.getElementById('btnInvestigate');
+            const wrapperOffering = document.getElementById('offeringTable');
+            const wrapperInvestigate = document.getElementById('investigateTable');
+
+            function setActive(activeBtn, activeWrapper) {
+                btnOffering.classList.remove('active');
+                btnInvestigate.classList.remove('active');
+                activeBtn.classList.add('active');
+
+                wrapperOffering.classList.remove('active');
+                wrapperInvestigate.classList.remove('active');
+                activeWrapper.classList.add('active');
+            }
+
+            btnOffering.addEventListener('click', function() {
+                setActive(btnOffering, wrapperOffering);
+            });
+
+            btnInvestigate.addEventListener('click', function() {
+                setActive(btnInvestigate, wrapperInvestigate);
+            });
+        })();
+    </script>
+</body>
+</html>

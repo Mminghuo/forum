@@ -1,0 +1,1036 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>关于灵异论坛的调查记录</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        /* 引入字体 */
+        @font-face {
+            font-family: 'PaperFont';
+            src: local('方正颜宋简体'), local('方正请刻简悦宋体'), local('SimSun'), local('STSong');
+            font-weight: normal;
+            font-style: normal;
+        }
+        
+        body {
+            background-color: #f8f4e8;
+            overflow: auto;                  /* 允许页面滚动 */
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;          /* 改为从顶部开始，随内容滚动 */
+            position: relative;
+            font-family: 'PaperFont', 'SimSun', serif;
+            padding: 40px 20px;
+        }
+        
+        /* 方格纸背景（固定） */
+        .paper-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #f8f4e8;
+            background-image: 
+                linear-gradient(to right, rgba(139, 0, 0, 0.08) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(139, 0, 0, 0.08) 1px, transparent 1px);
+            background-size: 40px 40px;
+            z-index: -2;
+        }
+        
+        /* 纸张边缘效果（固定） */
+        .paper-edge {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, transparent 95%, rgba(0,0,0,0.03) 100%),
+                        linear-gradient(to right, transparent 95%, rgba(0,0,0,0.03) 100%),
+                        linear-gradient(to left, transparent 95%, rgba(0,0,0,0.03) 100%),
+                        linear-gradient(to top, transparent 95%, rgba(0,0,0,0.03) 100%);
+            z-index: -1;
+            pointer-events: none;
+        }
+        
+        /* 纸张主容器 — 半透明白色卡片，随内容滚动，无内部滚动 */
+        .paper-container {
+            position: relative;                /* 为绝对定位边框提供参照 */
+            background-color: #fffef9;
+            width: 100%;
+            max-width: 1000px;
+            padding: 40px 40px 30px 40px;      /* 内边距，文字区域 */
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            border: 1px solid #e0d8c0;
+            z-index: 2;
+        }
+        
+        /* 纸张老化效果 */
+        .paper-container:before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" opacity="0.03"><filter id="noise"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="3" stitchTiles="stitch"/></filter><rect width="100" height="100" filter="url(%23noise)"/></svg>');
+            z-index: 0;
+            pointer-events: none;
+        }
+        
+        /* 双线边框 — 紧贴内边距边缘，向外扩大一圈（与文字保持间距） */
+        .border-container {
+            position: absolute;
+            top: 20px;          /* 小于内边距顶部40px，边框向上扩大 */
+            left: 20px;          /* 小于内边距左侧40px */
+            right: 20px;         /* 小于内边距右侧40px */
+            bottom: 15px;        /* 底部内边距30px，边框向下扩大 */
+            border: 2px solid rgba(0, 0, 0, 0.2);
+            border-radius: 3px;
+            pointer-events: none;
+            z-index: 1;
+        }
+        
+        .border-container:before {
+            content: "";
+            position: absolute;
+            top: 8px;
+            left: 8px;
+            width: calc(100% - 16px);
+            height: calc(100% - 16px);
+            border: 1px solid rgba(0, 0, 0, 0.2);
+            border-radius: 2px;
+            pointer-events: none;
+        }
+        
+        /* 主内容区域（相对定位抬高层级） */
+        .main-content {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        /* 标题容器 - 竖排文字 */
+        .title-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 40px;
+            animation: fadeInDown 1.2s ease-out;
+            position: relative;
+            z-index: 2;
+            flex-shrink: 0;
+        }
+        
+        .title-column {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 0 15px;
+        }
+        
+        .title-character {
+            color: #8b0000;
+            font-size: 52px;
+            font-weight: bold;
+            margin: 5px 0;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+            letter-spacing: 3px;
+        }
+        
+        /* 菜单选项容器 */
+        .menu-container {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+            width: 100%;
+            max-width: 500px;
+            margin: 0 auto;
+            animation: fadeInUp 1.2s ease-out 0.5s both;
+            position: relative;
+            z-index: 2;
+            flex: 1;
+            justify-content: center;
+            padding: 10px 0;
+        }
+        
+        .menu-option {
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+            padding: 8px 0;
+            position: relative;
+        }
+        
+        .menu-option:hover {
+            transform: translateY(-3px);
+        }
+        
+        .menu-option:hover .menu-option-title {
+            text-shadow: 2px 2px 6px rgba(139, 0, 0, 0.25);
+        }
+        
+        .menu-option-title {
+            color: #000;
+            font-size: 34px;
+            font-weight: bold;
+            transition: all 0.3s;
+            position: relative;
+            display: inline-block;
+        }
+        
+        /* 手写效果下划线 */
+        .menu-option-title:after {
+            content: "";
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: #8b0000;
+            transform: scaleX(0.8);
+            opacity: 0.5;
+            transition: all 0.3s;
+        }
+        
+        .menu-option:hover .menu-option-title:after {
+            transform: scaleX(1);
+            opacity: 1;
+        }
+        
+        .menu-option-desc {
+            color: #666;
+            font-size: 14px;
+            line-height: 1.5;
+            margin-top: 8px;
+            font-style: italic;
+        }
+        
+        /* 纸张底部信息（已删除）—— 原.paper-footer被移除 */
+        
+        /* 底部信息（已删除）—— 原.footer被移除 */
+        
+        /* 确认对话框 */
+        .confirm-dialog {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.85);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            backdrop-filter: blur(3px);
+        }
+        
+        .confirm-dialog.show {
+            display: flex;
+        }
+        
+        .dialog-content {
+            background-color: #fffef9;
+            border-radius: 2px;
+            padding: 30px;
+            max-width: 500px;
+            width: 90%;
+            border: 1px solid #e0d8c0;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+            font-family: 'PaperFont', 'SimSun', serif;
+            position: relative;
+            background-image: 
+                linear-gradient(to right, rgba(139, 0, 0, 0.08) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(139, 0, 0, 0.08) 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+        
+        .dialog-content:before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" opacity="0.05"><filter id="noise"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="3" stitchTiles="stitch"/></filter><rect width="100" height="100" filter="url(%23noise)"/></svg>');
+            z-index: 0;
+            pointer-events: none;
+        }
+        
+        .dialog-title {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #8b0000;
+            text-align: center;
+            border-bottom: 1px solid rgba(139, 0, 0, 0.3);
+            padding-bottom: 10px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .dialog-text {
+            margin-bottom: 25px;
+            color: #333;
+            line-height: 1.6;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .dialog-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .dialog-btn {
+            padding: 10px 30px;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 500;
+            min-width: 100px;
+            transition: all 0.3s;
+            font-family: 'PaperFont', 'SimSun', serif;
+            background: transparent;
+            color: #333;
+            position: relative;
+        }
+        
+        .dialog-btn:after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: #8b0000;
+            transform: scaleX(0.8);
+            opacity: 0.5;
+            transition: all 0.3s;
+        }
+        
+        .dialog-btn.confirm {
+            color: #8b0000;
+        }
+        
+        .dialog-btn.confirm:hover {
+            color: #a00000;
+        }
+        
+        .dialog-btn.confirm:hover:after {
+            transform: scaleX(1);
+            opacity: 1;
+            background-color: #a00000;
+        }
+        
+        .dialog-btn.cancel:hover {
+            color: #8b0000;
+        }
+        
+        .dialog-btn.cancel:hover:after {
+            transform: scaleX(1);
+            opacity: 1;
+        }
+        
+        /* 前言对话框 */
+        .preface-dialog {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.85);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1001;
+            backdrop-filter: blur(3px);
+        }
+        
+        .preface-dialog.show {
+            display: flex;
+        }
+        
+        .preface-content {
+            background-color: #fffef9;
+            border-radius: 2px;
+            padding: 40px;
+            max-width: 600px;
+            width: 90%;
+            border: 1px solid #e0d8c0;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+            font-family: 'PaperFont', 'SimSun', serif;
+            position: relative;
+            background-image: 
+                linear-gradient(to right, rgba(139, 0, 0, 0.08) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(139, 0, 0, 0.08) 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+        
+        .preface-content:before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" opacity="0.05"><filter id="noise"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="3" stitchTiles="stitch"/></filter><rect width="100" height="100" filter="url(%23noise)"/></svg>');
+            z-index: 0;
+            pointer-events: none;
+        }
+        
+        .preface-tabs {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 25px;
+            border-bottom: 1px solid rgba(139, 0, 0, 0.3);
+            position: relative;
+            z-index: 1;
+        }
+        
+        .preface-tab {
+            padding: 10px 30px;
+            cursor: pointer;
+            font-size: 20px;
+            font-weight: bold;
+            color: #666;
+            transition: all 0.3s;
+            border-bottom: 3px solid transparent;
+        }
+        
+        .preface-tab.active {
+            color: #8b0000;
+            border-bottom-color: #8b0000;
+        }
+        
+        .preface-tab:hover {
+            color: #8b0000;
+        }
+        
+        .preface-text {
+            margin-bottom: 30px;
+            color: #333;
+            line-height: 1.8;
+            text-align: left;
+            font-size: 16px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .preface-content-section {
+            display: none;
+        }
+        
+        .preface-content-section.active {
+            display: block;
+        }
+        
+        .preface-buttons {
+            display: flex;
+            justify-content: center;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .preface-btn {
+            padding: 12px 40px;
+            border: none;
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: bold;
+            background: transparent;
+            color: #8b0000;
+            transition: all 0.3s;
+            font-family: 'PaperFont', 'SimSun', serif;
+            letter-spacing: 2px;
+            position: relative;
+        }
+        
+        .preface-btn:after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: #8b0000;
+            transform: scaleX(0.8);
+            opacity: 0.5;
+            transition: all 0.3s;
+        }
+        
+        .preface-btn:hover {
+            color: #a00000;
+            transform: translateY(-3px);
+        }
+        
+        .preface-btn:hover:after {
+            transform: scaleX(1);
+            opacity: 1;
+            background-color: #a00000;
+        }
+        
+        /* 加载动画 */
+        .loading {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 1002;
+            backdrop-filter: blur(3px);
+        }
+        
+        .loading.show {
+            display: flex;
+        }
+        
+        .spinner {
+            width: 60px;
+            height: 60px;
+            border: 3px solid rgba(248, 244, 232, 0.3);
+            border-radius: 50%;
+            border-top-color: #8b0000;
+            animation: spin 1s ease-in-out infinite;
+            margin-bottom: 20px;
+        }
+        
+        .loading-text {
+            color: #f8f4e8;
+            font-size: 18px;
+            text-align: center;
+        }
+        
+        /* 提示信息 */
+        .hint-message {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: rgba(0, 0, 0, 0.9);
+            color: #f8f4e8;
+            padding: 12px 20px;
+            border-radius: 2px;
+            border-left: 4px solid #8b0000;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            transform: translateX(150%);
+            transition: transform 0.4s ease;
+            z-index: 100;
+            max-width: 300px;
+            font-family: 'PaperFont', 'SimSun', serif;
+            backdrop-filter: blur(2px);
+        }
+        
+        .hint-message.show {
+            transform: translateX(0);
+        }
+        
+        /* 动画 */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        /* 纸张上的墨水污渍效果 */
+        .ink-stain {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            background: radial-gradient(circle, rgba(139, 0, 0, 0.04) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        .stain-1 {
+            top: 15%;
+            left: 10%;
+            width: 80px;
+            height: 80px;
+        }
+        
+        .stain-2 {
+            bottom: 20%;
+            right: 15%;
+            width: 120px;
+            height: 120px;
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            body {
+                padding: 20px 15px;
+            }
+            .paper-container {
+                padding: 30px 25px 20px 25px;
+            }
+            .border-container {
+                top: 15px;
+                left: 15px;
+                right: 15px;
+                bottom: 10px;
+            }
+            .title-character {
+                font-size: 40px;
+            }
+            .menu-container {
+                max-width: 350px;
+                gap: 20px;
+            }
+            .menu-option-title {
+                font-size: 28px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .paper-container {
+                padding: 20px 18px 15px 18px;
+            }
+            .border-container {
+                top: 10px;
+                left: 8px;
+                right: 8px;
+                bottom: 6px;
+            }
+            .title-column {
+                margin: 0 8px;
+            }
+            .title-character {
+                font-size: 30px;
+                margin: 3px 0;
+            }
+            .menu-option-title {
+                font-size: 24px;
+            }
+            .menu-option-desc {
+                font-size: 12px;
+            }
+            .dialog-content, .preface-content {
+                padding: 20px;
+            }
+        }
+        
+        /* 针对关闭游戏按钮的特殊处理 */
+        #exitGameOption {
+            margin-top: 0;
+        }
+    </style>
+</head>
+<body>
+    <!-- 方格纸背景（固定） -->
+    <div class="paper-background"></div>
+    <div class="paper-edge"></div>
+    
+    <!-- 纸张主容器（随页面滚动） -->
+    <div class="paper-container">
+        <!-- 双线边框（紧贴内边距，向外扩大） -->
+        <div class="border-container"></div>
+        
+        <!-- 墨水污渍效果（保留） -->
+        <div class="ink-stain stain-1"></div>
+        <div class="ink-stain stain-2"></div>
+        
+        <!-- 主内容区域 -->
+        <div class="main-content">
+            <!-- 标题容器 - 竖排文字 -->
+            <div class="title-container">
+                <div class="title-column">
+                    <div class="title-character">灵</div>
+                    <div class="title-character">异</div>
+                    <div class="title-character">论</div>
+                    <div class="title-character">坛</div>
+                </div>
+                <div class="title-column">
+                    <div class="title-character" style="color: #667788;">调</div>
+                    <div class="title-character" style="color: #667788;">查</div>
+                    <div class="title-character" style="color: #667788;">记</div>
+                    <div class="title-character" style="color: #667788;">录</div>
+                </div>
+            </div>
+            
+            <!-- 菜单选项容器 -->
+            <div class="menu-container">
+                <!-- 开始游戏选项 -->
+                <div class="menu-option" id="newGameOption">
+                    <div class="menu-option-title">开始游戏</div>
+                    <div class="menu-option-desc">初始化游戏，将会清除所有本地数据</div>
+                </div>
+                
+                <!-- 继续游戏选项 -->
+                <div class="menu-option" id="continueGameOption">
+                    <div class="menu-option-title">继续游戏</div>
+                    <div class="menu-option-desc">从上次保存的地方读取游戏数据</div>
+                </div>
+                
+                <!-- 退出游戏选项 -->
+                <div class="menu-option" id="exitGameOption">
+                    <div class="menu-option-title">关闭游戏</div>
+                    <!-- 无小字 -->
+                </div>
+            </div>
+            
+            <!-- 纸张底部信息已删除 -->
+        </div>
+    </div>
+    
+    <!-- 底部信息（已删除） -->
+    
+    <!-- 确认对话框 -->
+    <div class="confirm-dialog" id="confirmDialog">
+        <div class="dialog-content">
+            <div class="dialog-title" id="dialogTitle">确认</div>
+            <div class="dialog-text" id="dialogText">您确定要执行此操作吗？</div>
+            <div class="dialog-buttons">
+                <button class="dialog-btn confirm" id="dialogConfirmBtn">确认</button>
+                <button class="dialog-btn cancel" id="dialogCancelBtn">取消</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 前言对话框 -->
+    <div class="preface-dialog" id="prefaceDialog">
+        <div class="preface-content">
+            <div class="preface-tabs">
+                <div class="preface-tab active" data-tab="preface">前言</div>
+                <div class="preface-tab" data-tab="instructions">游戏须知</div>
+            </div>
+            <div class="preface-content-section active" id="preface">
+                <div class="preface-text">
+                    <p>你是高三学生温乔。</p>
+                    <p>这个寒假，经理打电话说姐姐温妍未请假上班，已于一周前失踪。姐姐给你的最后一条消息是一串莫名其妙的数字：1234567890。</p>
+                    <p>你赶来姐姐住处，只找到这台电脑。这也是你拥有的唯一线索。</p>
+                    <p style="margin-top: 15px; font-style: italic; color: #8b0000;">电脑屏幕闪烁着微弱的光，等待你的探索……</p>
+                </div>
+            </div>
+            <div class="preface-content-section" id="instructions">
+                <div class="preface-text">
+                    <p>1.本游戏属于<strong>网页搜索解谜</strong>游戏，主要通过浏览电脑中的文件、论坛中的帖子，然后基于论坛搜索框查找关键内容，获得重要线索。游戏没有任何涉及到网页代码的谜题，请玩家专注游戏内。</p>
+                    <p>2.游戏内容以<strong>灵异论坛</strong>相关内容为主，包含恐怖元素。游戏目标是找到<strong>温妍</strong>的下落，时长在<strong>2个小时</strong>左右，还请耐心探索。</p>
+                    <p>3.本游戏通过浏览器保存数据，用户可以通过开始页面的<strong>继续游戏</strong>读取游玩数据。但由于作者能力有限，此功能并不完善，请用户谨慎使用。</p>
+                    <p>4.为获得最佳游戏体验，推荐用<strong>电脑</strong>游玩，并保持所有网页都在同一浏览器内开启。游戏窗口较多，同一页面尽量不要多开。</p>
+                    <p>5.声明：本游戏内容纯属虚构，不涉及任何现实中的团体或个人。</p>
+                </div>
+            </div>
+            <div class="preface-buttons">
+                <button class="preface-btn" id="openComputerBtn">打开电脑</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 加载动画 -->
+    <div class="loading" id="loading">
+        <div class="spinner"></div>
+        <div class="loading-text" id="loadingText">正在初始化游戏...</div>
+    </div>
+    
+    <!-- 提示信息 -->
+    <div class="hint-message" id="hintMessage"></div>
+    
+    <script>
+        // 获取DOM元素
+        const newGameOption = document.getElementById('newGameOption');
+        const continueGameOption = document.getElementById('continueGameOption');
+        const exitGameOption = document.getElementById('exitGameOption');
+        const confirmDialog = document.getElementById('confirmDialog');
+        const dialogTitle = document.getElementById('dialogTitle');
+        const dialogText = document.getElementById('dialogText');
+        const dialogConfirmBtn = document.getElementById('dialogConfirmBtn');
+        const dialogCancelBtn = document.getElementById('dialogCancelBtn');
+        const prefaceDialog = document.getElementById('prefaceDialog');
+        const openComputerBtn = document.getElementById('openComputerBtn');
+        const loading = document.getElementById('loading');
+        const loadingText = document.getElementById('loadingText');
+        const hintMessage = document.getElementById('hintMessage');
+        
+        // 检查是否有保存的游戏数据
+        function hasSavedGameData() {
+            const gamePassword = localStorage.getItem('gamePassword');
+            const chatGameState = localStorage.getItem('chatGameState');
+            const forumUserPosts = localStorage.getItem('forum_user_posts');
+            const forumUserState = localStorage.getItem('forum_user_state');
+            return gamePassword || chatGameState || forumUserPosts || forumUserState;
+        }
+        
+        // 显示提示信息
+        function showHint(text, type = 'info') {
+            hintMessage.textContent = text;
+            if (type === 'error') {
+                hintMessage.style.borderLeftColor = '#f44336';
+            } else if (type === 'success') {
+                hintMessage.style.borderLeftColor = '#4CAF50';
+            } else {
+                hintMessage.style.borderLeftColor = '#8b0000';
+            }
+            hintMessage.classList.add('show');
+            setTimeout(() => {
+                hintMessage.classList.remove('show');
+            }, 3000);
+        }
+        
+        // 显示加载动画
+        function showLoading(text) {
+            loadingText.textContent = text;
+            loading.classList.add('show');
+        }
+        
+        // 隐藏加载动画
+        function hideLoading() {
+            loading.classList.remove('show');
+        }
+        
+        // 显示确认对话框
+        function showConfirmDialog(title, text, confirmCallback) {
+            dialogTitle.textContent = title;
+            dialogText.textContent = text;
+            confirmDialog.classList.add('show');
+            dialogConfirmBtn.onclick = function() {
+                confirmDialog.classList.remove('show');
+                if (confirmCallback) {
+                    confirmCallback();
+                }
+            };
+        }
+        
+        // 显示前言对话框
+        function showPrefaceDialog() {
+            prefaceDialog.classList.add('show');
+        }
+        
+        // 清除所有游戏数据
+        function clearAllGameData() {
+            localStorage.removeItem('gamePassword');
+            localStorage.removeItem('userName');
+            localStorage.removeItem('loginTime');
+            localStorage.removeItem('chatGameState');
+            localStorage.removeItem('forum_manage_opened');
+            localStorage.removeItem('chat_notification_shown');
+            localStorage.removeItem('trigger_chat_messages');
+            localStorage.removeItem('forumManage_chatTriggered');
+            localStorage.removeItem('forum_user_posts');
+            localStorage.removeItem('forum_user_state');
+            localStorage.removeItem('forum_current_tab');
+            localStorage.removeItem('forum_current_page');
+            localStorage.removeItem('lastSearchTerm');
+            localStorage.removeItem('hasSearchResults');
+            localStorage.removeItem('forum_pm_data');
+            localStorage.removeItem('forum_pm_initialized');
+            localStorage.removeItem('folderUnlocked');
+            localStorage.removeItem('xiaoqingyu_triggered');
+            localStorage.removeItem('zhangyinshanu_visited');
+            localStorage.removeItem('zhangyinshanu_wait_clicked');
+            localStorage.removeItem('zhangyinshanu_chatTriggered');
+            localStorage.removeItem('xiaoqingyu_toast_shown');
+            localStorage.removeItem('hebianzhuilou_visited');
+            localStorage.removeItem('hebianzhuilou_toast_shown');
+            localStorage.removeItem('xingyundiaocha_toast_shown');
+            localStorage.removeItem('user_notes');
+            localStorage.removeItem('notes_content');
+            localStorage.removeItem('desktop_background_index');
+            localStorage.removeItem('chatMessageRead');
+            localStorage.removeItem('gameStartTime');
+            // 清除结局页面弹窗数据
+            localStorage.removeItem('endnew_mingtian2_toast_shown');
+            localStorage.removeItem('endnew_mishi_toast_shown');
+            localStorage.removeItem('endnew_shizong_toast_shown');
+            localStorage.removeItem('endnew_tonghua_toast_shown');
+            localStorage.removeItem('endnew_yvhai_toast_shown');
+            const keysToRemove = [];
+            for (let i = 0; i < localStorage.length; i++) {
+                const key = localStorage.key(i);
+                if (key && (key.startsWith('app_') || key.startsWith('game_'))) {
+                    keysToRemove.push(key);
+                }
+            }
+            keysToRemove.forEach(function(key) {
+                localStorage.removeItem(key);
+            });
+            sessionStorage.clear();
+            console.log('已清除所有游戏数据');
+        }
+        
+        // 开始新游戏
+        function startNewGame() {
+            showPrefaceDialog();
+        }
+        
+        // 打开电脑
+        function openComputer() {
+            prefaceDialog.classList.remove('show');
+            showLoading('正在初始化新游戏...');
+            clearAllGameData();
+            setTimeout(() => {
+                hideLoading();
+                showHint('新游戏已初始化，正在前往登录页面...', 'success');
+                setTimeout(() => {
+                    window.location.href = 'login.html';
+                }, 1500);
+            }, 2000);
+        }
+        
+        // 继续游戏
+        function continueGame() {
+            showLoading('正在加载游戏数据...');
+            if (!hasSavedGameData()) {
+                setTimeout(() => {
+                    hideLoading();
+                    showConfirmDialog(
+                        '没有找到保存的游戏',
+                        '未找到任何保存的游戏数据。您是否要开始新游戏？',
+                        startNewGame
+                    );
+                }, 1000);
+                return;
+            }
+            setTimeout(() => {
+                hideLoading();
+                showHint('游戏数据加载完成，正在前往桌面...', 'success');
+                setTimeout(() => {
+                    window.location.href = 'desktop.html';
+                }, 1500);
+            }, 2000);
+        }
+        
+        // 退出游戏
+        function exitGame() {
+            try {
+                window.close();
+            } catch (e) {
+                showHint('您可以直接关闭此标签页退出游戏。', 'info');
+            }
+        }
+        
+        // 初始化页面
+        function init() {
+            // 标签页切换功能
+            const prefaceTabs = document.querySelectorAll('.preface-tab');
+            prefaceTabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    const tabId = this.dataset.tab;
+                    
+                    // 移除所有标签页的活动状态
+                    prefaceTabs.forEach(t => t.classList.remove('active'));
+                    // 添加当前标签页的活动状态
+                    this.classList.add('active');
+                    
+                    // 隐藏所有内容区域
+                    const contentSections = document.querySelectorAll('.preface-content-section');
+                    contentSections.forEach(section => section.classList.remove('active'));
+                    // 显示当前内容区域
+                    document.getElementById(tabId).classList.add('active');
+                });
+            });
+            
+            newGameOption.addEventListener('click', function() {
+                if (hasSavedGameData()) {
+                    showConfirmDialog(
+                        '开始新游戏',
+                        '开始新游戏将清除所有现有的游戏数据，包括里论坛和聊天软件的进度。您确定要继续吗？',
+                        startNewGame
+                    );
+                } else {
+                    showConfirmDialog(
+                        '开始新游戏',
+                        '您确定要开始新游戏吗？',
+                        startNewGame
+                    );
+                }
+            });
+            
+            continueGameOption.addEventListener('click', function() {
+                continueGame();
+            });
+            
+            exitGameOption.addEventListener('click', function() {
+                showConfirmDialog(
+                    '关闭游戏',
+                    '您确定要关闭游戏吗？',
+                    exitGame
+                );
+            });
+            
+            openComputerBtn.addEventListener('click', function() {
+                openComputer();
+            });
+            
+            dialogCancelBtn.addEventListener('click', function() {
+                confirmDialog.classList.remove('show');
+            });
+            
+            confirmDialog.addEventListener('click', function(e) {
+                if (e.target === confirmDialog) {
+                    confirmDialog.classList.remove('show');
+                }
+            });
+            
+            prefaceDialog.addEventListener('click', function(e) {
+                if (e.target === prefaceDialog) {
+                    prefaceDialog.classList.remove('show');
+                }
+            });
+            
+            if (!hasSavedGameData()) {
+                continueGameOption.style.opacity = '0.7';
+                continueGameOption.style.cursor = 'not-allowed';
+                continueGameOption.onclick = function() {
+                    showHint('没有找到保存的游戏数据，请选择"开始游戏"', 'error');
+                };
+            }
+            
+            addRandomInkStains();
+        }
+        
+        // 添加随机墨水污渍（保留）
+        function addRandomInkStains() {
+            const paperContainer = document.querySelector('.paper-container');
+            const stainCount = Math.floor(Math.random() * 3) + 1;
+            for (let i = 0; i < stainCount; i++) {
+                const stain = document.createElement('div');
+                stain.className = 'ink-stain';
+                const top = Math.random() * 80 + 10;
+                const left = Math.random() * 80 + 10;
+                const size = Math.random() * 60 + 40;
+                stain.style.top = `${top}%`;
+                stain.style.left = `${left}%`;
+                stain.style.width = `${size}px`;
+                stain.style.height = `${size}px`;
+                stain.style.opacity = Math.random() * 0.05 + 0.02;
+                paperContainer.appendChild(stain);
+            }
+        }
+        
+        window.addEventListener('load', init);
+    </script>
+</body>
+</html>

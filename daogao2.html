@@ -1,0 +1,81 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>祷告记录 · 论坛</title>
+    <style>
+        /* 全局黑色背景，居中弹性布局 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+        }
+        body {
+            background-color: #0a0a0a;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        /* 直角卡片 */
+        .prayer-card {
+            background-color: rgba(20, 20, 20, 0.95);
+            border: 1px solid #333;
+            border-radius: 0;           /* 直角边 */
+            max-width: 800px;
+            width: 100%;
+            padding: 40px 50px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.7);
+        }
+        /* 标题 */
+        .card-title {
+            color: #ffffff;
+            font-size: 24px;
+            font-weight: 600;
+            letter-spacing: 2px;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #333;
+            text-align: center;
+        }
+        /* 正文段落 */
+        .prayer-text {
+            color: #e0e0e0;
+            font-size: 16px;
+            line-height: 1.9;
+        }
+        .prayer-text p {
+            margin-bottom: 20px;
+        }
+        .prayer-text p:last-child {
+            margin-bottom: 0;
+        }
+        /* 可选：强调部分（如需要可保留） */
+        .highlight {
+            color: #8b0000;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+    <div class="prayer-card">
+        <div class="card-title">祷告记录</div>
+        <div class="prayer-text">
+            <p>气运流转，自有盈亏。近日弟子等感觉愿力减弱，神通难施；刘生法体渐老，神力无法施展。若要广愿长生、济度众生，急需祭体以续天授。</p>
+            <p>然遍观近期结契之人，根器浅薄，无一合适。弟子日夜焦虑，恐负天尊所托。惟愿天尊暗中指引，让弟子早日寻得有缘之人，再续前运。</p>
+        </div>
+    </div>
+
+    <!-- 可选：按ESC关闭窗口（如果是在独立窗口中打开） -->
+    <script>
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                window.close();
+            }
+        });
+    </script>
+</body>
+</html>

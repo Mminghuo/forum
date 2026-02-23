@@ -1,0 +1,294 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>灵堂 · 宋公金城</title>
+    <style>
+        /* 彻底的黑白基调，阴冷、肃穆 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #030303;
+            font-family: 'SimHei', 'Microsoft YaHei', '黑体', 'PingFang SC', sans-serif;
+            color: #ddd;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 30px 20px;
+            background-image: 
+                linear-gradient(rgba(35, 35, 45, 0.3) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(35, 35, 45, 0.3) 1px, transparent 1px);
+            background-size: 24px 24px;
+            position: relative;
+        }
+
+        /* 幽冷光晕，仿佛灵烛 */
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            background: radial-gradient(circle at 50% 40%, rgba(20, 40, 60, 0.4) 0%, transparent 70%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* 主灵堂 —— 黑底暗纹，仿若石碑 */
+        .shrine {
+            max-width: 1000px;
+            width: 100%;
+            background-color: #050505;
+            padding: 40px 30px;
+            border: 1px solid #2e2e2e;
+            box-shadow: 0 0 50px rgba(0,0,0,0.9), inset 0 0 30px rgba(255,255,255,0.02);
+            position: relative;
+            z-index: 1;
+            backdrop-filter: blur(0.5px);
+        }
+
+        /* 挽联布局——完全以遗像为基准对齐 */
+        .memorial-grid {
+            display: flex;
+            flex-direction: column;
+            align-items: center;      /* 保证横批、照片、左右联整体居中 */
+            gap: 10px;
+        }
+
+        /* ----- 上方横批：白底黑字，宽度与遗像精确一致（含边框）----- */
+        .top-couplet {
+            width: 280px;            /* 与遗像区域总宽一致（box-border） */
+            background-color: #fff;
+            color: #0a0a0a;
+            padding: 14px 0;
+            text-align: center;
+            font-size: 26px;
+            font-weight: 800;
+            letter-spacing: 10px;
+            border: 1px solid #5a5a5a;
+            box-shadow: 0 0 12px rgba(255,255,255,0.1);
+            font-family: 'LiSu', 'KaiTi', '楷体', serif;
+            word-break: keep-all;
+            line-height: 1.3;
+            margin-bottom: 5px;
+        }
+
+        /* 中段：左联 + 遗像 + 右联，垂直居中对齐 */
+        .mid-row {
+            display: flex;
+            align-items: center;      /* 让左右挽联与照片在高度上自然对应 */
+            justify-content: center;
+            gap: 28px;
+            width: 100%;
+            flex-wrap: wrap;
+        }
+
+        /* ----- 左右挽联：白底黑字，宽度完全贴合文字，竖排庄重 ----- */
+        .side-couplet {
+            background-color: #fff;
+            color: #111;
+            border: 1px solid #5f5f5f;
+            box-shadow: 0 0 18px rgba(255,255,255,0.06);
+            font-family: 'LiSu', 'KaiTi', '楷体', serif;
+            font-size: 26px;
+            font-weight: bold;
+            line-height: 1.85;        /* 字间距舒适 */
+            letter-spacing: 0px;
+            text-align: center;
+            writing-mode: vertical-rl;
+            text-orientation: upright; /* 确保每个字都是正向，肃穆如碑 */
+            
+            /* 核心：宽度自适应文字，仅保留必要的留白 */
+            display: block;
+            width: fit-content;
+            height: fit-content;
+            padding: 28px 6px;        /* 上下留白较多，左右仅略宽于笔划 */
+            margin: 0;
+            word-break: keep-all;
+        }
+
+        /* 遗像区域——固定尺寸，可随时插入真实照片 */
+        .portrait-area {
+            width: 280px;
+            height: 320px;
+            background-color: #0f0f0f;
+            border: 2px solid #6d6d6d;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            box-shadow: inset 0 0 40px rgba(0,0,0,0.9), 0 0 30px rgba(70,70,100,0.3);
+            position: relative;
+        }
+
+        .portrait-frame {
+            width: 220px;
+            height: 240px;
+            background-color: #121212;
+            border: 1px solid #4a4a4a;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #7a7a7a;
+            font-size: 16px;
+            font-style: italic;
+            box-shadow: inset 0 0 12px black;
+            overflow: hidden;
+        }
+
+        .portrait-frame img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .portrait-caption {
+            margin-top: 14px;
+            color: #ddd;
+            font-size: 20px;
+            font-weight: bold;
+            letter-spacing: 8px;
+            border-top: 1px solid #5a5a5a;
+            padding-top: 12px;
+            width: 100%;
+            text-align: center;
+            text-shadow: 0 0 6px rgba(255,255,255,0.2);
+        }
+
+        /* ----- 下方祭词：白字黑底，幽深如诵经 ----- */
+        .eulogy {
+            margin-top: 55px;
+            padding: 32px 40px;
+            background-color: #0b0b0b;
+            border-top: 2px solid #3a3a3a;
+            border-bottom: 1px solid #2d2d2d;
+            color: #ececec;
+            font-size: 19px;
+            line-height: 2;
+            text-shadow: 0 0 6px rgba(230,230,250,0.1);
+            font-family: 'SimSun', '宋体', 'KaiTi', serif;
+            text-align: justify;
+            position: relative;
+        }
+
+        .eulogy p {
+            text-indent: 2.2em;
+            margin-bottom: 0.5em;
+        }
+
+        .eulogy strong {
+            color: #f5e6c6;
+            font-weight: 600;
+            letter-spacing: 2px;
+        }
+
+        .signature {
+            margin-top: 30px;
+            text-align: right;
+            font-size: 20px;
+            color: #c0c0c0;
+            font-family: 'KaiTi', '楷体', serif;
+            letter-spacing: 3px;
+        }
+
+        /* 极简装饰 —— 如灵幡残影 */
+        .shrine::before {
+            content: "";
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            width: 35px;
+            height: 35px;
+            border-top: 1px solid #4f4f4f;
+            border-left: 1px solid #4f4f4f;
+            opacity: 0.35;
+        }
+
+        .shrine::after {
+            content: "";
+            position: absolute;
+            bottom: 15px;
+            right: 15px;
+            width: 35px;
+            height: 35px;
+            border-bottom: 1px solid #4f4f4f;
+            border-right: 1px solid #4f4f4f;
+            opacity: 0.35;
+        }
+
+        /* 响应式：小屏时左右联转为横向，但依然保持白底黑字窄身 */
+        @media (max-width: 850px) {
+            .mid-row {
+                gap: 18px;
+            }
+            .side-couplet {
+                writing-mode: horizontal-tb;
+                width: fit-content;
+                padding: 10px 25px;
+                font-size: 24px;
+            }
+            .portrait-area {
+                width: 260px;
+                height: 300px;
+            }
+            .top-couplet {
+                width: 260px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="shrine">
+        <div class="memorial-grid">
+            <!-- 上方挽联——魂归天尊，宽度与遗像完全对齐 -->
+            <div class="top-couplet">
+                魂 归 天 尊
+            </div>
+
+            <!-- 中间：左联 · 遗像 · 右联 -->
+            <div class="mid-row">
+                <!-- 左侧挽联：白底黑字，窄边紧贴文字 -->
+                <div class="side-couplet">
+                    身 化 侍 者 运 承 天 道
+                </div>
+
+                <!-- 遗像区域：固定尺寸，供插入人物照片 -->
+                <div class="portrait-area">
+                    <div class="portrait-frame">
+                        <!-- 此处为预留照片位，220x240，可替换为真实图片 -->
+                        <img src="https://img.remit.ee/api/file/BQACAgUAAyEGAASHRsPbAAEQ46Jpjain_ulvJ_4a6M850mOCWJ5vFQACbyIAAvfBcFSDFB5XPF-MnToE.jpg" alt="BQACAgUAAyEGAASHRsPbAAEQ46Jpjain_ulvJ_4a6M850mOCWJ5vFQACbyIAAvfBcFSDFB5XPF-MnToE.jpg" /> 
+                    </div>
+                    <div class="portrait-caption">
+                        宋 金 城
+                    </div>
+                </div>
+
+                <!-- 右侧挽联：白底黑字，窄边包裹文字 -->
+                <div class="side-couplet">
+                    福 荫 子 孙 契 续 人 间
+                </div>
+            </div>
+
+            <!-- 下方祭词——沉痛、诡异，尽述“运契”与“天尊”之秘 -->
+            <div class="eulogy">
+                <p>父亲：</p>
+                <p>您虽身死，然得天尊所赐运力，擢升为侍者，身死魂不灭，福泽子孙。孩儿今日之微末成就，皆赖父荫所庇、运契相承。儿定遵父亲灵谕，潜心辅佐，为天尊寻更多供奉信徒，聚众生之愿以汇运力，延绵我宋氏门庭之福泽，令香火永续，侍道不孤。</p>
+                <p>伏惟尚飨，永沐慈光。</p>
+                <div class="signature">
+                    子 宋▇▇ 泣血
+                </div>
+            </div>
+        </div>
+
+        <!-- 极淡的符印感，加重阴冷氛围 -->
+        <div style="position: absolute; bottom: 12px; left: 20px; color: #252525; font-size: 14px; opacity: 0.3; letter-spacing: 8px;">
+            ࿓ ࿓ ࿓
+        </div>
+    </div>
+</body>
+</html>

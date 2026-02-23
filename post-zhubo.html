@@ -1,0 +1,892 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>关注的探险主播好久没更新了 - 七月半论坛</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* 基本样式 - 与论坛保持一致 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+        }
+        
+        body {
+            background-color: #0a0a0a;
+            color: #e0e0e0;
+            min-height: 100vh;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(20, 20, 20, 0.7) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(10, 10, 10, 0.7) 0%, transparent 20%);
+        }
+        
+        /* 顶部栏 - 与论坛保持一致 */
+        .forum-header {
+            background-color: rgba(15, 15, 15, 0.9);
+            padding: 10px 20px;
+            border-bottom: 1px solid #333;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            backdrop-filter: blur(10px);
+            height: 60px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+        }
+        
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .header-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #8b0000;
+            text-shadow: 0 0 10px rgba(139, 0, 0, 0.5);
+            letter-spacing: 2px;
+        }
+        
+        .close-btn {
+            background-color: #8b0000;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 13px;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .close-btn:hover {
+            background-color: #a00000;
+            box-shadow: 0 0 10px rgba(139, 0, 0, 0.5);
+        }
+        
+        /* Logo版头 */
+        .forum-logo-header {
+            height: 15vh;
+            min-height: 100px;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+            border-bottom: 1px solid #333;
+            margin-top: 60px; /* 顶部栏高度 */
+        }
+        
+        .forum-name {
+            font-size: 36px;
+            font-weight: 900;
+            color: #8b0000;
+            text-shadow: 0 0 15px rgba(139, 0, 0, 0.7);
+            margin-bottom: 5px;
+            letter-spacing: 3px;
+        }
+        
+        .forum-subtitle {
+            font-size: 14px;
+            color: #aaa;
+            font-style: italic;
+        }
+        
+        /* 帖子标题区域 - 固定跟随滚动 */
+        .post-title-bar {
+            position: sticky;
+            top: 60px; /* 在顶部栏下方 */
+            background-color: rgba(20, 20, 20, 0.95);
+            border-bottom: 1px solid #333;
+            padding: 12px 20px;
+            z-index: 999;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.5);
+        }
+        
+        .post-title-main {
+            font-size: 20px;
+            font-weight: 700;
+            color: #e0e0e0;
+            text-align: center;
+        }
+        
+        .post-title-main b {
+            color: #8b0000;
+        }
+        
+        /* 帖子内容区域 - 加宽至1000px */
+        .post-content-area {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        /* 楼层样式 */
+        .post-floor {
+            background-color: rgba(30, 30, 30, 0.8);
+            border: 1px solid #333;
+            border-radius: 4px;
+            padding: 15px;
+            margin-bottom: 15px;
+            transition: all 0.3s;
+        }
+        
+        .post-floor:hover {
+            border-color: #444;
+        }
+        
+        .floor-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 12px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #333;
+        }
+        
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #8b0000, #4a0000);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 16px;
+            border: 2px solid #8b0000;
+            margin-right: 12px;
+        }
+        
+        .user-info {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .user-name {
+            font-weight: 600;
+            color: #8b0000;
+            font-size: 14px;
+        }
+        
+        .floor-number {
+            font-size: 12px;
+            color: #666;
+            margin-top: 2px;
+        }
+        
+        .floor-content {
+            line-height: 1.6;
+            color: #e0e0e0;
+            font-size: 14px;
+            padding-left: 52px; /* 头像宽度 + 边距 */
+        }
+        
+        .floor-content p {
+            margin-bottom: 10px;
+        }
+        
+        .floor-content p:last-child {
+            margin-bottom: 0;
+        }
+        
+        /* 确保所有图片不溢出楼层容器 */
+        .floor-content img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            border: 1px solid #444;
+            border-radius: 4px;
+            margin: 10px 0;
+        }
+        
+        /* 引用样式 */
+        .quote {
+            background-color: rgba(20, 20, 20, 0.8);
+            border-left: 3px solid #8b0000;
+            padding: 10px;
+            margin: 10px 0;
+            font-size: 13px;
+            color: #aaa;
+        }
+        
+        .quote-author {
+            color: #8b0000;
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+        
+        /* 回帖区域 - 加宽至1000px */
+        .reply-area {
+            max-width: 1000px;
+            margin: 30px auto;
+            padding: 0 20px 40px;
+        }
+        
+        .reply-title {
+            font-size: 18px;
+            color: #8b0000;
+            margin-bottom: 15px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #333;
+        }
+        
+        .reply-box {
+            background-color: rgba(30, 30, 30, 0.8);
+            border: 1px solid #333;
+            border-radius: 4px;
+            padding: 15px;
+        }
+        
+        .reply-input {
+            width: 100%;
+            min-height: 120px;
+            background-color: rgba(20, 20, 20, 0.8);
+            border: 1px solid #444;
+            border-radius: 4px;
+            padding: 12px;
+            color: #e0e0e0;
+            font-size: 14px;
+            resize: vertical;
+            margin-bottom: 15px;
+        }
+        
+        .reply-input:focus {
+            outline: none;
+            border-color: #8b0000;
+        }
+        
+        .reply-buttons {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+        
+        .reply-btn {
+            background-color: #8b0000;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 8px 20px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .reply-btn:hover {
+            background-color: #a00000;
+        }
+        
+        .reply-btn.disabled {
+            background-color: #333;
+            color: #666;
+            cursor: not-allowed;
+        }
+        
+        /* 特殊样式 - 楼主楼层 */
+        .louzhu-floor {
+            border-left: 3px solid #8b0000;
+        }
+    </style>
+</head>
+<body>
+    <!-- 顶部栏 -->
+    <div class="forum-header">
+        <div class="header-left">
+            <div class="header-title">论坛</div>
+        </div>
+        <button class="close-btn" onclick="closePost()">
+            <i class="fas fa-times"></i>
+            关闭窗口
+        </button>
+    </div>
+    
+    <!-- Logo版头 -->
+    <div class="forum-logo-header">
+        <div class="forum-name">七月半</div>
+        <div class="forum-subtitle">欢迎来到未知的世界</div>
+    </div>
+    
+    <!-- 帖子标题栏 - 固定跟随滚动 -->
+    <div class="post-title-bar">
+        <div class="post-title-main"><b>关注的探险主播好久没更新了</b></div>
+    </div>
+    
+    <!-- 帖子内容区域 -->
+    <div class="post-content-area">
+        <!-- 一楼 -->
+        <div class="post-floor louzhu-floor">
+            <div class="floor-header">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info">
+                    <div class="user-name">天涯共此时hcx</div>
+                    <div class="floor-number">#1 楼主</div>
+                </div>
+            </div>
+            <div class="floor-content">
+                <p>大家平时看vlog吗？我曾经关注一个主播，不知道有人听过吗，叫"浪客探险笔记"，专门探索废墟、深山老林等阴森地方。大概是因为没有团队，而且去的地方又都太偏僻奇怪，他在平台上没什么热度，粉丝也才几万。</p>
+                <p>但我很喜欢他的视频风格，没有那些花里胡哨的，非常真实。加上这个主播效率很高，平均一两天就能出一期视频，我就经常看他的视频下饭，可以说关注了很久。</p>
+            </div>
+        </div>
+        
+        <!-- 二楼 -->
+        <div class="post-floor">
+            <div class="floor-header">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info">
+                    <div class="user-name">落雨</div>
+                    <div class="floor-number">#2</div>
+                </div>
+            </div>
+            <div class="floor-content">
+                <p>我也喜欢看，不过没听说过这人</p>
+            </div>
+        </div>
+        
+        <!-- 三楼 -->
+        <div class="post-floor">
+            <div class="floor-header">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info">
+                    <div class="user-name">燕子回时</div>
+                    <div class="floor-number">#3</div>
+                </div>
+            </div>
+            <div class="floor-content">
+                <p>刚在软件上搜了下，没这个人啊？是删号了还是？</p>
+            </div>
+        </div>
+        
+        <!-- 四楼 -->
+        <div class="post-floor louzhu-floor">
+            <div class="floor-header">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info">
+                    <div class="user-name">天涯共此时hcx</div>
+                    <div class="floor-number">#4 楼主</div>
+                </div>
+            </div>
+            <div class="floor-content">
+                <p>他在一个礼拜前坠崖死了。相关内容已经被平台封锁了，只有我这种看过视频的粉丝才知道真相。这件事情很诡异，等我详细和你们说。</p>
+            </div>
+        </div>
+        
+        <!-- 五楼 -->
+        <div class="post-floor louzhu-floor">
+            <div class="floor-header">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info">
+                    <div class="user-name">天涯共此时hcx</div>
+                    <div class="floor-number">#5 楼主</div>
+                </div>
+            </div>
+            <div class="floor-content">
+                <p>大约是一个月前，"浪客探险笔记"发了一期新视频。当时我正在吃午饭，第一时间就点开了。我发现，这个视频比以前的还要随意，镜头凌乱，没有任何剪辑，就好像只是随手的记录。</p>
+                <p>镜头显示主播走在山路上，隐约可见身边的树上系着一些绳子，由红、黄、蓝三种颜色交织编织而成，上面系着黄纸和铃铛。主播似乎是怕人发现，踩着杂草、走在偏僻陡峭的路上，就连差一点踩到蛇都捂住嘴不发出声音，小心翼翼越过一米高的绳索，没有碰到铃铛。</p>
+            </div>
+        </div>
+        
+        <!-- 六楼 -->
+        <div class="post-floor louzhu-floor">
+            <div class="floor-header">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info">
+                    <div class="user-name">天涯共此时hcx</div>
+                    <div class="floor-number">#6 楼主</div>
+                </div>
+            </div>
+            <div class="floor-content">
+                <p>随着主播走近，能看出这里有点像是一个村庄，可以看到一些民宿一样的红色砖房，干干净净的，不像是废弃的样子，但是都没有人。主播走到这里，已经有些黑了。周围没有任何人点灯。他打开手电筒，走了不知道多久，一不小心踩到了什么，后退几步，镜头挪过去，是一只死老鼠。而后镜头上移，看到了一座高大的石牌楼，上面的字有些风化了，依稀记得有"长生"两个字。</p>
+            </div>
+        </div>
+        
+        <!-- 七楼 -->
+        <div class="post-floor louzhu-floor">
+            <div class="floor-header">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info">
+                    <div class="user-name">天涯共此时hcx</div>
+                    <div class="floor-number">#7 楼主</div>
+                </div>
+            </div>
+            <div class="floor-content">
+                <p>牌楼后面是一座道观。当时天已经完全黑下来，主播的手电不知怎么坏了，只有摄像机自带的光，照得整个视频都笼罩着一层惨绿。主播也不说话，慢慢在黑暗中摸索，没看清，撞到了一个什么东西，低头才发现是一个红色的许愿箱，上面有一本泛黄的书，封皮用红笔写着"请愿"。</p>
+                <p>一只手伸出来，刚要翻开，镜头的角落忽地闪过一个影子，下一秒镜头剧烈晃动，主播似乎看到了什么，十分惊恐地往回跑，模糊不清的镜头只能隐约看到那个来时的牌楼。我不知道主播怎么离开的，视频就在这里戛然而止了。</p>
+            </div>
+        </div>
+        
+        <!-- 八楼 -->
+        <div class="post-floor">
+            <div class="floor-header">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info">
+                    <div class="user-name">沙丁鱼骨</div>
+                    <div class="floor-number">#8</div>
+                </div>
+            </div>
+            <div class="floor-content">
+                <p>这是遇见鬼，还是遇见神了？</p>
+            </div>
+        </div>
+        
+        <!-- 九楼 -->
+        <div class="post-floor">
+            <div class="floor-header">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info">
+                    <div class="user-name">破折号</div>
+                    <div class="floor-number">#9</div>
+                </div>
+            </div>
+            <div class="floor-content">
+                <div class="quote">
+                    <div class="quote-author">回复 沙丁鱼骨 #8楼</div>
+                    这是遇见鬼，还是遇见神了？
+                </div>
+                <p>这玩意怎么看也不像神吧</p>
+            </div>
+        </div>
+        
+        <!-- 十楼 -->
+        <div class="post-floor">
+            <div class="floor-header">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info">
+                    <div class="user-name">奏乐人</div>
+                    <div class="floor-number">#10</div>
+                </div>
+            </div>
+            <div class="floor-content">
+                <p>主播有没有说自己去的什么地方？</p>
+            </div>
+        </div>
+        
+        <!-- 十一楼 -->
+        <div class="post-floor louzhu-floor">
+            <div class="floor-header">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info">
+                    <div class="user-name">天涯共此时hcx</div>
+                    <div class="floor-number">#11 楼主</div>
+                </div>
+            </div>
+            <div class="floor-content">
+                <p>没有。很多人都在这期视频下询问，可主播一条也没回复。之后，他的视频风格发生了很大变化。既不露脸，也不再说话，更不和观众互动，只是隔一段时间就发送一则未经剪辑的视频，应该是主播举着相机，行走在马路、山林或是河边，漫无目的地不知道在寻找些什么。这些视频偶尔会拍到一些路人，可以看到，他们都用一直很奇怪的目光看着镜头或主播。</p>
+                <p>由于视频内容太过奇怪，评论区的一部分粉丝十分不满，认为他这是在糊弄观众。也有像我这样的灵异爱好者，讨论主播是不是被什么东西魇住了。这些讨论都没有结果，也没有人能够联系上主播。</p>
+            </div>
+        </div>
+        
+        <!-- 十二楼 -->
+        <div class="post-floor louzhu-floor">
+            <div class="floor-header">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info">
+                    <div class="user-name">天涯共此时hcx</div>
+                    <div class="floor-number">#12 楼主</div>
+                </div>
+            </div>
+            <div class="floor-content">
+                <p>直到上个星期，也是最后一期视频，只有不到一分钟。视频的开头是自上而下俯视悬崖，可以看到拍打山壁的海浪。过了一会儿，主播慢慢将镜头调转，我看清了他的脸，下了一大跳——蓬头垢面，一张满是泥污的脸，衣服竟然还是一个月前的那套，已经破烂的不成样子，漏出的皮肤上大大小小很多淤青和伤口，简直不成人形。</p>
+            </div>
+        </div>
+        
+        <!-- 十三楼 -->
+        <div class="post-floor louzhu-floor">
+            <div class="floor-header">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info">
+                    <div class="user-name">天涯共此时hcx</div>
+                    <div class="floor-number">#13 楼主</div>
+                </div>
+            </div>
+            <div class="floor-content">
+                <p>主播就这样对着镜头，眼睛仿佛透过屏幕，直勾勾盯着我，让人毛骨悚然。还没等我缓过一口气，就看到了更恐怖的一幕。主播面无表情地向前迈出一步，从悬崖上一跃而下！我几乎以为这是什么恶作剧，可视频中的镜头随着主播一同下坠，风声呼啸，伴着海潮，短短几秒后，就是沉重的落地声。</p>
+                <p>我永远也忘不掉，视频的最后几秒，摄像机从已经瘫软的手中滚落，掉到地上，半侧被染红的镜头，正好对上了主播死不瞑目的双眼，以及那嘴角诡异的笑容。</p>
+            </div>
+        </div>
+        
+        <!-- 十四楼 -->
+        <div class="post-floor">
+            <div class="floor-header">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info">
+                    <div class="user-name">鬼不觉</div>
+                    <div class="floor-number">#14</div>
+                </div>
+            </div>
+            <div class="floor-content">
+                <p>这是自杀了？</p>
+            </div>
+        </div>
+        
+        <!-- 十五楼 -->
+        <div class="post-floor">
+            <div class="floor-header">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info">
+                    <div class="user-name">南柯一梦</div>
+                    <div class="floor-number">#15</div>
+                </div>
+            </div>
+            <div class="floor-content">
+                <p>我去，真挺诡异的，不会是被鬼上身了吧</p>
+            </div>
+        </div>
+        
+        <!-- 十六楼 -->
+        <div class="post-floor">
+            <div class="floor-header">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info">
+                    <div class="user-name">燕子回时</div>
+                    <div class="floor-number">#16</div>
+                </div>
+            </div>
+            <div class="floor-content">
+                <p>我觉得有可能，应该是探险的时候招上不干净东西了</p>
+            </div>
+        </div>
+        
+        <!-- 十七楼 -->
+        <div class="post-floor">
+            <div class="floor-header">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info">
+                    <div class="user-name">疯狂睡大觉</div>
+                    <div class="floor-number">#17</div>
+                </div>
+            </div>
+            <div class="floor-content">
+                <p>这么诡异的视频，楼主有没有下载？想看</p>
+            </div>
+        </div>
+        
+        <!-- 十八楼 -->
+        <div class="post-floor louzhu-floor">
+            <div class="floor-header">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info">
+                    <div class="user-name">天涯共此时hcx</div>
+                    <div class="floor-number">#18 楼主</div>
+                </div>
+            </div>
+            <div class="floor-content">
+                <div class="quote">
+                    <div class="quote-author">回复 疯狂睡大觉 #17楼</div>
+                    这么诡异的视频，楼主有没有下载？想看
+                </div>
+                <p>最后这个视频发布不到十分钟就被封了，只有很少人看到。我当时太震惊了，忙着报警，想起来下载的时候已经晚了。</p>
+                <p>比起这个，更令我感到害怕的还是后续的调查。你们要是搜索主播的名字也能查到，警察找到主播后，经过尸检，发现他早在一个月前就已经死了！也就是说，后续一个月的视频，都是一具"尸体"在上传！</p>
+            </div>
+        </div>
+        
+        <!-- 十九楼 -->
+        <div class="post-floor">
+            <div class="floor-header">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info">
+                    <div class="user-name">咕噜咕噜</div>
+                    <div class="floor-number">#19</div>
+                </div>
+            </div>
+            <div class="floor-content">
+                <p>妈耶，所以说一个月前的视频里，主播就被什么东西给害死了？</p>
+            </div>
+        </div>
+        
+        <!-- 二十楼 -->
+        <div class="post-floor">
+            <div class="floor-header">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info">
+                    <div class="user-name">南柯一梦</div>
+                    <div class="floor-number">#20</div>
+                </div>
+            </div>
+            <div class="floor-content">
+                <p>那地方绝对有鬼！有没有人知道可能在哪里</p>
+            </div>
+        </div>
+        
+        <!-- 二十一楼 -->
+        <div class="post-floor">
+            <div class="floor-header">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info">
+                    <div class="user-name">一线牵</div>
+                    <div class="floor-number">#21</div>
+                </div>
+            </div>
+            <div class="floor-content">
+                <p>也可能是触怒神明了</p>
+            </div>
+        </div>
+        
+        <!-- 二十二楼 -->
+        <div class="post-floor">
+            <div class="floor-header">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info">
+                    <div class="user-name">燕子回时</div>
+                    <div class="floor-number">#22</div>
+                </div>
+            </div>
+            <div class="floor-content">
+                <p>我查了下警方通报，只说了主播死亡的地点，没说一个月前去过什么地方</p>
+            </div>
+        </div>
+        
+        <!-- 二十三楼 -->
+        <div class="post-floor louzhu-floor">
+            <div class="floor-header">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info">
+                    <div class="user-name">天涯共此时hcx</div>
+                    <div class="floor-number">#23 楼主</div>
+                </div>
+            </div>
+            <div class="floor-content">
+                <p>我现在一安静下来，就忍不住回想浪客的最后一期视频，简直像刻在了脑子里。我真不是个胆小的人，要不然也不会看探险vlog和逛灵异论坛，但这事儿真的，唉，真的太尼玛怪了！</p>
+            </div>
+        </div>
+        
+        <!-- 二十四楼 -->
+        <div class="post-floor">
+            <div class="floor-header">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info">
+                    <div class="user-name">疯狂睡大觉</div>
+                    <div class="floor-number">#24</div>
+                </div>
+            </div>
+            <div class="floor-content">
+                <p>怕什么，就当是看了一部第一人称的恐怖电影，又不会找上你</p>
+            </div>
+        </div>
+        
+        <!-- 二十五楼 -->
+        <div class="post-floor">
+            <div class="floor-header">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info">
+                    <div class="user-name">鬼不觉</div>
+                    <div class="floor-number">#25</div>
+                </div>
+            </div>
+            <div class="floor-content">
+                <p>人这一辈子或多或少会撞见点怪事的，放宽心吧</p>
+            </div>
+        </div>
+        
+        <!-- 二十六楼 -->
+        <div class="post-floor">
+            <div class="floor-header">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info">
+                    <div class="user-name">燕子回时</div>
+                    <div class="floor-number">#26</div>
+                </div>
+            </div>
+            <div class="floor-content">
+                <p>话说，主播是在哪儿自杀的啊？新闻里没提</p>
+            </div>
+        </div>
+        
+        <!-- 二十七楼 -->
+        <div class="post-floor">
+            <div class="floor-header">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info">
+                    <div class="user-name">南柯一梦</div>
+                    <div class="floor-number">#27</div>
+                </div>
+            </div>
+            <div class="floor-content">
+                <div class="quote">
+                    <div class="quote-author">回复 燕子回时 #26楼</div>
+                    话说，主播是在哪儿自杀的啊？新闻里没提
+                </div>
+                <p>好像是南鄣的一个荒岛，不知道叫什么名字</p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 回帖区域 -->
+    <div class="reply-area">
+        <div class="reply-title">发表回复</div>
+        <div class="reply-box">
+            <textarea class="reply-input" placeholder="请输入回复内容..." id="replyInput"></textarea>
+            <div class="reply-buttons">
+                <button class="reply-btn disabled" id="submitReply">提交回复</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 返回论坛按钮已删除 -->
+    
+    <script>
+        // 初始化函数
+        function initializePost() {
+            // 设置回帖按钮无反应
+            setupReplyButton();
+            
+            // 设置滚动时标题栏的样式
+            setupTitleBarScroll();
+            
+            // 添加楼主楼层悬停效果
+            highlightLouzhuFloors();
+            
+            // 添加一些解密游戏相关的交互
+            addPuzzleInteractions();
+        }
+        
+        // 设置回帖按钮无反应
+        function setupReplyButton() {
+            const submitBtn = document.getElementById('submitReply');
+            const replyInput = document.getElementById('replyInput');
+            
+            // 提交按钮点击无反应
+            submitBtn.onclick = function() {
+                // 什么都不做 - 无反应
+                return false;
+            };
+            
+            // 输入框点击也无反应（防止触发任何操作）
+            replyInput.onclick = function() {
+                // 什么都不做 - 无反应
+                return false;
+            };
+            
+            // 输入框获得焦点时也无反应
+            replyInput.onfocus = function() {
+                // 什么都不做 - 无反应
+                return false;
+            };
+        }
+        
+        // 设置滚动时标题栏的样式
+        function setupTitleBarScroll() {
+            const titleBar = document.querySelector('.post-title-bar');
+            let lastScrollTop = 0;
+            
+            window.addEventListener('scroll', function() {
+                const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                
+                // 根据滚动方向调整标题栏透明度
+                if (scrollTop > lastScrollTop) {
+                    // 向下滚动
+                    titleBar.style.backgroundColor = 'rgba(20, 20, 20, 0.85)';
+                } else {
+                    // 向上滚动
+                    titleBar.style.backgroundColor = 'rgba(20, 20, 20, 0.95)';
+                }
+                
+                lastScrollTop = scrollTop;
+            });
+        }
+        
+        // 高亮显示楼主楼层
+        function highlightLouzhuFloors() {
+            const louzhuFloors = document.querySelectorAll('.louzhu-floor');
+            
+            // 为每个楼主楼层添加悬停效果
+            louzhuFloors.forEach(floor => {
+                floor.addEventListener('mouseenter', function() {
+                    this.style.boxShadow = '0 0 15px rgba(139, 0, 0, 0.7)';
+                    this.style.transform = 'translateY(-2px)';
+                });
+                
+                floor.addEventListener('mouseleave', function() {
+                    this.style.boxShadow = 'none';
+                    this.style.transform = 'translateY(0)';
+                });
+            });
+        }
+        
+        // 关闭帖子页面 - 直接关闭窗口
+        function closePost() {
+            window.close();
+        }
+        
+        // 按ESC键也可以关闭窗口
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closePost();
+            }
+        });
+        
+        // 初始化
+        window.onload = function() {
+            initializePost();
+            
+            // 自动滚动到页面顶部
+            window.scrollTo(0, 0);
+        };
+    </script>
+</body>
+</html>

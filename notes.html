@@ -1,0 +1,613 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>备忘录</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* 恢复原有的所有CSS样式 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+        }
+        
+        body {
+            background-color: #f8f4e9; /* 纸色背景 */
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        /* 备忘录顶部栏 */
+        .notes-header {
+            background-color: #fffef7; /* 浅纸色 */
+            padding: 15px 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #e6e1d2;
+        }
+        
+        .notes-title {
+            font-size: 24px;
+            font-weight: 600;
+            color: #5a4c3c;
+        }
+        
+        /* 返回按钮 */
+        .back-btn {
+            background-color: #8b7355;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: background-color 0.2s;
+        }
+        
+        .back-btn:hover {
+            background-color: #6d5a40;
+        }
+        
+        /* 备忘录工具栏 */
+        .notes-toolbar {
+            padding: 15px 20px;
+            background-color: #fffef7;
+            border-bottom: 1px solid #e6e1d2;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        /* 分类标签 - 居中 */
+        .notes-categories {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            margin: 0 auto;
+        }
+        
+        .category-btn {
+            padding: 10px 20px;
+            background-color: transparent;
+            color: #5a4c3c;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 15px;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 600; /* 加粗 */
+            position: relative;
+        }
+        
+        .category-btn:hover {
+            background-color: #f0ede4;
+        }
+        
+        .category-btn.active {
+            background-color: #e9e2d6;
+            color: #3d3429;
+            box-shadow: inset 0 0 0 1px #d6cdbc;
+        }
+        
+        /* 分类计数徽章 */
+        .category-count {
+            background-color: #8b7355;
+            color: white;
+            font-size: 12px;
+            padding: 2px 8px;
+            border-radius: 10px;
+            margin-left: 5px;
+            font-weight: normal;
+        }
+        
+        /* 分隔线 */
+        .category-separator {
+            width: 1px;
+            height: 20px;
+            background-color: #ddd;
+            margin: 0 5px;
+        }
+        
+        /* 操作按钮区域 - 右侧 */
+        .notes-actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .notes-btn {
+            padding: 8px 16px;
+            background-color: #e9e2d6;
+            color: #5a4c3c;
+            border: 1px solid #d6cdbc;
+            border-radius: 3px;
+            cursor: not-allowed; /* 表示按钮不可点击 */
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            opacity: 0.7;
+        }
+        
+        /* 备忘录内容区域 */
+        .notes-content {
+            flex: 1;
+            padding: 25px;
+            overflow-y: auto;
+            background-color: #f8f4e9;
+        }
+        
+        /* 纸张效果的笔记卡片 */
+        .note {
+            background-color: #fffef7;
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s;
+            border: 1px solid #e6e1d2;
+            position: relative;
+        }
+        
+        .note:hover {
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* 日记笔记的装饰线 */
+        .note.diary::before {
+            content: '';
+            position: absolute;
+            left: 15px;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background-color: #8b7355;
+            border-radius: 2px;
+        }
+        
+        /* 待办事项的装饰线 */
+        .note.todo::before {
+            content: '';
+            position: absolute;
+            left: 15px;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background-color: #6d8a7d;
+            border-radius: 2px;
+        }
+        
+        /* 回收站的装饰线 */
+        .note.recycle::before {
+            content: '';
+            position: absolute;
+            left: 15px;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background-color: #a67c52;
+            border-radius: 2px;
+        }
+        
+        .note-date {
+            font-size: 14px;
+            color: #8b7355;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 500;
+        }
+        
+        .note-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #3d3429;
+        }
+        
+        .note-text {
+            line-height: 1.7;
+            color: #5a4c3c;
+            margin-bottom: 15px;
+        }
+        
+        .note-text p {
+            margin-bottom: 12px;
+        }
+        
+        .note-warning {
+            background-color: #fdf6e3;
+            border: 1px solid #faedcd;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 15px;
+            color: #856404;
+        }
+        
+        /* 待办事项样式 */
+        .todo-list {
+            margin-top: 10px;
+        }
+        
+        .todo-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            padding: 8px 0;
+        }
+        
+        .todo-checkbox {
+            margin-right: 12px;
+            width: 18px;
+            height: 18px;
+            cursor: default;
+            accent-color: #8b7355;
+        }
+        
+        .todo-text {
+            flex: 1;
+            color: #5a4c3c;
+        }
+        
+        .todo-text.completed {
+            text-decoration: line-through;
+            color: #9c8e7c;
+        }
+        
+        .todo-list-title {
+            font-weight: 600;
+            margin-top: 15px;
+            margin-bottom: 10px;
+            color: #3d3429;
+            font-size: 16px;
+        }
+        
+        .todo-list-title:first-child {
+            margin-top: 0;
+        }
+        
+        /* 空状态 */
+        .empty-state {
+            text-align: center;
+            padding: 80px 20px;
+            color: #9c8e7c;
+        }
+        
+        .empty-state i {
+            font-size: 48px;
+            margin-bottom: 20px;
+            color: #d6cdbc;
+        }
+        
+        .empty-state p {
+            margin-bottom: 20px;
+            font-size: 16px;
+        }
+        
+        /* 滚动条样式 */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #f0ede4;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: #d6cdbc;
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: #c4b9a5;
+        }
+        
+        /* 移除所有对话框和编辑相关样式 */
+        .new-note-dialog,
+        .edit-note-dialog,
+        .note-actions,
+        .save-status {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+    <!-- 备忘录顶部栏 -->
+    <div class="notes-header">
+        <div class="notes-title">备忘录</div>
+        <button class="back-btn" onclick="window.close()">
+            <i class="fas fa-times"></i>
+            关闭窗口
+        </button>
+    </div>
+    
+    <!-- 备忘录工具栏 -->
+    <div class="notes-toolbar">
+        <div class="notes-categories">
+            <button class="category-btn active" data-category="diary" onclick="switchCategory('diary')">
+                <i class="fas fa-book"></i>
+                个人日记
+                <span class="category-count" id="diaryCount">(5)</span>
+            </button>
+            <button class="category-btn" data-category="todo" onclick="switchCategory('todo')">
+                <i class="fas fa-tasks"></i>
+                待办事项
+                <span class="category-count" id="todoCount">(2)</span>
+            </button>
+            <button class="category-btn" data-category="recycle" onclick="switchCategory('recycle')">
+                <i class="fas fa-trash-alt"></i>
+                回收站
+                <span class="category-count" id="recycleCount">(3)</span>
+            </button>
+        </div>
+        <div class="notes-actions">
+            <button class="notes-btn">
+                <i class="fas fa-plus"></i>
+                新增
+            </button>
+            <button class="notes-btn">
+                <i class="fas fa-save"></i>
+                保存全部
+            </button>
+        </div>
+    </div>
+    
+    <!-- 备忘录内容区域 -->
+    <div class="notes-content" id="notesContent">
+        <!-- 笔记会动态加载 -->
+    </div>
+    
+    <script>
+        // 笔记数据
+        let notes = [];
+        let currentCategory = 'diary'; // 当前选中的分类
+        
+        // 日记数据
+        const diaryNotes = [
+            {
+                id: 1,
+                category: 'diary',
+                date: "半个月前",
+                title: "",
+                content: "又头晕 特别是傍晚 睡不着 一直做怪梦 去医院查不出来 室友说我是不是中邪了 也许真的该去论坛问问"
+            },
+            {
+                id: 2,
+                category: 'diary',
+                date: "三个月前",
+                title: "",
+                content: "今天在路上晕倒了，被室友送去医院。没医保，检查开药花了好多钱……\n\n好想找妈妈哭，但还是忍住了。\n\n妈妈已经很辛苦，妹妹又要高三了，她成绩好，一定能考上好大学。我不能打扰她们。"
+            },
+            {
+                id: 3,
+                category: 'diary',
+                date: "半年前",
+                title: "",
+                content: "终于租到合适的房子了！最近唯一的好消息。室友是南方人，性格超好，居然喜欢看恐怖故事。\n\n而且我们俩都是 03 年出生的，好巧。\n\n希望接下来能顺利一点。"
+            },
+            {
+                id: 4,
+                category: 'diary',
+                date: "九个月前",
+                title: "",
+                content: "毕业了。\n\n工作好难找，文科生真的没出路吗？面试了几家，工资都只有三五千……好想快点赚钱，帮妈妈分担一点。\n\n怎么办啊。"
+            },
+            {
+                id: 5,
+                category: 'diary',
+                date: "一年前",
+                title: "",
+                content: "冬月二十，晚上十点。过了学生时代最后一个生日，和朋友吃饭聊天，特别开心。"
+            }
+        ];
+        
+        // 待办事项数据
+        const todoNotes = [
+            {
+                id: 6,
+                category: 'todo',
+                date: "",
+                title: "清单一",
+                todos: [
+                    { id: 1, text: "发帖求助", completed: true },
+                    { id: 2, text: "买车票", completed: true },
+                    { id: 3, text: "活下去", completed: false }
+                ]
+            },
+            {
+                id: 7,
+                category: 'todo',
+                date: "",
+                title: "清单二",
+                todos: [
+                    { id: 1, text: "工作面试", completed: true },
+                    { id: 2, text: "在公司附近租房", completed: true },
+                    { id: 3, text: "室友生日", completed: true },
+                    { id: 4, text: "给妈妈转账", completed: true },
+                    { id: 5, text: "回家", completed: false }
+                ]
+            }
+        ];
+        
+        // 回收站数据
+        const recycleNotes = [
+            {
+                id: 8,
+                category: 'recycle',
+                date: "一周前",
+                title: "",
+                content: "我没事我没事我没事我没事我没事我没事"
+            },
+            {
+                id: 9,
+                category: 'recycle',
+                date: "一个月前",
+                title: "",
+                content: "最近总觉得有人跟着我。不是明显的那种，就是……背后发凉，一回头又什么都没有。\n\n家里东西也好像会自己动。钥匙明明放茶几，醒来却在书房。冰箱里的牛奶变成了我没买过的牌子，室友却说是我买的。\n\n是我记错了吗……"
+            },
+            {
+                id: 10,
+                category: 'recycle',
+                date: "半年前",
+                title: "",
+                content: "之前在微博随便发了个求助，竟然收到了\"怪谈论坛\"的邀请码。里面氛围好邪乎，注册还要真名和生辰八字，有点吓人又有点带感。\n\n把密码记在这里吧：wyynlzdq，免得我忘了。嘿嘿。"
+            }
+        ];
+        
+        // 初始化数据
+        function loadNotes() {
+            notes = [...diaryNotes, ...todoNotes, ...recycleNotes];
+            
+            // 更新分类计数
+            updateCategoryCounts();
+            
+            // 渲染笔记
+            renderNotes();
+        }
+        
+        // 更新分类计数
+        function updateCategoryCounts() {
+            const diaryCount = diaryNotes.length;
+            const todoCount = todoNotes.length;
+            const recycleCount = recycleNotes.length;
+            
+            document.getElementById('diaryCount').textContent = `(${diaryCount})`;
+            document.getElementById('todoCount').textContent = `(${todoCount})`;
+            document.getElementById('recycleCount').textContent = `(${recycleCount})`;
+        }
+        
+        // 切换分类
+        function switchCategory(category) {
+            // 更新当前分类
+            currentCategory = category;
+            
+            // 更新按钮状态
+            document.querySelectorAll('.category-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.dataset.category === category) {
+                    btn.classList.add('active');
+                }
+            });
+            
+            // 重新渲染笔记
+            renderNotes();
+        }
+        
+        // 渲染笔记
+        function renderNotes() {
+            const notesContent = document.getElementById('notesContent');
+            
+            // 过滤当前分类的笔记
+            let filteredNotes = [];
+            
+            switch(currentCategory) {
+                case 'diary':
+                    filteredNotes = diaryNotes;
+                    break;
+                case 'todo':
+                    filteredNotes = todoNotes;
+                    break;
+                case 'recycle':
+                    filteredNotes = recycleNotes;
+                    break;
+            }
+            
+            if (filteredNotes.length === 0) {
+                // 空状态
+                let emptyText = "";
+                switch(currentCategory) {
+                    case 'diary':
+                        emptyText = "暂无日记";
+                        break;
+                    case 'todo':
+                        emptyText = "暂无待办事项";
+                        break;
+                    case 'recycle':
+                        emptyText = "回收站为空";
+                        break;
+                }
+                
+                notesContent.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-sticky-note"></i>
+                        <p>${emptyText}</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            notesContent.innerHTML = '';
+            
+            // 根据分类渲染不同的内容
+            if (currentCategory === 'todo') {
+                // 待办事项的渲染逻辑
+                filteredNotes.forEach(note => {
+                    const noteElement = document.createElement('div');
+                    noteElement.className = `note todo`;
+                    noteElement.dataset.id = note.id;
+                    
+                    let todoHtml = '';
+                    
+                    // 添加待办事项列表
+                    if (note.todos && note.todos.length > 0) {
+                        note.todos.forEach(todo => {
+                            todoHtml += `
+                                <div class="todo-item">
+                                    <input type="checkbox" class="todo-checkbox" ${todo.completed ? 'checked' : ''} disabled>
+                                    <span class="todo-text ${todo.completed ? 'completed' : ''}">${todo.text}</span>
+                                </div>
+                            `;
+                        });
+                    }
+                    
+                    noteElement.innerHTML = `
+                        <div class="note-title">${note.title}</div>
+                        <div class="todo-list">
+                            ${todoHtml}
+                        </div>
+                    `;
+                    
+                    notesContent.appendChild(noteElement);
+                });
+            } else {
+                // 日记和回收站的渲染逻辑
+                filteredNotes.forEach(note => {
+                    const noteElement = document.createElement('div');
+                    noteElement.className = `note ${currentCategory}`;
+                    noteElement.dataset.id = note.id;
+                    
+                    let noteContent = note.content.split('\n').map(p => p ? `<p>${p}</p>` : '').join('');
+                    
+                    noteElement.innerHTML = `
+                        <div class="note-date">
+                            <i class="far fa-calendar"></i>
+                            ${note.date}
+                        </div>
+                        <div class="note-text">${noteContent}</div>
+                    `;
+                    
+                    notesContent.appendChild(noteElement);
+                });
+            }
+        }
+        
+        // 初始化
+        window.onload = function() {
+            // 加载笔记
+            loadNotes();
+        };
+    </script>
+</body>
+</html>

@@ -1,0 +1,167 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>《南鄣民俗志》卷12·惠慈长生天尊因缘经</title>
+    <style>
+        /* 完全仿照古籍PDF版面 —— 肃穆、洁净、无饰 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #5f5f5f;    /* 深灰底，模拟阅读器背景 */
+            font-family: "Times New Roman", "Songti SC", "SimSun", "宋体", "Georgia", serif;
+            line-height: 1.75;
+            color: #1e1e1e;
+            padding: 40px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .pdf-spread {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+            max-width: 1400px;
+            width: 100%;
+        }
+
+        /* 每一“页” —— 绝对的白纸黑字，传统中式书页留白 */
+        .page {
+            background: white;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+            padding: 42px 48px;
+            flex: 0 1 620px;          /* 固定宽度，两页并排时协调 */
+            max-width: 900px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* 页眉：完全遵照要求，不加任何装饰线，纯文字居中 */
+        .page-header {
+            text-align: center;
+            font-size: 18px;
+            font-weight: 600;
+            color: #2c2c2c;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            border-bottom: 0.5px solid #aaa;  /* 极淡分隔，仅作视觉参考，非多余装饰 */
+            letter-spacing: 1.5px;
+        }
+
+        /* 正文区域——清秀、疏朗 */
+        .page-content {
+            flex: 1;
+            font-size: 17.5px;
+            text-align: justify;
+            word-break: break-word;
+        }
+
+        .page-content p {
+            margin-bottom: 1.3em;
+            text-indent: 2em;          /* 首行缩进二格，完全中文排版传统 */
+        }
+
+        /* 图片区域 —— 无边框、无阴影，仅黑白，尺寸精确缩为原大的三分之二（视觉） */
+        .image-wrapper {
+            margin: 32px 0 28px;
+            text-align: center;
+        }
+
+        .image-wrapper img {
+            width: 400px;              /* 假设原图宽约600px，缩小2/3 = 400px；比例不变 */
+            max-width: 100%;
+            height: auto;
+            filter: grayscale(100%);   /* 纯黑白，无任何泛黄、做旧滤镜 */
+            border: none;
+            outline: none;
+            box-shadow: none;
+            display: inline-block;
+            vertical-align: bottom;
+        }
+
+        /* 页脚页码 —— 居中，干净，无多余标点 */
+        .page-footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 12px;
+            border-top: 0.5px solid #ccc;
+            font-size: 16px;
+            color: #555;
+            font-weight: normal;
+            letter-spacing: 2px;
+        }
+
+        /* 移动优化：小屏幕两页自动堆叠，图片自适应 */
+        @media (max-width: 700px) {
+            .page {
+                padding: 28px 22px;
+                max-width: 100%;
+            }
+            .page-header {
+                font-size: 16px;
+            }
+            .image-wrapper img {
+                width: 100%;
+                max-width: 350px;      /* 维持比例，仍显克制缩小感 */
+            }
+            .page-content {
+                font-size: 16.5px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="pdf-spread">
+        <!-- ========= 第 1 页 ========= -->
+        <div class="page">
+            <div class="page-header">《南鄣民俗志》卷12《惠慈长生天尊因缘经》</div>
+            <div class="page-content">
+                <p>唐玄宗年间，南鄣地方有异。天垂黑青，妖雷频作，河伯兴波于奚江，水势汹涌。官吏恐有大灾，以少女吕氏为祭，投江息神怒。</p>
+                <p>吕氏既入水，未几风浪骤止，江涛自平。但见其履波徐行，缓步登岸，自言已诛河伯，此江永宁。</p>
+                <p>官民皆惊，以为神女，上表请封“惠慈真人”。吕氏辞而不受，乃告众人曰：“世有大劫，乃天地定数，非人力可免。吾感大道好生，怜众生疾苦，故示一言：速离尘嚣，隐入山林，或可存续。”</p>
+                
+                <!-- 第一幅插图：惠慈真人斩河伯 —— 完全依PDF位置插入，黑白，尺寸缩2/3，无框 -->
+                <div class="image-wrapper">
+                    <img src="https://img.remit.ee/api/file/BQACAgUAAyEGAASHRsPbAAEQ43NpjZ2GUqPDhiELMOrXGI2sk6X_SgACLyIAAvfBcFRAW2j5dny86ToE.png"
+                         alt="惠慈真人斩河伯图"
+                         width="300"
+                         height="auto">
+                </div>
+                
+                <p>时值天宝八载，四海升平，闻者多晒之，以为妄语。后数年，灾变迭起，方悟其言不虚，然已迟矣。</p>
+                <p>有富户刘生者，睹吕氏斩河伯之奇，深信其言，遂尽散家财，愿从修行。吕氏知其诚，允随左右，乃携之游历人间，终隐于东南海岛，澄心修炼。</p>
+                <p>忽忽一甲子，霞光满天之际，吕氏凝神飞举，羽化登真。升遐之际，犹顾红尘，乃指所居之山曰：“吾升紫府，非遇大缘，不履凡尘。然世间苦海无边，若有至诚祈请，可于此处凿石。山自有灵，尔当虔心雕刻，勿怠勿躁，待机缘至时，吾自临凡。”</p>
+            </div>
+            <div class="page-footer">第37页</div>
+        </div>
+
+        <!-- ========= 第 2 页 ========= -->
+        <div class="page">
+            <div class="page-header">《南鄣民俗志》卷12《惠慈长生天尊因缘经》</div>
+            <div class="page-content">
+                <p>语毕含笑而起，霞举云升，当日光照四野，观者宿疾顿消，昔之疑者尽伏地称颂，号曰“惠慈天尊”。乡里称奇，至今庙貌犹存。</p>
+                
+                <!-- 第二幅插图：刘生凿壁见玄玉神像 —— 完全遵照原PDF位置，黑白，缩2/3，无框 -->
+                <div class="image-wrapper">
+                    <img src="https://img.remit.ee/api/file/BQACAgUAAyEGAASHRsPbAAEQ43JpjZ2CcbhuZvKS_mdhMEDKKvG0-gACLiIAAvfBcFT0LaOENS0d3joE.png"
+                         alt="刘生凿壁见玄玉神像图"
+                         width="300"
+                         height="auto">
+                </div>
+                
+                <p>于是刘生徙居山中，避世凿壁，朝夕不辍。历二十载，石壁如旧，未尝损毫，而其志愈坚。年至耄耋，地忽大震，屋宇尽颓，唯此山屹然不动。众皆登山泣拜，恳天尊垂怜。但闻轰然声响，石壁剥落，中现玄玉神像，慈目垂视，与天尊无异。地动遂止。</p>
+                <p>刘生伏地告曰：“愿为天尊侍者，洒扫尘埃，长驻人间，永奉香火。”天尊感其精诚，乃降法谕，天外玄鸟衔霞而至，敕刘生为“长生侍者”，鹤发生重，颓躯再春。</p>
+                <p>自是，刘生率族人世代奉像，弘天尊之教，泽被南鄣。享寿一百八十岁，见信众广布，乃含笑坐化，乘鹤归真。其族承祀不绝，所在村落，人皆长寿，至今犹称仙乡。</p>
+            </div>
+            <div class="page-footer">第38页</div>
+        </div>
+    </div>
+</body>
+</html>

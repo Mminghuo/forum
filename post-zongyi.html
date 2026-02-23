@@ -1,0 +1,867 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>寻找记忆中的一档生存综艺- 七月半论坛</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* 基本样式 - 与论坛保持一致 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+        }
+        
+        body {
+            background-color: #0a0a0a;
+            color: #e0e0e0;
+            min-height: 100vh;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(20, 20, 20, 0.7) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(10, 10, 10, 0.7) 0%, transparent 20%);
+        }
+        
+        /* 顶部栏 - 与论坛保持一致 */
+        .forum-header {
+            background-color: rgba(15, 15, 15, 0.9);
+            padding: 10px 20px;
+            border-bottom: 1px solid #333;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            backdrop-filter: blur(10px);
+            height: 60px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+        }
+        
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .header-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #8b0000;
+            text-shadow: 0 0 10px rgba(139, 0, 0, 0.5);
+            letter-spacing: 2px;
+        }
+        
+        .close-btn {
+            background-color: #8b0000;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 13px;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .close-btn:hover {
+            background-color: #a00000;
+            box-shadow: 0 0 10px rgba(139, 0, 0, 0.5);
+        }
+        
+        /* Logo版头 */
+        .forum-logo-header {
+            height: 15vh;
+            min-height: 100px;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+            border-bottom: 1px solid #333;
+            margin-top: 60px; /* 顶部栏高度 */
+        }
+        
+        .forum-name {
+            font-size: 36px;
+            font-weight: 900;
+            color: #8b0000;
+            text-shadow: 0 0 15px rgba(139, 0, 0, 0.7);
+            margin-bottom: 5px;
+            letter-spacing: 3px;
+        }
+        
+        .forum-subtitle {
+            font-size: 14px;
+            color: #aaa;
+            font-style: italic;
+        }
+        
+        /* 帖子标题区域 - 固定跟随滚动 */
+        .post-title-bar {
+            position: sticky;
+            top: 60px; /* 在顶部栏下方 */
+            background-color: rgba(20, 20, 20, 0.95);
+            border-bottom: 1px solid #333;
+            padding: 12px 20px;
+            z-index: 999;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.5);
+        }
+        
+        .post-title-main {
+            font-size: 20px;
+            font-weight: 700;
+            color: #e0e0e0;
+            text-align: center;
+        }
+        
+        .post-title-main b {
+            color: #8b0000;
+        }
+        
+        /* 帖子内容区域 - 加宽至1000px */
+        .post-content-area {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        /* 楼层样式 */
+        .post-floor {
+            background-color: rgba(30, 30, 30, 0.8);
+            border: 1px solid #333;
+            border-radius: 4px;
+            padding: 15px;
+            margin-bottom: 15px;
+            transition: all 0.3s;
+        }
+        
+        .post-floor:hover {
+            border-color: #444;
+        }
+        
+        .floor-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 12px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #333;
+        }
+        
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #8b0000, #4a0000);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 16px;
+            border: 2px solid #8b0000;
+            margin-right: 12px;
+        }
+        
+        .user-info {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .user-name {
+            font-weight: 600;
+            color: #8b0000;
+            font-size: 14px;
+        }
+        
+        .floor-number {
+            font-size: 12px;
+            color: #666;
+            margin-top: 2px;
+        }
+        
+        .floor-content {
+            line-height: 1.6;
+            color: #e0e0e0;
+            font-size: 14px;
+            padding-left: 52px; /* 头像宽度 + 边距 */
+        }
+        
+        .floor-content p {
+            margin-bottom: 10px;
+        }
+        
+        .floor-content p:last-child {
+            margin-bottom: 0;
+        }
+        
+        /* 确保所有图片不溢出楼层容器 */
+        .floor-content img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            border: 1px solid #444;
+            border-radius: 4px;
+            margin: 10px 0;
+        }
+
+        /* 链接样式 */
+        .post-link {
+            color: #8b0000;
+            text-decoration: none;
+            border-bottom: 1px dashed #8b0000;
+            transition: all 0.3s;
+        }
+        
+        .post-link:hover {
+            color: #a00000;
+            border-bottom: 1px solid #a00000;
+        }
+        
+        /* 引用样式 */
+        .quote {
+            background-color: rgba(20, 20, 20, 0.8);
+            border-left: 3px solid #8b0000;
+            padding: 10px;
+            margin: 10px 0;
+            font-size: 13px;
+            color: #aaa;
+        }
+        
+        .quote-author {
+            color: #8b0000;
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+        
+        /* 回帖区域 - 加宽至1000px */
+        .reply-area {
+            max-width: 1000px;
+            margin: 30px auto;
+            padding: 0 20px 40px;
+        }
+        
+        .reply-title {
+            font-size: 18px;
+            color: #8b0000;
+            margin-bottom: 15px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #333;
+        }
+        
+        .reply-box {
+            background-color: rgba(30, 30, 30, 0.8);
+            border: 1px solid #333;
+            border-radius: 4px;
+            padding: 15px;
+        }
+        
+        .reply-input {
+            width: 100%;
+            min-height: 120px;
+            background-color: rgba(20, 20, 20, 0.8);
+            border: 1px solid #444;
+            border-radius: 4px;
+            padding: 12px;
+            color: #e0e0e0;
+            font-size: 14px;
+            resize: vertical;
+            margin-bottom: 15px;
+        }
+        
+        .reply-input:focus {
+            outline: none;
+            border-color: #8b0000;
+        }
+        
+        .reply-buttons {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+        
+        .reply-btn {
+            background-color: #8b0000;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 8px 20px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .reply-btn:hover {
+            background-color: #a00000;
+        }
+        
+        .reply-btn.disabled {
+            background-color: #333;
+            color: #666;
+            cursor: not-allowed;
+        }
+        
+        /* 特殊样式 - 楼主楼层 */
+        .louzhu-floor {
+            border-left: 3px solid #8b0000;
+        }
+    </style>
+</head>
+<body>
+    <!-- 顶部栏 -->
+    <div class="forum-header">
+        <div class="header-left">
+            <div class="header-title">论坛</div>
+        </div>
+        <button class="close-btn" onclick="closePost()">
+            <i class="fas fa-times"></i>
+            关闭窗口
+        </button>
+    </div>
+    
+    <!-- Logo版头 -->
+    <div class="forum-logo-header">
+        <div class="forum-name">七月半</div>
+        <div class="forum-subtitle">欢迎来到未知的世界</div>
+    </div>
+    
+    <!-- 帖子标题栏 - 固定跟随滚动 -->
+    <div class="post-title-bar">
+        <div class="post-title-main"><b>寻找记忆中的一档生存综艺</b></div>
+    </div>
+    
+    <!-- 帖子内容区域 -->
+    <div class="post-content-area">
+        <!-- 一楼 -->
+        <div class="post-floor louzhu-floor">
+            <div class="floor-header">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info">
+                    <div class="user-name">八千里外</div>
+                    <div class="floor-number">#1 楼主</div>
+                </div>
+            </div>
+            <div class="floor-content">
+                <p>如题，找一档综艺节目。想不起名字了，大约是二十多年前吧，我八、九岁时候在电视上看过，是那种"荒野求生"类的综艺，有十几个参赛者，坚持到最后就能获胜。</p>
+            </div>
+        </div>
+        
+        <!-- 二楼 -->
+        <div class="post-floor louzhu-floor">
+            <div class="floor-header">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info">
+                    <div class="user-name">八千里外</div>
+                    <div class="floor-number">#2 楼主</div>
+                </div>
+            </div>
+            <div class="floor-content">
+                <p>我记得这综艺是在半夜播出的，画面很暗，剪辑也很粗糙，大部分内容就是摄像机跟拍参赛者，拍摄他们的求生日常。现在回想起来，虽然没什么节目效果，但还挺真实的，而且也算是童年回忆了，希望各位大神帮我找找。</p>
+            </div>
+        </div>
+        
+        <!-- 三楼 -->
+        <div class="post-floor">
+            <div class="floor-header">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info">
+                    <div class="user-name">南柯一梦</div>
+                    <div class="floor-number">#3</div>
+                </div>
+            </div>
+            <div class="floor-content">
+                <p>20年前的荒野求生综艺？那很超前了</p>
+            </div>
+        </div>
+        
+        <!-- 四楼 -->
+        <div class="post-floor">
+            <div class="floor-header">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info">
+                    <div class="user-name">小范先生</div>
+                    <div class="floor-number">#4</div>
+                </div>
+            </div>
+            <div class="floor-content">
+                <p>现在的综艺都有剧本，请的还都是些网红明星，根本就不好看</p>
+            </div>
+        </div>
+        
+        <!-- 五楼 -->
+        <div class="post-floor">
+            <div class="floor-header">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info">
+                    <div class="user-name">奏乐人</div>
+                    <div class="floor-number">#5</div>
+                </div>
+            </div>
+            <div class="floor-content">
+                <p>楼主今年多大？给个具体点的时间，还有细节</p>
+            </div>
+        </div>
+        
+        <!-- 六楼 -->
+        <div class="post-floor louzhu-floor">
+            <div class="floor-header">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info">
+                    <div class="user-name">八千里外</div>
+                    <div class="floor-number">#6 楼主</div>
+                </div>
+            </div>
+            <div class="floor-content">
+                <div class="quote">
+                    <div class="quote-author">回复 奏乐人 #5楼</div>
+                    楼主今年多大？给个具体点的时间，还有细节
+                </div>
+                <p>我今年34岁，真想不起来是具体是哪一年，当时太小，还是在半夜看的，隐约记得几句宣传词，有"命运"、"十万元"之类的话，不确定有没有记错。</p>
+            </div>
+        </div>
+        
+        <!-- 七楼 -->
+        <div class="post-floor louzhu-floor">
+            <div class="floor-header">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info">
+                    <div class="user-name">八千里外</div>
+                    <div class="floor-number">#7 楼主</div>
+                </div>
+            </div>
+            <div class="floor-content">
+                <p>对了，我想起来场景了，应该是在海边，记得镜头有扫过大海。我没看过大海，所以对这一点印象深刻。</p>
+            </div>
+        </div>
+        
+        <!-- 八楼 -->
+        <div class="post-floor">
+            <div class="floor-header">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info">
+                    <div class="user-name">燕子回时</div>
+                    <div class="floor-number">#8</div>
+                </div>
+            </div>
+            <div class="floor-content">
+                <p>沿海城市？或者是在小岛上？</p>
+            </div>
+        </div>
+        
+        <!-- 九楼 -->
+        <div class="post-floor">
+            <div class="floor-header">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info">
+                    <div class="user-name">花生真好吃</div>
+                    <div class="floor-number">#9</div>
+                </div>
+            </div>
+            <div class="floor-content">
+                <p>这个节目获胜的人能得到十万元？还挺多的，那可是二十多年前</p>
+            </div>
+        </div>
+        
+        <!-- 十楼 -->
+        <div class="post-floor">
+            <div class="floor-header">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info">
+                    <div class="user-name">南柯一梦</div>
+                    <div class="floor-number">#10</div>
+                </div>
+            </div>
+            <div class="floor-content">
+                <p>那楼主还记得是在哪个电视台播的吗？</p>
+            </div>
+        </div>
+        
+        <!-- 十一楼 -->
+        <div class="post-floor louzhu-floor">
+            <div class="floor-header">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info">
+                    <div class="user-name">八千里外</div>
+                    <div class="floor-number">#11 楼主</div>
+                </div>
+            </div>
+            <div class="floor-content">
+                <div class="quote">
+                    <div class="quote-author">回复 南柯一梦 #10楼</div>
+                    那楼主还记得是在哪个电视台播的吗？
+                </div>
+                <p>真想不起来了</p>
+            </div>
+        </div>
+        
+        <!-- 十二楼 -->
+        <div class="post-floor">
+            <div class="floor-header">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info">
+                    <div class="user-name">奏乐人</div>
+                    <div class="floor-number">#12</div>
+                </div>
+            </div>
+            <div class="floor-content">
+                <p>不至于吧？就那几个电视台，就算现在看电视的人少了，对台标也该有印象才是</p>
+            </div>
+        </div>
+        
+        <!-- 十三楼 -->
+        <div class="post-floor">
+            <div class="floor-header">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info">
+                    <div class="user-name">沙丁鱼骨</div>
+                    <div class="floor-number">#13</div>
+                </div>
+            </div>
+            <div class="floor-content">
+                <p>我猜是地方台，而且如果是大电视台的话，应该会有很多人看过，不至于找不着</p>
+            </div>
+        </div>
+        
+        <!-- 十四楼 -->
+        <div class="post-floor">
+            <div class="floor-header">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info">
+                    <div class="user-name">南柯一梦</div>
+                    <div class="floor-number">#14</div>
+                </div>
+            </div>
+            <div class="floor-content">
+                <p>有道理，看楼主简介写着南鄣市，可以查查南鄣的电视台</p>
+            </div>
+        </div>
+        
+        <!-- 十五楼 -->
+        <div class="post-floor">
+            <div class="floor-header">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info">
+                    <div class="user-name">燕子回时</div>
+                    <div class="floor-number">#15</div>
+                </div>
+            </div>
+            <div class="floor-content">
+                <p>好像找到了！ 我查了南鄣电视台历年深夜档的名单，2000年有一档名为《幸运生存者》的节目，前后只播了三期就在没有后文了。楼主看看对不对。</p>
+                <!-- 图片占位符 -->
+                <div class="article-content">
+                    <img src="https://img.remit.ee/api/file/BQACAgUAAyEGAASHRsPbAAERF39pmxn_ORn7voKiyJnZNPhBPVNK0QACrB8AAtjY2VTgUIB4Xdg45joE.png" alt="BQACAgUAAyEGAASHRsPbAAERF39pmxn_ORn7voKiyJnZNPhBPVNK0QACrB8AAtjY2VTgUIB4Xdg45joE.png" />
+                </div>
+            </div>
+        </div>
+        
+        <!-- 十六楼 -->
+        <div class="post-floor">
+            <div class="floor-header">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info">
+                    <div class="user-name">花生真好吃</div>
+                    <div class="floor-number">#16</div>
+                </div>
+            </div>
+            <div class="floor-content">
+                <p>和楼主描述的很像哎！</p>
+            </div>
+        </div>
+        
+        <!-- 十七楼 -->
+        <div class="post-floor">
+            <div class="floor-header">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info">
+                    <div class="user-name">咕噜咕噜</div>
+                    <div class="floor-number">#17</div>
+                </div>
+            </div>
+            <div class="floor-content">
+                <p>大佬太厉害了，佩服</p>
+            </div>
+        </div>
+        
+        <!-- 十八楼 -->
+        <div class="post-floor louzhu-floor">
+            <div class="floor-header">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info">
+                    <div class="user-name">八千里外</div>
+                    <div class="floor-number">#18 楼主</div>
+                </div>
+            </div>
+            <div class="floor-content">
+                <p>对！！就是这个！可算想起来了！大佬能查到片源吗？想看</p>
+            </div>
+        </div>
+        
+        <!-- 十九楼 -->
+        <div class="post-floor">
+            <div class="floor-header">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info">
+                    <div class="user-name">燕子回时</div>
+                    <div class="floor-number">#19</div>
+                </div>
+            </div>
+            <div class="floor-content">
+                <p>没有，除了这张简介截图，根本找不到其他的官方信息，更别说资源了，已经是失传媒体了</p>
+            </div>
+        </div>
+        
+        <!-- 二十楼 -->
+        <div class="post-floor">
+            <div class="floor-header">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info">
+                    <div class="user-name">沙丁鱼骨</div>
+                    <div class="floor-number">#20</div>
+                </div>
+            </div>
+            <div class="floor-content">
+                <p>哎，原来是这个节目？我前不久刚在别的论坛看到相关新闻报道，等我上传一下</p>
+            </div>
+        </div>
+        
+        <!-- 二十一楼 -->
+        <div class="post-floor">
+            <div class="floor-header">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info">
+                    <div class="user-name">沙丁鱼骨</div>
+                    <div class="floor-number">#21</div>
+                </div>
+            </div>
+            <div class="floor-content">
+                <p>已经上传到杂谈板块了，你们可以搜索看看</p>
+            </div>
+        </div>
+        
+        <!-- 二十二楼 -->
+        <div class="post-floor">
+            <div class="floor-header">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info">
+                    <div class="user-name">咕噜咕噜</div>
+                    <div class="floor-number">#22</div>
+                </div>
+            </div>
+            <div class="floor-content">
+                <p>搜《幸运生存者》是吧？</p>
+            </div>
+        </div>
+        
+        <!-- 二十三楼 -->
+        <div class="post-floor">
+            <div class="floor-header">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info">
+                    <div class="user-name">南柯一梦</div>
+                    <div class="floor-number">#23</div>
+                </div>
+            </div>
+            <div class="floor-content">
+                <p>节目竟然死人了？？怪不得只播了几期</p>
+            </div>
+        </div>
+
+        <!-- 二十三楼 -->
+        <div class="post-floor">
+            <div class="floor-header">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info">
+                    <div class="user-name">花生真好吃</div>
+                    <div class="floor-number">#24</div>
+                </div>
+            </div>
+            <div class="floor-content">
+                <p>这记者可真厉害，查到这么多</p>
+            </div>
+        </div>
+
+        <!-- 二十四楼 -->
+        <div class="post-floor">
+            <div class="floor-header">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info">
+                    <div class="user-name">奏乐人</div>
+                    <div class="floor-number">#25</div>
+                </div>
+            </div>
+            <div class="floor-content">
+                <p>怎么只有上期，没后续吗？</p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 回帖区域 -->
+    <div class="reply-area">
+        <div class="reply-title">发表回复</div>
+        <div class="reply-box">
+            <textarea class="reply-input" placeholder="请输入回复内容..." id="replyInput"></textarea>
+            <div class="reply-buttons">
+                <button class="reply-btn disabled" id="submitReply">提交回复</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 返回论坛按钮已删除 -->
+    
+    <script>
+        // 初始化函数
+        function initializePost() {
+            // 设置回帖按钮无反应
+            setupReplyButton();
+            
+            // 设置滚动时标题栏的样式
+            setupTitleBarScroll();
+            
+            // 添加楼主楼层悬停效果
+            highlightLouzhuFloors();
+            
+            // 添加一些解密游戏相关的交互
+            addPuzzleInteractions();
+        }
+        
+        // 设置回帖按钮无反应
+        function setupReplyButton() {
+            const submitBtn = document.getElementById('submitReply');
+            const replyInput = document.getElementById('replyInput');
+            
+            // 提交按钮点击无反应
+            submitBtn.onclick = function() {
+                // 什么都不做 - 无反应
+                return false;
+            };
+            
+            // 输入框点击也无反应（防止触发任何操作）
+            replyInput.onclick = function() {
+                // 什么都不做 - 无反应
+                return false;
+            };
+            
+            // 输入框获得焦点时也无反应
+            replyInput.onfocus = function() {
+                // 什么都不做 - 无反应
+                return false;
+            };
+        }
+        
+        // 设置滚动时标题栏的样式
+        function setupTitleBarScroll() {
+            const titleBar = document.querySelector('.post-title-bar');
+            let lastScrollTop = 0;
+            
+            window.addEventListener('scroll', function() {
+                const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                
+                // 根据滚动方向调整标题栏透明度
+                if (scrollTop > lastScrollTop) {
+                    // 向下滚动
+                    titleBar.style.backgroundColor = 'rgba(20, 20, 20, 0.85)';
+                } else {
+                    // 向上滚动
+                    titleBar.style.backgroundColor = 'rgba(20, 20, 20, 0.95)';
+                }
+                
+                lastScrollTop = scrollTop;
+            });
+        }
+        
+        // 高亮显示楼主楼层
+        function highlightLouzhuFloors() {
+            const louzhuFloors = document.querySelectorAll('.louzhu-floor');
+            
+            // 为每个楼主楼层添加悬停效果
+            louzhuFloors.forEach(floor => {
+                floor.addEventListener('mouseenter', function() {
+                    this.style.boxShadow = '0 0 15px rgba(139, 0, 0, 0.7)';
+                    this.style.transform = 'translateY(-2px)';
+                });
+                
+                floor.addEventListener('mouseleave', function() {
+                    this.style.boxShadow = 'none';
+                    this.style.transform = 'translateY(0)';
+                });
+            });
+        }
+        
+        // 关闭帖子页面 - 直接关闭窗口
+        function closePost() {
+            window.close();
+        }
+        
+        // 按ESC键也可以关闭窗口
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closePost();
+            }
+        });
+        
+        // 初始化
+        window.onload = function() {
+            initializePost();
+            
+            // 自动滚动到页面顶部
+            window.scrollTo(0, 0);
+        };
+    </script>
+</body>
+</html>

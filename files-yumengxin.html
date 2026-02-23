@@ -1,0 +1,256 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>用户档案 · 七月半论坛</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* ========== 基本样式（与论坛保持一致） ========== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+        }
+        
+        body {
+            background-color: #0a0a0a;
+            color: #e0e0e0;
+            min-height: 100vh;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(20, 20, 20, 0.7) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(10, 10, 10, 0.7) 0%, transparent 20%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-top: 70px;
+        }
+
+        /* ========== 固定顶部栏 ========== */
+        .forum-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: rgba(15, 15, 15, 0.95);
+            border-bottom: 1px solid #333;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 12px rgba(0,0,0,0.5);
+            z-index: 200;
+            padding: 0 20px;
+        }
+
+        .header-content {
+            width: 75%;
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .header-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #8b0000;
+            text-shadow: 0 0 10px rgba(139, 0, 0, 0.5);
+            letter-spacing: 2px;
+        }
+
+        .close-btn {
+            background-color: #8b0000;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 13px;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .close-btn:hover {
+            background-color: #a00000;
+            box-shadow: 0 0 10px rgba(139, 0, 0, 0.5);
+        }
+
+        /* ========== 主容器 ========== */
+        .archive-container {
+            width: 75%;
+            max-width: 1000px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        @media (max-width: 1000px) {
+            .archive-container {
+                width: 95%;
+            }
+        }
+
+        /* 卡片通用样式 */
+        .card {
+            background-color: rgba(20, 20, 20, 0.9);
+            border: 1px solid #333;
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+        }
+
+        /* 标题卡片 */
+        .title-card {
+            text-align: center;
+            padding: 30px 20px;
+        }
+        .white-name {
+            font-size: 36px;
+            font-weight: 900;
+            color: #ffffff;
+            letter-spacing: 2px;
+            line-height: 1.2;
+        }
+        .sub-arch {
+            font-size: 18px;
+            color: #aaa;
+            font-style: italic;
+            margin-top: 8px;
+        }
+
+        /* 信息卡片 */
+        .info-card {
+            padding: 20px 25px;
+        }
+        .info-title {
+            font-size: 18px;
+            color: #8b0000;
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #333;
+            font-weight: 600;
+        }
+        .info-content {
+            font-size: 15px;
+            line-height: 1.7;
+            color: #e0e0e0;
+        }
+
+        /* 记录卡片 */
+        .record-card {
+            padding: 20px 25px;
+        }
+        .record-title {
+            font-size: 18px;
+            color: #8b0000;
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #333;
+            font-weight: 600;
+        }
+        .record-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .record-item {
+            font-size: 14px;
+            line-height: 1.8;
+            color: #e0e0e0;
+            margin-bottom: 12px;
+            padding-left: 0;
+        }
+        .record-item:last-child {
+            margin-bottom: 0;
+        }
+        .record-item strong {
+            color: #ffffff;
+            font-weight: 700;
+        }
+
+        /* 底部标语 */
+        .footer-slogan {
+            text-align: center;
+            color: #8b0000;
+            font-size: 20px;
+            font-weight: 700;
+            text-shadow: 0 0 10px rgba(139, 0, 0, 0.5);
+            letter-spacing: 2px;
+            padding: 20px 0 30px;
+        }
+    </style>
+</head>
+<body>
+    <!-- 固定顶部栏 -->
+    <div class="forum-header">
+        <div class="header-content">
+            <div class="header-left">
+                <div class="header-title">七月半</div>
+            </div>
+            <button class="close-btn" onclick="closeWindow()">
+                <i class="fas fa-times"></i>
+                关闭窗口
+            </button>
+        </div>
+    </div>
+
+    <!-- 主内容区 -->
+    <div class="archive-container">
+        <!-- 标题卡片：于梦欣 · 档案 -->
+        <div class="card title-card">
+            <div class="white-name">于梦欣</div>
+            <div class="sub-arch">档案</div>
+        </div>
+
+        <!-- 基本信息卡片 -->
+        <div class="card info-card">
+            <div class="info-title">基本信息</div>
+            <div class="info-content">
+                于梦欣，女，2003年出生，现就读于福建师范大学。父母离异，家境贫困。
+            </div>
+        </div>
+
+        <!-- 记录卡片 -->
+        <div class="card record-card">
+            <div class="record-title">记录</div>
+            <ul class="record-list">
+                <li class="record-item"><strong>2025年5月23日：</strong>于梦欣在论坛发帖，自述年少时曾为“山神”义女，有通神经历，似具备灵媒潜质。此类经历值得留意，或许有望成为天尊降临之载体。列为重点关注对象。</li>
+                <li class="record-item"><strong>2025年6月7日：</strong>引导于梦欣供奉天尊，得其命格，由刘生请示天尊。遗憾的是，此人并非灵媒之体，无法作为降临载体。但其人确具异于常人的灵能，愿力亦强。暂不消耗其运，留待考察，或另有他用。</li>
+                <li class="record-item"><strong>2025年6月9日：</strong>查阅于梦欣心愿，其执念之深令人惊异。天尊教诲有云：执念愈深，信奉之力愈强，愈有可能诚心追随天尊，成为信徒。适逢刘生即将举行长生葬，天尊已指定祭体，然暂时未有妥善之法引导供奉。也许正可借于梦欣的灵感，令其接近祭体，免我等亲自出手。</li>
+                <li class="record-item"><strong>2025年6月12日：</strong>前日所述方案可行。经商议，由宋生亲自出面，引于梦欣加入“运契”，并授予其“<strong>渡生大醮</strong>”相关内容，指示按照仪轨引导祭体，直至长生葬举行之日。</li>
+                <li class="record-item"><strong>2025年7月4日：</strong>依于梦欣的心愿，经刘生请示天尊，得出解法：长生葬后，祭体寿尽魂散之时，其余下肉身，可供于梦欣留驻陈菲之魂灵。此为两全其美之策也。近日，陈菲的尸体已交予昌运村存放。然其亡故已久，魂魄大半已离体，难以追寻。如此一来，即便长生葬后为祭体渡魂，最终所得，也不过是一具半死的行尸。此非我等需要关注之事，且注意隐瞒，勿让于梦欣知晓。</li>
+                <li class="record-item"><strong>2025年7月28日：</strong>于梦欣成功与祭体成为室友，引导工作顺利进行。相关内容详见考察记录：<strong>wy20260215</strong>。</li>
+                <li class="record-item"><strong>2026年1月19日：</strong>于梦欣报告，祭体浸养完成。山中祭坛也已选定并准备就绪，可正式筹备长生葬。指示于梦欣尽快将祭体带至祭祀地点。此事关乎我等之福泽，不容有失。已嘱托刘生向天尊祷告，请其消除沿途监控痕迹，以免引人怀疑。</li>
+                <li class="record-item"><strong>2026.02月10日：</strong>祭体已抵达祭祀地点。可开启长生葬。十日之内，祭祀即可完成。</li>
+            </ul>
+        </div>
+
+        <!-- 底部红色标语 -->
+        <div class="footer-slogan">普世广愿，惠慈长生</div>
+    </div>
+
+    <script>
+        function closeWindow() {
+            window.close();
+        }
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeWindow();
+            }
+        });
+    </script>
+</body>
+</html>

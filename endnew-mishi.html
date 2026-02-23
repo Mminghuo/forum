@@ -1,0 +1,306 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>千福县通报 · 云留山事件</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background-color: #0a2d5e;
+            color: #ffffff;
+            font-family: "Microsoft YaHei", "SimHei", sans-serif;
+            line-height: 1.8;
+            padding: 30px;
+            min-height: 100vh;
+        }
+        
+        .notification-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 30px;
+        }
+        
+        .notification-title {
+            text-align: center;
+            font-size: 36px;
+            font-weight: bold;
+            margin-bottom: 40px;
+            letter-spacing: 8px;
+        }
+        
+        .notification-content {
+            font-size: 20px;
+            text-align: justify;
+        }
+        
+        .notification-content p {
+            margin-bottom: 25px;
+            text-indent: 2em;
+        }
+        
+        .notification-date {
+            text-align: right;
+            font-size: 20px;
+            margin-top: 60px;
+        }
+        
+        .notification-signature {
+            text-align: right;
+            font-size: 22px;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+        
+        @media (max-width: 768px) {
+            body {
+                padding: 15px;
+            }
+            
+            .notification-container {
+                padding: 20px 15px;
+            }
+            
+            .notification-title {
+                font-size: 28px;
+                margin-bottom: 30px;
+            }
+            
+            .notification-content {
+                font-size: 18px;
+            }
+            
+            .notification-date,
+            .notification-signature {
+                font-size: 18px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="notification-container">
+        <h1 class="notification-title">通 报</h1>
+        
+        <div class="notification-content">
+            <p>2026年2月22日11时，我市千福县110接到报警声称有人穿越云留山后失联，寻求帮助。进一步了解得知，2月21日下午7时左右，一名外地女子温某（女，17岁）避开管护站，违规进入云留山，此后与外界失去联络。</p>
+            
+            <p>接到报警千福县立即启动应急救援预案，组织相关部门四支专业救援队和当地群众全力搜救，南鄣市委，市政府领导带领市级相关部门现场指挥搜救工作。</p>
+            
+            <p>因云留山区域地形极为复杂，气候多变，为尚未开发的原始森林，雾气重，能见度极低，且搜救范围广泛，失联人员未携带卫星定位设备，无法精准定位，搜救工作异常艰难。</p>
+            
+            <p>2026年2月23日，千福县又组织多支救援力量和群众进山参与救援。当天晚上19时许，搜救队员发现了失联人员温某（经DNA比对确认），已无生命体征。</p>
+            
+            <p>云留山属国家级自然保护核心区，严禁任何单位或个人未经许可擅自闯入。政府再次提醒，违规进山危险性极大，请大家遵规守法，敬畏自然，珍爱生命。</p>
+        </div>
+        
+        <div class="notification-signature">南鄣市千福县政府</div>
+        <div class="notification-date">2026年2月23日</div>
+    </div>
+
+<style>
+#hb-chat-toast {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    background: rgba(32, 32, 32, 0.95);
+    color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.4);
+    padding: 20px 15px 15px;
+    width: 300px;
+    z-index: 9999;
+    display: none;
+    border: 1px solid rgba(255,255,255,0.1);
+    animation: hbSlideIn 0.3s ease-out;
+    backdrop-filter: blur(10px);
+}
+@keyframes hbSlideIn {
+    from { transform: translateY(20px); opacity: 0; }
+    to   { transform: translateY(0);    opacity: 1; }
+}
+#hb-chat-toast .toast-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+#hb-chat-toast .toast-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #fff;
+    font-weight: bold;
+    font-size: 14px;
+}
+#hb-chat-toast .toast-title i { color: #4CAF50; font-size: 18px; }
+#hb-chat-toast .toast-close {
+    background: none; border: none; color: #aaa;
+    font-size: 16px; cursor: pointer; transition: color 0.2s;
+}
+#hb-chat-toast .toast-close:hover { color: #fff; }
+#hb-chat-toast .toast-body {
+    color: rgba(255,255,255,0.9);
+    font-size: 14px;
+    line-height: 1.5;
+    margin-bottom: 15px;
+}
+#hb-chat-toast .toast-btns {
+    display: flex;
+    gap: 10px;
+}
+#hb-chat-toast .toast-btn {
+    flex: 1;
+    padding: 8px 15px;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.2s;
+}
+#hb-chat-toast .toast-btn.later {
+    background: rgba(60,60,60,0.8);
+    color: #e0e0e0;
+    border: 1px solid #444;
+}
+#hb-chat-toast .toast-btn.later:hover { border-color: #8b0000; color: #8b0000; }
+#hb-chat-toast .toast-btn.open {
+    background: #4CAF50;
+    color: white;
+    font-weight: bold;
+}
+#hb-chat-toast .toast-btn.open:hover { background: #3d8b40; }
+
+/* 中间弹窗样式 */
+#hb-center-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    z-index: 10000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+}
+#hb-center-modal .modal-content {
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+    padding: 40px;
+    max-width: 500px;
+    width: 90%;
+    text-align: center;
+    animation: hbModalFadeIn 0.3s ease-out;
+}
+@keyframes hbModalFadeIn {
+    from { opacity: 0; transform: scale(0.9); }
+    to   { opacity: 1; transform: scale(1); }
+}
+#hb-center-modal .modal-title {
+    font-size: 24px;
+    font-weight: bold;
+    color: #222;
+    margin-bottom: 20px;
+}
+#hb-center-modal .modal-text {
+    font-size: 16px;
+    color: #333;
+    line-height: 1.6;
+    margin-bottom: 30px;
+}
+#hb-center-modal .modal-btn {
+    background: #4CAF50;
+    color: white;
+    border: none;
+    padding: 12px 30px;
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+#hb-center-modal .modal-btn:hover {
+    background: #3d8b40;
+}
+</style>
+
+<div id="hb-chat-toast">
+    <div class="toast-header">
+        <div class="toast-title">
+            <i class="fas fa-comment-dots"></i>
+            聊天软件通知
+        </div>
+        <button class="toast-close" id="hb-toast-close"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="toast-body">明烛天青发来了新消息</div>
+    <div class="toast-btns">
+        <button class="toast-btn later" id="hb-toast-later">稍后</button>
+        <button class="toast-btn open" id="hb-toast-open">查看消息</button>
+    </div>
+</div>
+
+<!-- 中间弹窗 -->
+<div id="hb-center-modal">
+    <div class="modal-content">
+        <div class="modal-title">恭喜！您完成了此次调查！</div>
+        <div class="modal-text">
+            此为结局一【迷失】。本游戏一共有五种结局。建议从"万家地图"页面开始，尝试做出不同的选择。<br><br>
+            如果您喜欢本游戏，还请帮忙宣传，感谢！
+        </div>
+        <button class="modal-btn" id="hb-modal-close">确定</button>
+    </div>
+</div>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<script>
+    (function() {
+        try {
+            // 检查是否首次访问
+            var toastKey = 'endnew_mishi_toast_shown';
+            if (!localStorage.getItem(toastKey)) {
+                localStorage.setItem(toastKey, 'true');
+                setTimeout(function() {
+                    document.getElementById('hb-chat-toast').style.display = 'block';
+                }, 1500);
+            }
+
+            // 关闭提示窗
+            document.getElementById('hb-toast-close').addEventListener('click', function() {
+                document.getElementById('hb-chat-toast').style.display = 'none';
+            });
+            document.getElementById('hb-toast-later').addEventListener('click', function() {
+                document.getElementById('hb-chat-toast').style.display = 'none';
+            });
+
+            // 打开中间弹窗
+            document.getElementById('hb-toast-open').addEventListener('click', function() {
+                document.getElementById('hb-chat-toast').style.display = 'none';
+                document.getElementById('hb-center-modal').style.display = 'flex';
+            });
+
+            // 关闭中间弹窗
+            document.getElementById('hb-modal-close').addEventListener('click', function() {
+                document.getElementById('hb-center-modal').style.display = 'none';
+            });
+
+            // 点击弹窗外部关闭
+            document.getElementById('hb-center-modal').addEventListener('click', function(e) {
+                if (e.target === this) {
+                    this.style.display = 'none';
+                }
+            });
+        } catch(e) {
+            console.error('提示窗功能初始化失败:', e);
+        }
+    })();
+</script>
+</body>
+</html>

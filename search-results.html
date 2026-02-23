@@ -1,0 +1,909 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>用户搜索 - 怪谈论坛</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* ========== 表论坛色调：灰白背景，蓝白搭配 ========== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+        }
+        
+        body {
+            background-color: #f0f2f5;        /* 灰白色背景 */
+            color: #1e293b;                    /* 深灰色文字 */
+            min-height: 100vh;
+        }
+        
+        /* 顶部工具栏 */
+        .search-toolbar {
+            background-color: #ffffff;
+            padding: 15px 20px;
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+        }
+        
+        .search-page-title {
+            font-size: 24px;
+            font-weight: 600;
+            color: #4a6fa5;                    /* 灰蓝色 */
+        }
+        
+        /* 搜索框区域 */
+        .search-box-container {
+            display: flex;
+            flex-direction: column;              /* 改为纵向排列 */
+            align-items: center;
+            margin: 20px;
+        }
+
+        /* 新增“用户搜索”文字 */
+        .search-label {
+            font-size: 18px;
+            font-weight: 600;
+            color: #4a6fa5;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        
+        .search-box {
+            display: flex;
+            align-items: center;
+            background-color: #ffffff;
+            border-radius: 30px;
+            padding: 10px 20px;
+            width: 500px;
+            max-width: 100%;
+            border: 1px solid #cbd5e1;
+            transition: all 0.2s;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.02);
+        }
+        
+        .search-box:hover {
+            border-color: #4a6fa5;
+        }
+        
+        .search-box input {
+            border: none;
+            background: transparent;
+            flex: 1;
+            outline: none;
+            font-size: 16px;
+            color: #1e293b;
+        }
+        
+        .search-box input::placeholder {
+            color: #94a3b8;
+        }
+        
+        .search-btn {
+            background-color: #4a6fa5;          /* 灰蓝色 */
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+        
+        .search-btn:hover {
+            background-color: #3a5a87;
+        }
+        
+        .close-btn {
+            background-color: #4a6fa5;          /* 灰蓝色 */
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 30px;                 /* 圆角 */
+            cursor: pointer;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s;
+        }
+        
+        .close-btn:hover {
+            background-color: #3a5a87;
+            box-shadow: 0 2px 8px rgba(74, 111, 165, 0.3);
+        }
+        
+        /* 搜索结果区域 */
+        .search-results-page {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 20px 40px;
+        }
+        
+        .search-header {
+            margin-bottom: 20px;
+            padding: 15px;
+            background-color: #ffffff;
+            border-radius: 16px;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+        }
+        
+        .search-title {
+            font-size: 20px;
+            color: #1e293b;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+        
+        .search-keyword {
+            color: #4a6fa5;                      /* 灰蓝色 */
+            font-weight: 500;
+            font-size: 18px;
+        }
+        
+        .search-meta {
+            color: #64748b;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+        
+        /* 结果分类 */
+        .result-category {
+            margin-bottom: 30px;
+            background-color: #ffffff;
+            border-radius: 16px;
+            border: 1px solid #e2e8f0;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+        }
+        
+        .category-header {
+            background-color: #f9fcff;
+            padding: 12px 20px;
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            color: #4a6fa5;
+        }
+        
+        .category-icon {
+            margin-right: 10px;
+            font-size: 18px;
+        }
+        
+        .category-title {
+            font-size: 18px;
+            font-weight: 600;
+        }
+        
+        .result-count {
+            margin-left: 10px;
+            font-size: 14px;
+            color: #64748b;
+        }
+        
+        /* 帖子结果 */
+        .posts-list {
+            padding: 0;
+        }
+        
+        .post-result-item {
+            padding: 15px 20px;
+            border-bottom: 1px solid #e2e8f0;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+        }
+        
+        .post-result-item:hover {
+            background-color: #f8fafc;
+        }
+        
+        .post-icon {
+            color: #4a6fa5;
+            margin-right: 12px;
+            font-size: 18px;
+        }
+        
+        .post-content {
+            flex: 1;
+        }
+        
+        .post-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 5px;
+        }
+        
+        .post-meta {
+            font-size: 13px;
+            color: #64748b;
+        }
+        
+        /* 用户结果 */
+        .users-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+            padding: 20px;
+        }
+        
+        .user-result-item {
+            background-color: #f9fcff;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 15px;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+        }
+        
+        .user-result-item:hover {
+            border-color: #4a6fa5;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 14px rgba(74, 111, 165, 0.08);
+        }
+        
+        .user-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #4a6fa5, #2c4a73);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 20px;
+            margin: 0 auto 10px;
+        }
+        
+        .user-name {
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 5px;
+        }
+        
+        /* 杂谈结果 */
+        .talks-list {
+            padding: 20px;
+        }
+        
+        .talk-result-item {
+            background-color: #f9fcff;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 15px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .talk-result-item:hover {
+            border-color: #4a6fa5;
+        }
+        
+        .talk-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .talk-icon {
+            color: #4a6fa5;
+            margin-right: 10px;
+            font-size: 20px;
+        }
+        
+        .talk-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 8px;
+        }
+        
+        .talk-keywords {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            margin-bottom: 10px;
+        }
+        
+        .keyword-tag {
+            background-color: #e9f0f9;
+            color: #4a6fa5;
+            padding: 3px 8px;
+            border-radius: 20px;
+            font-size: 12px;
+        }
+        
+        /* 多结果杂谈 */
+        .talk-multi-item {
+            margin-bottom: 10px;
+            padding: 10px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+        }
+        
+        .talk-multi-item:hover {
+            border-color: #4a6fa5;
+            background-color: #f8fafc;
+        }
+        
+        .talk-multi-icon {
+            color: #4a6fa5;
+            margin-right: 10px;
+            font-size: 16px;
+        }
+        
+        .talk-multi-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #1e293b;
+        }
+        
+        /* 管理档案结果 */
+        .archives-list {
+            padding: 20px;
+        }
+        
+        .archive-result-item {
+            background-color: #f9fcff;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 15px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+        }
+        
+        .archive-result-item:hover {
+            border-color: #4a6fa5;
+        }
+        
+        .archive-icon {
+            color: #4a6fa5;
+            margin-right: 12px;
+            font-size: 20px;
+        }
+        
+        .archive-content {
+            flex: 1;
+        }
+        
+        .archive-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 5px;
+        }
+        
+        .archive-meta {
+            font-size: 13px;
+            color: #64748b;
+            font-style: italic;
+        }
+        
+        /* □□□□结果 */
+        .secrets-list {
+            padding: 20px;
+        }
+        
+        .secret-result-item {
+            background-color:#f9fcff ;
+            border: 1px solid #ff0000;
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 15px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+        }
+        
+        .secret-result-item:hover {
+            border-color: #ff0000;
+            box-shadow: 0 0 10px rgba(74, 111, 165, 0.3);
+        }
+        
+        .secret-icon {
+            color: #ff0000;
+            margin-right: 12px;
+            font-size: 20px;
+        }
+        
+        .secret-content {
+            flex: 1;
+        }
+        
+        .secret-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #ff0000;
+            margin-bottom: 5px;
+        }
+        
+        .secret-meta {
+            font-size: 13px;
+            color: #ff0000;
+            font-style: italic;
+        }
+        
+        /* 无结果提示 */
+        .no-results {
+            padding: 60px 20px;
+            text-align: center;
+            background-color: #ffffff;
+            border-radius: 16px;
+            border: 1px solid #e2e8f0;
+            margin-top: 20px;
+        }
+        
+        .no-results-icon {
+            font-size: 72px;
+            margin-bottom: 20px;
+            color: #cbd5e1;
+        }
+        
+        .no-results-title {
+            font-size: 24px;
+            margin-bottom: 10px;
+            color: #334155;
+            font-weight: 500;
+        }
+        
+        .no-results-message {
+            color: #64748b;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        /* 删除返回论坛按钮相关样式 */
+        /* .back-to-forum 及其内部样式已移除 */
+    </style>
+</head>
+<body>
+    <!-- 顶部工具栏 -->
+    <div class="search-toolbar">
+        <div class="search-page-title">七月半 - 用户搜索</div>
+        
+        <button class="close-btn" onclick="window.close()">
+            <i class="fas fa-times"></i>
+            关闭窗口
+        </button>
+    </div>
+    
+    <!-- 搜索框区域（添加“用户搜索”标题） -->
+    <div class="search-box-container">
+        <div class="search-label">用户搜索</div>   <!-- 新增标题 -->
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="搜索帖子、用户或关键词...">
+            <button class="search-btn" onclick="performSearch()">
+                <i class="fas fa-search"></i>
+            </button>
+        </div>
+    </div>
+    
+    <!-- 搜索结果页面内容 -->
+    <div class="search-results-page">
+        <div id="searchContent">
+            <!-- 搜索结果会动态生成 -->
+        </div>
+        
+        <!-- 返回论坛按钮已删除 -->
+    </div>
+    
+    <script>
+        // 搜索数据配置 - 与forum.html保持一致
+        const searchData = {
+            posts: [
+                { title: "讨论：关于ai的恐怖谷效应", file: "post-ai.html", keywords: ["ai", "恐怖谷", "人工智能", "AI", "恐怖谷效应"] },
+                { title: "我住的公寓又遇见鬼了", file: "post-gyg.html", keywords: ["公寓", "鬼", "遇鬼", "灵异", "闹鬼"] },
+                { title: "怪事：偶尔会刷到奇怪的婚礼直播", file: "post-hunlizhibo.html", keywords: ["婚礼", "直播", "怪事", "灵异直播"] },
+                { title: "我找到对抗鬼的方法了！", file: "post-qugui.html", keywords: ["对抗鬼", "方法", "求助", "灵异"] },
+                { title: "真实经历：一场雪山上的死里逃生", file: "post-xueshan.html", keywords: ["雪山", "死里逃生", "登山", "山难"] },
+                { title: "怎么办，死去的学生半夜来敲我家门……", file: "post-youyi.html", keywords: ["学生", "敲门", "灵异", "学校", "教育"] },
+                { title: "那个在葬礼上失踪的朋友", file: "post-zangli.html", keywords: ["葬礼", "失踪", "朋友", "灵异"] },
+                { title: "通灵游戏真不能随便玩", file: "post-tongling.html", keywords: ["通灵", "游戏", "禁忌", "危险"] },
+                { title: "【重要更新】关于论坛用户注册和发帖的几点说明", file: "post-jiaguanli.html", keywords: ["论坛", "规则", "注册", "发帖", "说明"] },
+                { title: "【七月半】用户必读", file: "post-zhenguanli.html", keywords: ["必读", "指南", "新人", "入门"] }
+                // 【在此处添加新的帖子】
+                // 格式：{ title: "帖子标题", file: "html文件名", keywords: ["关键词1", "关键词2"] },
+            ],
+            
+            users: [
+                { name: "咕噜咕噜", file: "user-gulugulu.html" },
+                { name: "知足常乐", file: "user-zhizuchangle.html" },
+                { name: "鬼不觉", file: "user-guibujue.html" },
+                { name: "温水青", file: "user-wenshuiqing.html" },
+                { name: "落雨", file: "user-luoyu.html" },
+                { name: "蝴蝶与飞雪", file: "user-hudieyufeixue.html" },
+                { name: "山不在高", file: "user-shanbuzaigao.html" },
+                { name: "smile", file: "user-smile.html" },
+                { name: "喵喵神", file: "user-miaomiaoshen.html" },
+                { name: "管理员", file: "user-admin.html" },
+                { name: "一线牵", file: "user-yixianqian.html" } 
+                // 【在此处添加新的用户】
+                // 格式：{ name: "用户名", file: "html文件名" },
+            ],
+            
+            talks: [
+                { keywords: ["失踪"], file: "new-shitishizong.html", title: "女大学生尸体失踪" },
+                { keywords: ["南鄣市", "南鄣"], file: "new-tanminanqing.html", title: "探秘南鄣市" },
+                { keywords: ["泰永集团"], file: "new-juanzhumingxie.html", title: "捐助鸣谢" },
+                { keywords: ["合作机构"], files: ["new-yunqi.html", "new-juanzhumingxie.html"], titles: ["'运契'公益互助协会", "捐助鸣谢"] },
+                { keywords: ["宋青云"], file: "new-songqingyun.html", title: "宋青云专访" },
+                { keywords: ["延盛岛"], file: "new-banqian.html", title: "延盛岛居民搬迁" },
+                { keywords: ["运契","运契公益互助协会" ], file: "new-yunqi.html", title: "'运契'公益互助协会" }
+                // 【在此处添加新的杂谈】
+                // 单页面格式：{ keywords: ["关键词1", "关键词2"], file: "html文件名", title: "页面标题" },
+                // 多页面格式：{ keywords: ["关键词"], files: ["html文件1", "html文件2"], titles: ["标题1", "标题2"] },
+            ],
+            
+            // 【管理档案】 - 在这里添加新的管理档案
+            archives: [
+                { keyword: "温妍", file: "files-wenyan.html", title: "温妍-用户档案" }
+                // 【在此处添加新的管理档案】
+                // 格式：{ keyword: "关键词", file: "html文件名", title: "档案标题" },
+            ],
+            
+            // 【□□□□】 - 在这里添加新的□□□□
+            secrets: [
+                { keyword: "普世广愿惠慈长生", file: "fault-zhenyan.html", title: "普世广愿惠慈长生" }
+                // 【在此处添加新的□□□□】
+                // 格式：{ keyword: "关键词", file: "html文件名", title: "标题" },
+            ]
+        };
+        
+        // 显示搜索结果
+        function displaySearchResults() {
+            const searchContent = document.getElementById('searchContent');
+            const searchTerm = sessionStorage.getItem('searchTerm');
+            
+            // 设置搜索框的值
+            if (searchTerm) {
+                document.getElementById('searchInput').value = searchTerm;
+            }
+            
+            if (!searchTerm) {
+                showNoResults("请在搜索框中输入关键词进行搜索");
+                return;
+            }
+            
+            // 收集搜索结果
+            const results = {
+                users: [],
+                talks: [],
+                archives: [],
+                secrets: []
+            };
+            
+            // 搜索用户 - 部分匹配
+            searchData.users.forEach(user => {
+                if (user.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
+                    searchTerm.toLowerCase().includes(user.name.toLowerCase())) {
+                    results.users.push(user);
+                }
+            });
+            
+            // 搜索杂谈 - 精确匹配
+            searchData.talks.forEach(talk => {
+                const keywordMatch = talk.keywords.some(keyword => 
+                    keyword.toLowerCase() === searchTerm.toLowerCase()
+                );
+                
+                if (keywordMatch) {
+                    results.talks.push(talk);
+                }
+            });
+            
+            // 搜索管理档案 - 精确匹配
+            searchData.archives.forEach(archive => {
+                if (archive.keyword.toLowerCase() === searchTerm.toLowerCase()) {
+                    results.archives.push(archive);
+                }
+            });
+            
+            // 搜索□□□□ - 精确匹配
+            searchData.secrets.forEach(secret => {
+                if (secret.keyword.toLowerCase() === searchTerm.toLowerCase()) {
+                    results.secrets.push(secret);
+                }
+            });
+            
+            // 检查是否有任何结果
+            const totalResults = results.users.length + 
+                                results.talks.length + results.archives.length + 
+                                results.secrets.length;
+            
+            let html = `
+                <div class="search-header">
+                    <div class="search-title">搜索结果</div>
+                    <div>搜索关键词: <span class="search-keyword">"${searchTerm}"</span></div>
+                    <div class="search-meta">找到 ${totalResults} 个相关结果</div>
+                </div>
+            `;
+            
+            if (totalResults === 0) {
+                showNoResults(`没有找到与"${searchTerm}"相关的内容`);
+                return;
+            }
+            
+
+            
+            // 显示用户结果
+            if (results.users.length > 0) {
+                html += `
+                    <div class="result-category">
+                        <div class="category-header">
+                            <i class="fas fa-user-circle category-icon"></i>
+                            <div class="category-title">用户个人主页</div>
+                            <div class="result-count">(${results.users.length}个结果)</div>
+                        </div>
+                        <div class="users-list">
+                `;
+                
+                results.users.forEach(user => {
+                    html += `
+                        <div class="user-result-item" onclick="openPage('${user.file}')">
+                            <div class="user-avatar">
+                                <i class="fas fa-user"></i>
+                            </div>
+                            <div class="user-name">${user.name}</div>
+                        </div>
+                    `;
+                });
+                
+                html += `
+                        </div>
+                    </div>
+                `;
+            }
+            
+            // 显示杂谈结果
+            if (results.talks.length > 0) {
+                html += `
+                    <div class="result-category">
+                        <div class="category-header">
+                            <i class="fas fa-ghost category-icon"></i>
+                            <div class="category-title">灵异杂谈</div>
+                            <div class="result-count">(${results.talks.length}个结果)</div>
+                        </div>
+                        <div class="talks-list">
+                `;
+                
+                results.talks.forEach(talk => {
+                    if (talk.files) {
+                        // 多页面杂谈
+                        html += `
+                            <div class="talk-result-item">
+                                <div class="talk-header">
+                                    <i class="fas fa-newspaper talk-icon"></i>
+                                    <div class="talk-title">${talk.keywords.join(', ')}</div>
+                                </div>
+                                <div class="talk-keywords">
+                                    ${talk.keywords.map(keyword => 
+                                        `<span class="keyword-tag">${keyword}</span>`
+                                    ).join('')}
+                                </div>
+                                <div style="color: #64748b; font-size: 13px; margin-bottom: 10px;">找到 ${talk.files.length} 个相关页面：</div>
+                        `;
+                        
+                        talk.files.forEach((file, index) => {
+                            html += `
+                                <div class="talk-multi-item" onclick="openPage('${file}')">
+                                    <i class="fas fa-arrow-right talk-multi-icon"></i>
+                                    <div class="talk-multi-title">${talk.titles[index]}</div>
+                                </div>
+                            `;
+                        });
+                        
+                        html += `</div>`;
+                    } else {
+                        // 单页面杂谈
+                        html += `
+                            <div class="talk-result-item" onclick="openPage('${talk.file}')">
+                                <div class="talk-header">
+                                    <i class="fas fa-newspaper talk-icon"></i>
+                                    <div class="talk-title">${talk.title}</div>
+                                </div>
+                                <div class="talk-keywords">
+                                    ${talk.keywords.map(keyword => 
+                                        `<span class="keyword-tag">${keyword}</span>`
+                                    ).join('')}
+                                </div>
+                            </div>
+                        `;
+                    }
+                });
+                
+                html += `
+                        </div>
+                    </div>
+                `;
+            }
+            
+            // 显示管理档案结果
+            if (results.archives.length > 0) {
+                html += `
+                    <div class="result-category">
+                        <div class="category-header">
+                            <i class="fas fa-folder category-icon"></i>
+                            <div class="category-title">管理档案</div>
+                            <div class="result-count">(${results.archives.length}个结果)</div>
+                        </div>
+                        <div class="archives-list">
+                `;
+                
+                results.archives.forEach(archive => {
+                    html += `
+                        <div class="archive-result-item" onclick="openPage('${archive.file}')">
+                            <i class="fas fa-folder archive-icon"></i>
+                            <div class="archive-content">
+                                <div class="archive-title">${archive.title}</div>
+                                <div class="archive-meta">查看资料</div>
+                            </div>
+                        </div>
+                    `;
+                });
+                
+                html += `
+                        </div>
+                    </div>
+                `;
+            }
+            
+            // 显示□□□□结果
+            if (results.secrets.length > 0) {
+                html += `
+                    <div class="result-category">
+                        <div class="category-header">
+                            <i class="fas fa-exclamation-triangle category-icon"></i>
+                            <div class="category-title">□□□□</div>
+                            <div class="result-count">(${results.secrets.length}个结果)</div>
+                        </div>
+                        <div class="secrets-list">
+                `;
+                
+                results.secrets.forEach(secret => {
+                    html += `
+                        <div class="secret-result-item" onclick="openPage('${secret.file}')">
+                            <i class="fas fa-exclamation-triangle secret-icon"></i>
+                            <div class="secret-content">
+                                <div class="secret-title">${secret.title}</div>
+                                <div class="secret-meta">□□□□</div>
+                            </div>
+                        </div>
+                    `;
+                });
+                
+                html += `
+                        </div>
+                    </div>
+                `;
+            }
+            
+            searchContent.innerHTML = html;
+        }
+        
+        // 显示无结果提示
+        function showNoResults(message) {
+            const searchContent = document.getElementById('searchContent');
+            const searchTerm = sessionStorage.getItem('searchTerm');
+            
+            let searchTermDisplay = searchTerm ? `"${searchTerm}"` : "";
+            
+            searchContent.innerHTML = `
+                <div class="search-header">
+                    <div class="search-title">搜索结果</div>
+                    <div>搜索关键词: <span class="search-keyword">${searchTermDisplay}</span></div>
+                    <div class="search-meta">找到 0 个相关结果</div>
+                </div>
+                
+                <div class="no-results">
+                    <div class="no-results-icon">
+                        <i class="fas fa-search-minus"></i>
+                    </div>
+                    <h2 class="no-results-title">暂无搜索结果</h2>
+                    <p class="no-results-message">${message}</p>
+                    <p style="color: #64748b; font-size: 14px; margin-top: 10px;">注意：搜索内容勿包含""、《》等标点符号。</p>
+                </div>
+            `;
+        }
+        
+        // 在当前页面执行搜索
+        function performSearch() {
+            const searchInput = document.getElementById('searchInput');
+            const searchTerm = searchInput.value.trim();
+            
+            if (!searchTerm) {
+                alert('请输入搜索关键词！');
+                return;
+            }
+            
+            // 保存搜索关键词到sessionStorage
+            sessionStorage.setItem('searchTerm', searchTerm);
+            
+            // 收集搜索结果
+            const results = {
+                users: [],
+                talks: [],
+                archives: [],
+                secrets: []
+            };
+            
+            // 搜索用户 - 部分匹配
+            searchData.users.forEach(user => {
+                if (user.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
+                    searchTerm.toLowerCase().includes(user.name.toLowerCase())) {
+                    results.users.push(user);
+                }
+            });
+            
+            // 搜索杂谈 - 精确匹配
+            searchData.talks.forEach(talk => {
+                const keywordMatch = talk.keywords.some(keyword => 
+                    keyword.toLowerCase() === searchTerm.toLowerCase()
+                );
+                
+                if (keywordMatch) {
+                    results.talks.push(talk);
+                }
+            });
+            
+            // 搜索管理档案 - 精确匹配
+            searchData.archives.forEach(archive => {
+                if (archive.keyword.toLowerCase() === searchTerm.toLowerCase()) {
+                    results.archives.push(archive);
+                }
+            });
+            
+            // 搜索□□□□ - 精确匹配
+            searchData.secrets.forEach(secret => {
+                if (secret.keyword.toLowerCase() === searchTerm.toLowerCase()) {
+                    results.secrets.push(secret);
+                }
+            });
+            
+            // 保存搜索结果到sessionStorage
+            sessionStorage.setItem('searchResults', JSON.stringify(results));
+            
+            // 重新显示结果
+            displaySearchResults();
+        }
+        
+        // 打开页面
+        function openPage(file) {
+            window.open(file, '_blank');
+        }
+        
+        // 绑定Enter键搜索
+        document.getElementById('searchInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                performSearch();
+            }
+        });
+        
+        // 页面加载时显示搜索结果
+        window.onload = function() {
+            displaySearchResults();
+        };
+    </script>
+</body>
+</html>

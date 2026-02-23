@@ -1,0 +1,406 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>专访"运契"公益互助协会创始人宋青云- 南鄣文明网</title>
+    <style>
+        /* ---------- 全局重置 无交互 ---------- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
+            background-color: #fff;
+            color: #222;
+            line-height: 1.6;
+            max-width: 1200px;         /* 加宽以适应右侧栏 */
+            margin: 0 auto;
+            padding: 20px 25px 40px;
+        }
+
+        /* 完全移除交互行为：所有指针默认，无下划线，无颜色变化 */
+        span, div, p, h1, h2, h3, .nav-item, .footer-text {
+            cursor: default;
+        }
+
+        /* ---------- 南鄣文明网头部（纯文字） ---------- */
+        .baidu-header {
+            display: flex;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #e4e4e4;
+            margin-bottom: 15px;
+        }
+
+        .baidu-logo {
+            font-weight: bold;
+            font-size: 22px;
+            color: #3385ff;
+            margin-right: 25px;
+            letter-spacing: 1px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 24px;
+        }
+
+        .nav-item {
+            font-size: 15px;
+            color: #555;
+            text-decoration: none;  /* 无下划线 */
+            font-weight: 400;
+        }
+
+        /* ---------- 面包屑：当前位置 ---------- */
+        .breadcrumb {
+            font-size: 14px;
+            color: #888;
+            margin-bottom: 12px;
+            padding-bottom: 5px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        .breadcrumb span {
+            color: #666;
+        }
+
+        /* ---------- 文章头部 ---------- */
+        .article-header {
+            margin-bottom: 25px;
+        }
+
+        .article-title {
+            font-size: 30px;
+            font-weight: bold;
+            line-height: 1.4;
+            margin-bottom: 18px;
+            color: #1a1a1a;
+        }
+
+        .article-meta {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .publisher-info {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .publisher-name {
+            font-size: 16px;
+            color: #3385ff;          /* 南鄣文明网标识色 */
+            font-weight: 500;
+        }
+
+        .publish-date {
+            color: #999;
+            font-size: 14px;
+        }
+
+        /* 移除关注按钮，替换为静态来源 */
+
+        /* ---------- 两列布局：左侧正文 + 右侧竖栏 ---------- */
+        .content-grid {
+            display: flex;
+            gap: 40px;
+            margin-top: 10px;
+            align-items: flex-start;
+        }
+
+        /* 左侧文章主区域 */
+        .article-main {
+            flex: 1;                /* 占据剩余宽度 */
+            min-width: 0;          /* 防止溢出 */
+        }
+
+        /* ---------- 文章内容样式 ---------- */
+        .article-content {
+            font-size: 18px;
+            line-height: 1.85;
+            color: #2c2c2c;
+        }
+
+        .article-content p {
+            margin-bottom: 24px;
+            text-indent: 2em;
+            letter-spacing: 0.3px;
+        }
+
+        /* ---------- 图片区域：固定比正文窄一圈 ---------- */
+        .article-image {
+            margin: 30px 0;
+            text-align: center;
+        }
+
+        .image-placeholder {
+            width: 85%;             /* 比左侧文章宽度窄15% */
+            max-width: 700px;       /* 最大宽度限制，确保不会过宽 */
+            height: auto;
+            min-height: 280px;
+            background-color: #f4f6f9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #6c757d;
+            font-size: 17px;
+            margin: 0 auto 12px;    /* 居中显示 */
+            border-radius: 8px;
+            border: 1px solid #eaeef2;
+            padding: 20px;
+            font-style: italic;
+            line-height: 1.5;
+            word-break: break-word;
+        }
+
+        .image-caption {
+            font-size: 14px;
+            color: #777;
+            text-align: center;
+            font-style: italic;
+            letter-spacing: 0.5px;
+            width: 85%;
+            margin: 0 auto;
+        }
+
+        /* ---------- 引用样式 ---------- */
+        .quote {
+            background-color: #f9f9f9;
+            border-left: 4px solid #c0cbd4;
+            padding: 20px 25px;
+            margin: 30px 0;
+            font-style: italic;
+            color: #4a4a4a;
+            line-height: 1.7;
+            font-size: 17px;
+        }
+
+        /* ---------- 右侧边栏（竖栏样式：竖线标题 + 纯文字） ---------- */
+        .sidebar {
+            width: 260px;
+            flex-shrink: 0;
+            background-color: #fafbfc;
+            padding: 22px 18px;
+            border-radius: 10px;
+            border: 1px solid #edf0f2;
+        }
+
+        .sidebar-section {
+            margin-bottom: 35px;
+        }
+
+        .sidebar-section:last-child {
+            margin-bottom: 0;
+        }
+
+        /* 竖着的文字效果：左边框竖线，模拟“竖栏标题” */
+        .sidebar-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #2c3e50;
+            border-left: 6px solid #3385ff;   /* 醒目的竖线 */
+            padding-left: 14px;
+            line-height: 1.3;
+            margin-bottom: 20px;
+            letter-spacing: 0.8px;
+        }
+
+        .rec-list, .topic-list {
+            list-style: none;
+            padding-left: 6px;
+        }
+
+        .rec-list li, .topic-list li {
+            font-size: 15px;
+            color: #444;
+            padding: 10px 0 10px 10px;
+            border-bottom: 1px dashed #e2e6e9;
+            line-height: 1.5;
+            transition: none;       /* 无交互 */
+            cursor: default;
+        }
+
+        .rec-list li:last-child, .topic-list li:last-child {
+            border-bottom: none;
+        }
+
+        /* 纯文字，不加任何链接样式 */
+        .rec-list li span, .topic-list li span {
+            color: #444;
+            text-decoration: none;
+        }
+
+        /* ---------- 底部版权信息（完全替换原footer） ---------- */
+        .site-footer {
+            margin-top: 55px;
+            padding-top: 28px;
+            border-top: 2px solid #e9ecef;
+            font-size: 15px;
+            color: #5e6870;
+            text-align: center;
+            background-color: #fff;
+        }
+
+        .footer-text {
+            line-height: 1.9;
+            word-spacing: 4px;
+            color: #5a626b;
+        }
+
+        .footer-text span {
+            margin: 0 6px;
+            color: #4f5b66;
+        }
+
+        /* 移除所有悬停效果、指针变化 */
+        .nav-item:hover,
+        .rec-list li:hover,
+        .topic-list li:hover,
+        .sidebar-title:hover,
+        .footer-text:hover {
+            color: inherit;
+            background-color: transparent;
+            text-decoration: none;
+            cursor: default;
+        }
+
+        /* 响应式优化：小屏幕时右侧栏移到下方 */
+        @media (max-width: 900px) {
+            .content-grid {
+                flex-direction: column;
+            }
+            .sidebar {
+                width: 100%;
+                margin-top: 30px;
+            }
+            .article-image .image-placeholder {
+                width: 95%;        /* 窄边效果依然保留 */
+            }
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 15px 15px;
+            }
+            .article-title {
+                font-size: 26px;
+            }
+            .article-content {
+                font-size: 17px;
+            }
+            .baidu-header {
+                flex-wrap: wrap;
+            }
+            .nav-links {
+                margin-top: 8px;
+                gap: 18px;
+            }
+        }
+
+        /* 完全移除a标签样式——本页面已无任何链接，所有导航均用span */
+        /* 确保没有任何下划线或pointer事件 */
+        a, button, .follow-btn {
+            display: none;      /* 原有关注按钮已移除，此处无对应元素，仅做安全重置 */
+        }
+    </style>
+</head>
+<body>
+    <!-- 南鄣文明网头部（纯文字导航，无链接） -->
+    <div class="baidu-header">
+        <div class="baidu-logo">南鄣文明网</div>
+        <div class="nav-links">
+            <span class="nav-item">首页</span>
+            <span class="nav-item">国内</span>
+            <span class="nav-item">国际</span>
+            <span class="nav-item">社会</span>
+            <span class="nav-item">财经</span>
+            <span class="nav-item">科技</span>
+        </div>
+    </div>
+
+    <!-- 当前位置：面包屑 南鄣文明网＞新闻＞正文 -->
+    <div class="breadcrumb">
+        <span>南鄣文明网</span> ＞ <span>风云人物</span> ＞ <span>正文</span>
+    </div>
+
+    <!-- 文章头部信息 -->
+    <div class="article-header">
+        <h1 class="article-title">专访"运契"公益互助协会创始人宋青云</h1>
+        <div class="article-meta">
+            <div class="publisher-info">
+                <span class="publisher-name">南鄣文明网</span>
+                <span class="publish-date">2020年9月26日 11:28</span>
+            </div>
+            <!-- 关注按钮已移除，纯文字呈现 -->
+        </div>
+    </div>
+
+    <!-- 核心：两列布局（左侧正文 + 右侧竖栏） -->
+    <div class="content-grid">
+        <!-- 左侧：文章主体，包含图片与文字 -->
+        <div class="article-main">
+            <div class="article-content">
+                <p>2020年，南鄣市"全市创新文明先进集体"评选名单正式公布，"运契"公益互助协会名列其中。这一年，恰逢协会成立十周年。这份荣誉，无疑是对他们十年来默默付出、持续服务社会的最好认可，对每一位"运契"成员而言，更是莫大的鼓舞。</p>
+                
+                <p>在这个具有纪念意义的时刻，本报记者有幸采访到协会创始人<strong>宋青云</strong>先生。一向低调行事、极少公开露面的他，首次接受了媒体的专访。</p>
+
+                <p>初见宋青云，记者略感惊讶。年近四十的他，看起来却不到三十岁模样，身着得体西装，面带微笑，言谈亲切而真挚。交流不过十分钟，便能感受到他身上那股由内而外的善意与真诚——或许正是这样的品质，支撑他创建这样一个纯粹的公益组织。</p>
+                
+                <p>2008年，刚从学校毕业、进入南京市律师协会工作的宋青云，出于一份朴素的社会责任感与对困境群体的关怀，开始着手筹建"运契"公益互助协会，希望以更系统、更持久的方式，帮助那些需要支持的人。</p>
+                
+                <p>当被问及为何以"运契"为名时，宋青云这样解释："我一直相信，人并非孤岛。人与人之间需要联结，需要互助。只有当我们携起手来，形成合力，才有可能一起面对生命中的困顿与无常，共同寻找转折与新生的机缘。<strong>'运契'，既是人与人之间互助的契约，也寓意着一份走向新生活的契机。</strong>"</p>
+
+                <!-- 固定插入图片：宽度比新闻正文窄一圈，居中显示 -->
+                <div class="article-image">
+                    <img src="https://img.remit.ee/api/file/BQACAgUAAyEGAASHRsPbAAEQ4lJpjV8YDtL161Sey4PuSfK-2Bi_VQACmRsAAoLCaFSBy-7BYe8Q_joE.png" alt="BQACAgUAAyEGAASHRsPbAAEQ4lJpjV8YDtL161Sey4PuSfK-2Bi_VQACmRsAAoLCaFSBy-7BYe8Q_joE.png" />
+                    <div class="image-caption">
+                        —— 宋青云 ——
+                    </div>
+                </div>
+                                
+                <p>"我认为自己是一个幸运的人。"宋青云接着说，"这份幸运不只属于我个人，我更希望将它传递出去。公益对我而言，就是播撒爱心、传递祝愿的过程。也就是'<strong>普世广愿</strong>'。当我们共同发愿、共同行动，世界也会因我们而变得更美好一些。"</p>
+            </div>
+        </div>
+
+        <!-- 右侧竖栏：“相关推荐”“专题栏目” 纯文字，无交互，竖线标题 -->
+        <div class="sidebar">
+            <!-- 相关推荐模块 -->
+            <div class="sidebar-section">
+                <div class="sidebar-title">相关推荐</div>
+                <ul class="rec-list">
+                    <li><span>· “运契”公益互助协会</span></li>
+                    <li><span>· 居家办公的好处，你知道几点？</span></li>
+                </ul>
+            </div>
+            <!-- 专题栏目模块 -->
+            <div class="sidebar-section">
+                <div class="sidebar-title">专题栏目</div>
+                <ul class="topic-list">
+                    <li><span>· 志愿活动</span></li>
+                    <li><span>· 疫情防护</span></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- 页面最底端：网站信息（纯文字，完全无链接） -->
+    <div class="site-footer">
+        <div class="footer-text">
+            制作单位：南鄣文明网股份有限公司  版权所有：南鄣市人民政府  合作伙伴：南鄣泰永集团
+        </div>
+        <div class="footer-text" style="margin-top: 12px; font-size: 14px; color: #8a939b;">
+            © 南鄣文明网 · 时政新闻部 · 仅用于解密游戏展示
+        </div>
+    </div>
+
+    <!-- 无任何脚本，无交互链接，所有文字均不可点击 -->
+</body>
+</html>

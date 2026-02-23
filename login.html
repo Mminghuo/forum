@@ -1,0 +1,487 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>系统登录</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+        }
+        
+        body {
+            background-color: #000;
+            overflow: hidden;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        /* 桌面背景 */
+        .desktop-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('https://images.unsplash.com/photo-1542751371-adc38448a05e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80');
+            background-size: cover;
+            background-position: center;
+            filter: brightness(0.9);
+            z-index: -1;
+        }
+        
+        /* 顶部时间显示 */
+        .top-time {
+            position: absolute;
+            top: 40px;
+            right: 40px;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 80px;
+            font-weight: 300;
+            text-align: right;
+            line-height: 1;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            animation: fadeIn 1s ease-out;
+        }
+        
+        .top-date {
+            position: absolute;
+            top: 130px;
+            right: 40px;
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 24px;
+            font-weight: 300;
+            text-align: right;
+            text-shadow: 0 1px 5px rgba(0, 0, 0, 0.3);
+        }
+        
+        /* 登录容器 */
+        .login-container {
+            width: 100%;
+            max-width: 400px;
+            background-color: rgba(0, 0, 0, 0.7);
+            border-radius: 8px;
+            padding: 40px 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            animation: fadeIn 0.8s ease-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* 用户头像 */
+        .user-avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background-color: #0078d4;
+            margin: 0 auto 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 3px solid rgba(255, 255, 255, 0.2);
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .avatar-icon {
+            font-size: 48px;
+            color: white;
+        }
+        
+        /* 用户信息 */
+        .user-info {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .user-name {
+            color: white;
+            font-size: 24px;
+            font-weight: 500;
+            margin-bottom: 5px;
+            letter-spacing: 0.5px;
+        }
+        
+        .user-status {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 14px;
+        }
+        
+        /* 密码输入区域 */
+        .password-container {
+            position: relative;
+            margin-bottom: 25px;
+        }
+        
+        .password-label {
+            display: block;
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+        
+        .password-input {
+            width: 100%;
+            padding: 15px 50px 15px 15px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+            color: white;
+            font-size: 16px;
+            outline: none;
+            transition: all 0.3s;
+        }
+        
+        .password-input:focus {
+            border-color: #0078d4;
+            background-color: rgba(255, 255, 255, 0.15);
+        }
+        
+        .password-input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+        
+        /* 登录按钮 */
+        .login-button {
+            position: absolute;
+            right: 5px;
+            top: 35px;
+            background-color: #0078d4;
+            color: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 18px;
+            transition: all 0.3s;
+        }
+        
+        .login-button:hover {
+            background-color: #106ebe;
+            transform: scale(1.05);
+        }
+        
+        /* 提示信息 */
+        .hint {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 12px;
+            text-align: center;
+            margin-top: 20px;
+            line-height: 1.5;
+        }
+        
+        /* 底部信息 */
+        .footer {
+            position: absolute;
+            bottom: 20px;
+            width: 100%;
+            text-align: center;
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 12px;
+            letter-spacing: 0.5px;
+        }
+        
+        /* 加载动画 */
+        .loading {
+            display: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            justify-content: center;
+            align-items: center;
+            border-radius: 8px;
+            z-index: 10;
+        }
+        
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: #0078d4;
+            animation: spin 1s ease-in-out infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        /* 状态消息 */
+        .status-message {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 4px;
+            border-left: 4px solid #0078d4;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            transform: translateX(150%);
+            transition: transform 0.4s ease;
+            z-index: 1000;
+        }
+        
+        .status-message.show {
+            transform: translateX(0);
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 480px) {
+            .login-container {
+                margin: 20px;
+                padding: 30px 20px;
+            }
+            
+            .user-avatar {
+                width: 80px;
+                height: 80px;
+            }
+            
+            .avatar-icon {
+                font-size: 36px;
+            }
+            
+            .top-time {
+                top: 20px;
+                right: 20px;
+                font-size: 60px;
+            }
+            
+            .top-date {
+                top: 95px;
+                right: 20px;
+                font-size: 18px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 桌面背景 -->
+    <div class="desktop-background"></div>
+    
+    <!-- 顶部时间显示 -->
+    <div class="top-time" id="topTime">00:00</div>
+    <div class="top-date" id="topDate">0000年00月00日</div>
+    
+    <!-- 登录容器 -->
+    <div class="login-container">
+        <div class="user-avatar">
+            <i class="fas fa-user avatar-icon"></i>
+        </div>
+        
+        <div class="user-info">
+            <div class="user-name">温水青</div>
+            <div class="user-status">准备登录</div>
+        </div>
+        
+        <div class="password-container">
+            <label class="password-label">输入密码</label>
+            <input type="password" class="password-input" id="passwordInput" placeholder="输入密码..." maxlength="20">
+            <button class="login-button" id="loginButton">
+                <i class="fas fa-arrow-right"></i>
+            </button>
+        </div>
+        
+        <div class="hint">
+            请输入数字密码登录系统
+        </div>
+        
+        <!-- 加载动画 -->
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+        </div>
+    </div>
+    
+    <!-- 状态消息 -->
+    <div class="status-message" id="statusMessage"></div>
+    
+    <!-- 底部信息 -->
+    <div class="footer" id="footerInfo">
+        浙江省 杭州市 | 2023年10月15日 00:00:00
+    </div>
+    
+    <script>
+        // 获取DOM元素
+        const passwordInput = document.getElementById('passwordInput');
+        const loginButton = document.getElementById('loginButton');
+        const loading = document.getElementById('loading');
+        const statusMessage = document.getElementById('statusMessage');
+        const topTime = document.getElementById('topTime');
+        const topDate = document.getElementById('topDate');
+        const footerInfo = document.getElementById('footerInfo');
+        
+        // 更新时间的函数
+        function updateTime() {
+            // 初始游戏时间：2026年2月20日18:00
+            const initialGameTime = new Date(2026, 1, 20, 18, 0, 0);
+            // 游戏时间上限：2026年2月20日23:30
+            const maxGameTime = new Date(2026, 1, 20, 23, 30, 0);
+            
+            // 从localStorage获取游戏开始时间
+            let gameStartTime = localStorage.getItem('gameStartTime');
+            if (!gameStartTime) {
+                // 首次登录，设置游戏开始时间为当前真实时间
+                gameStartTime = new Date().toISOString();
+                localStorage.setItem('gameStartTime', gameStartTime);
+            }
+            
+            // 计算游戏运行时间（毫秒）
+            const realElapsedTime = Date.now() - new Date(gameStartTime).getTime();
+            
+            // 计算当前游戏时间
+            let currentGameTime = new Date(initialGameTime.getTime() + realElapsedTime);
+            
+            // 确保游戏时间不超过上限
+            if (currentGameTime > maxGameTime) {
+                currentGameTime = maxGameTime;
+            }
+            
+            // 格式化顶部时间（时:分）
+            const hours = String(currentGameTime.getHours()).padStart(2, '0');
+            const minutes = String(currentGameTime.getMinutes()).padStart(2, '0');
+            topTime.textContent = `${hours}:${minutes}`;
+            
+            // 格式化顶部日期
+            const year = currentGameTime.getFullYear();
+            const month = String(currentGameTime.getMonth() + 1).padStart(2, '0');
+            const day = String(currentGameTime.getDate()).padStart(2, '0');
+            topDate.textContent = `${year}年${month}月${day}日`;
+            
+            // 格式化底部信息
+            const weekdays = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'];
+            const weekday = weekdays[currentGameTime.getDay()];
+            const seconds = String(currentGameTime.getSeconds()).padStart(2, '0');
+            
+            // 这里可以修改为您想要的省和市
+            const province = "河南省";
+            const city = "信阳市";
+            
+            footerInfo.textContent = `${province} ${city} | ${year}年${month}月${day}日 ${weekday} ${hours}:${minutes}:${seconds}`;
+        }
+        
+        // 初始更新时间并设置定时器
+        updateTime();
+        setInterval(updateTime, 1000);
+        
+        // 允许的字符（仅数字）
+        const allowedChars = '0123456789';
+        
+        // 验证密码输入（只允许数字）
+        passwordInput.addEventListener('input', function() {
+            let value = this.value;
+            let newValue = '';
+            
+            for (let char of value) {
+                if (allowedChars.includes(char)) {
+                    newValue += char;
+                }
+            }
+            
+            this.value = newValue;
+        });
+        
+        // 正确密码（与备忘录中"电脑密码 1234567890"一致）
+        const CORRECT_PASSWORD = '1234567890';
+
+        // 登录功能
+        function login() {
+            const password = passwordInput.value.trim();
+            
+            // 检查是否输入了密码
+            if (password.length === 0) {
+                showMessage('请输入密码', 'error');
+                passwordInput.focus();
+                return;
+            }
+            
+            // 验证密码是否正确
+            if (password !== CORRECT_PASSWORD) {
+                showMessage('密码错误，请重试', 'error');
+                passwordInput.value = '';
+                passwordInput.focus();
+                // 抖动效果
+                passwordInput.style.transform = 'translateX(-6px)';
+                setTimeout(() => { passwordInput.style.transform = 'translateX(6px)'; }, 60);
+                setTimeout(() => { passwordInput.style.transform = 'translateX(0)'; }, 120);
+                return;
+            }
+            
+            // 显示加载动画
+            loading.style.display = 'flex';
+            
+            // 模拟登录过程
+            setTimeout(() => {
+                // 保存登录状态到本地存储
+                localStorage.setItem('gamePassword', password);
+                localStorage.setItem('userName', '温水青');
+                localStorage.setItem('loginTime', new Date().toLocaleString());
+                
+                // 显示成功消息
+                showMessage('登录成功！正在进入系统...', 'success');
+                
+                // 延迟1.5秒后跳转到桌面页面
+                setTimeout(() => {
+                    window.location.href = 'desktop.html';
+                }, 1500);
+                
+            }, 1200);
+        }
+        
+        // 显示状态消息
+        function showMessage(text, type) {
+            statusMessage.textContent = text;
+            
+            // 根据类型设置颜色
+            if (type === 'error') {
+                statusMessage.style.borderLeftColor = '#f44336';
+            } else if (type === 'success') {
+                statusMessage.style.borderLeftColor = '#4CAF50';
+            } else {
+                statusMessage.style.borderLeftColor = '#0078d4';
+            }
+            
+            // 显示消息
+            statusMessage.classList.add('show');
+            
+            // 3秒后隐藏消息
+            setTimeout(() => {
+                statusMessage.classList.remove('show');
+            }, 3000);
+        }
+        
+        // 添加登录按钮点击事件
+        loginButton.addEventListener('click', login);
+        
+        // 添加回车键登录功能
+        passwordInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                login();
+            }
+        });
+        
+        // 页面加载完成后自动聚焦到密码输入框
+        window.addEventListener('load', function() {
+            passwordInput.focus();
+        });
+    </script>
+</body>
+</html>

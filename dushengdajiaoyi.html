@@ -1,0 +1,212 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>《渡生大醮仪》</title>
+    <style>
+        /* ---------- 全局：深灰底，衬线字体，做旧氛围 ---------- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #3c3c3c;   /* 深灰色背景，模拟阅读器边框 */
+            font-family: "华文宋体", "Songti SC", "SimSun", "Times New Roman", serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+            /* 背景微纹理，增加旧感 */
+            background-image: radial-gradient(circle at 30% 40%, rgba(180, 160, 140, 0.05) 0%, transparent 30%),
+                              repeating-linear-gradient(45deg, rgba(0,0,0,0.02) 0px, rgba(0,0,0,0.02) 2px, transparent 2px, transparent 8px);
+        }
+
+        /* ---------- 书籍卡片：白底，柔和阴影，边缘轻微破损感 ---------- */
+        .book-page {
+            max-width: 780px;
+            width: 100%;
+            background-color: #fff;   /* 米白，更接近旧纸 */
+            color: #1e1e1e;
+            padding: 3.2rem 3.8rem;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5), 
+                        0 0 0 1px #b0a28e inset,        /* 内边框，模拟纸边 */
+                        0 0 0 2px #e8e0d0 inset;        
+            border: 1px solid #9e8f7a;
+            border-radius: 4px;            /* 极微圆角，不破坏书页感 */
+            position: relative;
+            line-height: 1.8;
+            font-size: 18px;
+            text-align: justify;
+            /* 做旧滤镜层 */
+            filter: brightness(0.99) contrast(1.02);
+            transition: all 0.2s;
+        }
+
+        /* 做旧噪点层 (伪元素叠加，不影响文字阅读) */
+        .book-page::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMDAiIGhlaWdodD0iMzAwIj48ZmlsdGVyIGlkPSJmIj48ZmVUdXJidWxlbmNlIHR5cGU9ImZyYWN0YWxOb2lzZSIgYmFzZUZyZXF1ZW5jeT0iLjc1IiBudW1PY3RhdmVzPSIzIiAvPjwvZmlsdGVyPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbHRlcj0idXJsKCNmKSIgb3BhY2l0eT0iMC4wMjUiIC8+PC9zdmc+'); /* 极浅噪点 */
+            opacity: 0.15;
+            mix-blend-mode: multiply;
+            border-radius: inherit;
+        }
+
+        /* 标题样式：居中、大气 */
+        .book-title {
+            font-size: 2.8rem;
+            font-weight: 700;
+            text-align: center;
+            color: #1f1f1f;
+            letter-spacing: 8px;
+            margin: 0.2em 0 0.8em 0;
+            border-bottom: 2px solid #b8aa9a;
+            padding-bottom: 0.4em;
+            font-family: "华文楷体", "KaiTi", "楷体", serif;
+            text-shadow: 1px 1px 0 #ddd;
+        }
+
+        /* 章标题（带星号） */
+        .chapter-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin: 1.5em 0 0.5em 0;
+            color: #2b1f12;
+            padding-left: 18px;
+            letter-spacing: 2px;
+            font-family: "华文楷体", "KaiTi", serif;
+        }
+
+        /* 正文段落 */
+        .book-page p {
+            text-indent: 2em;
+            margin-bottom: 0.8em;
+            word-break: break-word;
+            line-height: 1.9;
+        }
+
+        /* 无缩进段落（用于列表项等） */
+        .no-indent {
+            text-indent: 0;
+            margin-left: 2em;
+            margin-bottom: 0.4em;
+        }
+
+        /* 强调文本 */
+        .highlight {
+            font-weight: 600;
+            color: #3f2b1a;
+        }
+
+        /* 列表样式（用于祭体分类） */
+        .list-item {
+            text-indent: 0;
+            margin-left: 3em;
+            margin-bottom: 0.5em;
+            position: relative;
+        }
+        .list-item::before {
+            content: "·";
+            position: absolute;
+            left: -1.2em;
+            color: #a65e3a;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+
+        /* 重要备注（最后一段） */
+        .warning-note {
+            background-color: #f4ede5;
+            padding: 0.8em 1.5em;
+            border-left: 6px solid #b9594a;
+            margin: 1.5em 0;
+            font-style: italic;
+            color: #3e2b20;
+            box-shadow: inset 0 0 8px rgba(150, 100, 50, 0.1);
+            border-radius: 2px;
+        }
+
+        /* 分隔装饰线 */
+        .divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #b89e87, transparent);
+            margin: 2em 0 1em;
+        }
+
+        /* 页码 (简洁) */
+        .page-number {
+            text-align: center;
+            margin-top: 2.5em;
+            font-size: 0.9rem;
+            color: #8b7a6a;
+            letter-spacing: 2px;
+            border-top: 1px dashed #cbbaa8;
+            padding-top: 1em;
+        }
+
+        /* 小字号装饰 */
+        .small-note {
+            font-size: 0.9rem;
+            color: #7e6d5d;
+            text-align: right;
+            margin-top: 0.5em;
+        }
+
+        /* 移动端适配 */
+        @media (max-width: 600px) {
+            .book-page {
+                padding: 2rem 1.5rem;
+                font-size: 16px;
+            }
+            .book-title {
+                font-size: 2.2rem;
+                letter-spacing: 4px;
+            }
+            .chapter-title {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="book-page">
+        <!-- 主标题 -->
+        <div class="book-title">渡生大醮</div>
+        
+        <!-- 第一章：渡生醮 -->
+        <div class="chapter-title">渡生醮</div>
+        <p>渡生醮者，召请天尊、祈求赐福之仪也。凡行此醮，必设坛奉祀，以通天地。醮期常为七日，次第如下：开坛净地、请神降驾、扬幡召灵、上表陈情、祭幽度亡、送神归天。</p>
+        <p><strong>祭体</strong></p>
+        <p>或为寿元充足者，宜选年少之人，气血方刚、命数未衰，且福泽深厚、运势昌隆。此类祭体，多用于长生葬仪，以寿续命，以运延年。</p>
+        <p>或为通灵之体，尤为稀有。既需寿元丰足、福泽深厚，更须天生通晓阴阳，能感鬼神、能接灵气，谓之“灵媒”。此等祭体，堪为天尊降世之凭寄。</p>
+        
+        <!-- 分隔线 (视觉分隔) -->
+        <div class="divider"></div>
+        
+        <!-- 第二章：长生葬仪 -->
+        <div class="chapter-title"> 长生葬仪</div>
+        <p>长生葬者，生者之葬也。人之将死，命数将尽，可为行此葬仪，为其延寿续命。以祭体之余命，续生者之寿元；以祭体之魂灵献于天尊，使天尊赐福于众人，福泽绵长。</p>
+        <p>此祭以“长生使者”为本源，主祭之人，常以刘氏后人为之。若刘氏自求续命，则由广愿侍者代之。</p>
+        <p><strong>其法如下：</strong></p>
+        <p>择定祭体，引其供奉于天尊。待长生葬启，造乌木棺椁，以宝幡缠绕祭体周身，置于其中，使魂灵归于天尊座下，肉身散其未尽阳寿。同日为受祭之人举办葬仪，与葬死者无异——入棺、封殓、送葬、安厝，一应俱全。</p>
+        <p>葬仪毕，二者棺椁安放于祭祀之地。三日之后，受祭者当复起于世，续留寿元，可得长寿之福。</p>
+        <p><strong>须记</strong></p>
+        <p>长生葬者入棺三日，若祭体犹存，则受祭者必遭反噬，为天道所窥，当场殒命，慎之戒之。</p>
+        
+        <p><strong>祭祀地点</strong>通常设于刘氏宗祠。此处须僻静无人，不扰外事。若求醮力更胜，则须择天尊神像所在之山。凡设坛之地，当以五色布遮天，使日月不照、阴阳混淆，方成其用。</p>
+        
+        <!-- 简短的占位句，增强古籍感 -->
+        <p class="small-note">—— 录自《渡生大醮仪》抄本 ——</p>
+    </div>
+</body>
+</html>

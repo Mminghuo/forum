@@ -1,0 +1,1275 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>▇▇▇▇ - ▇▇论坛</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* ========== 基本样式 ========== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+        }
+        
+        body {
+            background-color: #0a0a0a;
+            color: #e0e0e0;
+            min-height: 100vh;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(20, 20, 20, 0.7) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(10, 10, 10, 0.7) 0%, transparent 20%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-top: 70px;
+        }
+
+        /* ========== 固定顶部栏 ========== */
+        .fixed-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: rgba(15, 15, 15, 0.95);
+            border-bottom: 1px solid #333;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 12px rgba(0,0,0,0.5);
+            z-index: 200;
+        }
+
+        .header-content {
+            width: 75%;
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 24px;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .header-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #8b0000;
+            text-shadow: 0 0 10px rgba(139, 0, 0, 0.5);
+            letter-spacing: 2px;
+        }
+
+        .close-btn {
+            background-color: #8b0000;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 13px;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .close-btn:hover {
+            background-color: #a00000;
+            box-shadow: 0 0 10px rgba(139, 0, 0, 0.5);
+        }
+
+        /* ========== 论坛主体容器 ========== */
+        .forum-container {
+            width: 75%;
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        @media (max-width: 1000px) {
+            .header-content {
+                width: 95%;
+            }
+            .forum-container {
+                width: 95%;
+            }
+        }
+
+        /* 卡片通用样式 */
+        .card {
+            background-color: rgba(20, 20, 20, 0.9);
+            border: 1px solid #333;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+        }
+
+        /* 版头卡片 */
+        .logo-card {
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+            border: 1px solid #333;
+            border-radius: 16px;
+            min-height: 100px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px 0;
+        }
+
+        .logo-card .forum-name {
+            font-size: 42px;
+            font-weight: 900;
+            color: #8b0000;
+            text-shadow: 0 0 15px rgba(139, 0, 0, 0.7);
+            margin-bottom: 5px;
+            letter-spacing: 3px;
+        }
+
+        .logo-card .forum-subtitle {
+            font-size: 16px;
+            color: #aaa;
+            font-style: italic;
+        }
+
+        /* 工具栏卡片 */
+        .toolbar-card {
+            background-color: rgba(20, 20, 20, 0.9);
+            border: 1px solid #333;
+            border-radius: 16px;
+            padding: 12px 24px;
+        }
+
+        .main-toolbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .search-section {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .search-label {
+            font-size: 13px;
+            color: #8b0000;
+            font-weight: bold;
+        }
+
+        .forum-search {
+            display: flex;
+            align-items: center;
+            background-color: rgba(30, 30, 30, 0.8);
+            border-radius: 4px;
+            padding: 6px 12px;
+            width: 280px;
+            border: 1px solid #444;
+            transition: all 0.3s;
+        }
+
+        .forum-search:hover {
+            border-color: #8b0000;
+        }
+
+        .forum-search input {
+            border: none;
+            background: transparent;
+            flex: 1;
+            outline: none;
+            font-size: 13px;
+            color: #e0e0e0;
+        }
+
+        .search-btn {
+            background: none;
+            border: none;
+            color: #8b0000;
+            cursor: pointer;
+            font-size: 13px;
+        }
+
+        .special-btn {
+            color: #8b0000;
+            font-size: 13px;
+            padding: 6px 12px;
+            background-color: rgba(30, 30, 30, 0.8);
+            border: 1px solid #444;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s;
+            white-space: nowrap;
+        }
+
+        .special-btn:hover {
+            border-color: #8b0000;
+            background-color: rgba(139, 0, 0, 0.1);
+        }
+
+        .user-section {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .user-status-area {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .user-avatar.eye-avatar {
+            background: linear-gradient(135deg, #8b0000, #4a0000);
+            border: 2px solid #8b0000;
+        }
+
+        .worship-btn {
+            background-color: #8b0000;
+            color: white;
+            border: 1px solid #8b0000;
+            border-radius: 4px;
+            padding: 5px 10px;
+            font-size: 11px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .worship-btn:hover {
+            background-color: #a00000;
+            box-shadow: 0 0 8px rgba(139, 0, 0, 0.5);
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .user-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #8b0000, #4a0000);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 14px;
+            border: 2px solid #8b0000;
+        }
+
+        .user-details {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .user-name {
+            font-weight: 600;
+            color: #e0e0e0;
+            font-size: 13px;
+        }
+
+        .user-status {
+            font-size: 11px;
+            color: #4CAF50;
+        }
+
+        /* 内容卡片 */
+        .content-card {
+            background-color: rgba(20, 20, 20, 0.9);
+            border: 1px solid #333;
+            border-radius: 16px;
+            padding: 24px;
+        }
+
+        /* 论坛导航栏 */
+        .forum-nav {
+            display: flex;
+            gap: 0;
+            background-color: rgba(20, 20, 20, 0.9);
+            border: 1px solid #333;
+            border-bottom: 1px solid #333;
+            border-radius: 4px 4px 0 0;
+            overflow: hidden;
+            margin-bottom: 0;
+        }
+
+        .forum-nav-item {
+            padding: 10px 20px;
+            font-size: 13px;
+            color: #aaa;
+            cursor: pointer;
+            background-color: transparent;
+            border: none;
+            border-right: 1px solid #333;
+            transition: all 0.3s;
+        }
+
+        .forum-nav-item:last-child {
+            border-right: none;
+        }
+
+        .forum-nav-item:hover {
+            background-color: rgba(139, 0, 0, 0.1);
+            color: #e0e0e0;
+        }
+
+        .forum-nav-item.active {
+            background-color: #8b0000;
+            color: white;
+        }
+
+        /* 帖子区域 - 左右内边距设为0，与导航栏对齐 */
+        .forum-posts-area {
+            background-color: rgba(20, 20, 20, 0.9);
+            border: none;
+            border-radius: 0 0 4px 4px;
+            min-height: 200px;
+            padding: 15px 0;           /* 左右内边距为0，帖子项自己控制左右内边距 */
+        }
+
+        .posts-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        /* 帖子项 - 左右内边距与导航栏项的内边距一致，上下内边距增加 */
+        .post-item {
+            padding: 16px 20px;         /* 上下16px，左右20px，与导航栏文字对齐 */
+            background-color: rgba(30, 30, 30, 0.8);
+            border: 1px solid #333;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .post-item:hover {
+            border-color: #8b0000;
+            transform: translateY(-1px);
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .post-item.essence {
+            border-left: 3px solid #ffd700;
+        }
+
+        .post-item-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 6px;
+        }
+
+        .post-title {
+            font-size: 15px;
+            font-weight: 600;
+            color: #e0e0e0;
+        }
+
+        .post-title.special-red {
+            color: #ff4444 !important;
+        }
+
+        .post-title.locked {
+            color: #999;
+        }
+
+        .post-author {
+            font-size: 13px;
+            color: #8b0000;
+        }
+
+        .post-date {
+            font-size: 11px;
+            color: #666;
+        }
+
+        /* 分页控件 */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 20px 0 0;
+            gap: 5px;
+        }
+
+        .page-btn {
+            padding: 6px 10px;
+            background-color: rgba(30, 30, 30, 0.8);
+            color: #e0e0e0;
+            border: 1px solid #444;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 13px;
+            transition: all 0.3s;
+        }
+
+        .page-btn.active {
+            background-color: #8b0000;
+            color: white;
+            border-color: #8b0000;
+        }
+
+        .page-btn:hover:not(.active) {
+            border-color: #8b0000;
+            color: #8b0000;
+        }
+
+        .page-btn.disabled {
+            color: #555;
+            cursor: not-allowed;
+            border-color: #333;
+        }
+
+        /* 发帖按钮 */
+        .new-post-btn {
+            position: fixed;
+            bottom: 90px;
+            right: 20px;
+            background-color: #8b0000;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.5);
+            font-size: 20px;
+            transition: all 0.3s;
+            z-index: 100;
+        }
+
+        .new-post-btn:hover {
+            background-color: #a00000;
+            transform: scale(1.1);
+            box-shadow: 0 5px 15px rgba(139, 0, 0, 0.5);
+        }
+
+        .new-post-btn.disabled {
+            background-color: #333;
+            cursor: not-allowed;
+        }
+
+        /* 在线人数显示 */
+        .online-counter {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: rgba(15, 15, 15, 0.95);
+            padding: 8px 15px;
+            border-top: 1px solid #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            height: 45px;
+            z-index: 99;
+        }
+
+        .online-dot {
+            width: 8px;
+            height: 8px;
+            background-color: #ff0000;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 0.7; }
+            50% { opacity: 1; }
+            100% { opacity: 0.7; }
+        }
+
+        .online-number {
+            color: #ff0000;
+            font-weight: 600;
+        }
+
+        /* 帖子标签 */
+        .post-badge {
+            display: inline-block;
+            padding: 2px 6px;
+            font-size: 10px;
+            border-radius: 3px;
+            margin-right: 6px;
+        }
+
+        .post-badge.ongoing {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .post-badge.completed {
+            background-color: #2196F3;
+            color: white;
+        }
+
+        .post-badge.essence {
+            background-color: #ffd700;
+            color: #000;
+        }
+
+        .post-badge.locked {
+            background-color: #8a2be2;
+            color: white;
+        }
+
+        .post-badge.admin {
+            background-color: #8b0000;
+            color: white;
+        }
+
+        .post-badge.tomb {
+            background-color: #333;
+            color: #aaa;
+        }
+
+        .post-badge.deleted {
+            background-color: #333;
+            color: #ff4444;
+        }
+
+        /* 对话框、通知等 */
+        .login-dialog, .security-dialog, .admin-dialog, .worship-dialog, .locked-post-dialog {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+        }
+        .login-dialog.show, .security-dialog.show, .admin-dialog.show, .worship-dialog.show, .locked-post-dialog.show { display: flex; }
+        .login-dialog-content, .security-dialog-content, .admin-dialog-content, .worship-dialog-content, .locked-post-dialog-content {
+            background-color: rgba(20, 20, 20, 0.95);
+            border-radius: 8px;
+            padding: 25px;
+            max-width: 380px;
+            width: 90%;
+            border: 1px solid #333;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.7);
+        }
+        .login-dialog-title, .security-dialog-title, .admin-dialog-title, .worship-dialog-title, .locked-post-dialog-title {
+            font-size: 18px;
+            margin-bottom: 18px;
+            color: #e0e0e0;
+            text-align: center;
+            border-bottom: 1px solid #333;
+            padding-bottom: 8px;
+        }
+        .worship-dialog-subtitle, .locked-post-dialog-subtitle {
+            font-size: 12px;
+            color: #aaa;
+            text-align: center;
+            margin-bottom: 18px;
+            font-style: italic;
+        }
+        .login-input-group, .security-input-group, .admin-input-group, .worship-input-group, .locked-post-input-group { margin-bottom: 18px; }
+        .login-label, .security-label, .admin-label, .worship-label, .locked-post-label {
+            display: block;
+            margin-bottom: 5px;
+            color: #aaa;
+            font-size: 13px;
+        }
+        .login-input, .security-input, .admin-input, .worship-input, .locked-post-input {
+            width: 100%;
+            padding: 9px;
+            background-color: rgba(30, 30, 30, 0.8);
+            border: 1px solid #444;
+            border-radius: 4px;
+            font-size: 14px;
+            color: #e0e0e0;
+            transition: all 0.3s;
+        }
+        .login-input:focus, .security-input:focus, .admin-input:focus, .worship-input:focus, .locked-post-input:focus {
+            border-color: #8b0000;
+            outline: none;
+        }
+        .login-buttons, .security-buttons, .admin-buttons, .worship-buttons, .locked-post-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+        }
+        .login-dialog-btn, .security-dialog-btn, .admin-dialog-btn, .worship-dialog-btn, .locked-post-dialog-btn {
+            padding: 9px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 500;
+            min-width: 90px;
+            transition: all 0.3s;
+        }
+        .login-dialog-btn.login, .security-dialog-btn.submit, .admin-dialog-btn.submit, .worship-dialog-btn.submit, .locked-post-dialog-btn.submit {
+            background-color: #8b0000;
+            color: white;
+        }
+        .login-dialog-btn.login:hover, .security-dialog-btn.submit:hover, .admin-dialog-btn.submit:hover, .worship-dialog-btn.submit:hover, .locked-post-dialog-btn.submit:hover { background-color: #a00000; }
+        .login-dialog-btn.cancel, .security-dialog-btn.cancel, .admin-dialog-btn.cancel, .worship-dialog-btn.cancel, .locked-post-dialog-btn.cancel {
+            background-color: rgba(30, 30, 30, 0.8);
+            color: #e0e0e0;
+            border: 1px solid #444;
+        }
+        .login-dialog-btn.cancel:hover, .security-dialog-btn.cancel:hover, .admin-dialog-btn.cancel:hover, .worship-dialog-btn.cancel:hover, .locked-post-dialog-btn.cancel:hover {
+            border-color: #8b0000;
+            color: #8b0000;
+        }
+        .empty-posts {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 15px;
+            color: #666;
+            text-align: center;
+        }
+        .empty-posts-icon { font-size: 50px; margin-bottom: 15px; color: #333; }
+        .empty-posts-text { font-size: 15px; margin-bottom: 8px; }
+        .empty-posts-hint { font-size: 13px; color: #555; }
+
+        .worship-result-dialog {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 2002;
+        }
+        .worship-result-dialog.show { display: flex; }
+        .worship-result-content {
+            background-color: rgba(20, 20, 20, 0.95);
+            border-radius: 8px;
+            padding: 25px;
+            max-width: 450px;
+            width: 90%;
+            border: 1px solid #8b0000;
+            box-shadow: 0 8px 25px rgba(139, 0, 0, 0.5);
+            text-align: center;
+        }
+        .worship-result-title { font-size: 18px; margin-bottom: 18px; color: #8b0000; border-bottom: 1px solid #333; padding-bottom: 8px; }
+        .worship-result-text { font-size: 15px; color: #e0e0e0; line-height: 1.5; margin-bottom: 20px; }
+        .worship-result-note { font-size: 13px; color: #aaa; font-style: italic; }
+
+        #hb-chat-toast {
+            position: fixed;
+            bottom: 80px;
+            right: 20px;
+            background: rgba(32, 32, 32, 0.95);
+            color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.4);
+            padding: 20px 15px 15px;
+            width: 300px;
+            z-index: 9999;
+            display: none;
+            border: 1px solid rgba(255,255,255,0.1);
+            animation: hbSlideIn 0.3s ease-out;
+            backdrop-filter: blur(10px);
+        }
+        @keyframes hbSlideIn {
+            from { transform: translateY(20px); opacity: 0; }
+            to   { transform: translateY(0);    opacity: 1; }
+        }
+        #hb-chat-toast .toast-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        #hb-chat-toast .toast-title {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #fff;
+            font-weight: bold;
+            font-size: 14px;
+        }
+        #hb-chat-toast .toast-title i { color: #4CAF50; font-size: 18px; }
+        #hb-chat-toast .toast-close {
+            background: none; border: none; color: #aaa;
+            font-size: 16px; cursor: pointer; transition: color 0.2s;
+        }
+        #hb-chat-toast .toast-close:hover { color: #fff; }
+        #hb-chat-toast .toast-body {
+            color: rgba(255,255,255,0.9);
+            font-size: 14px;
+            line-height: 1.5;
+            margin-bottom: 15px;
+        }
+        #hb-chat-toast .toast-btns {
+            display: flex;
+            gap: 10px;
+        }
+        #hb-chat-toast .toast-btn {
+            flex: 1;
+            padding: 8px 15px;
+            border-radius: 4px;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+        #hb-chat-toast .toast-btn.later {
+            background: rgba(60,60,60,0.8);
+            color: #e0e0e0;
+            border: 1px solid #444;
+        }
+        #hb-chat-toast .toast-btn.later:hover { border-color: #8b0000; color: #8b0000; }
+        #hb-chat-toast .toast-btn.open {
+            background: #4CAF50;
+            color: white;
+            font-weight: bold;
+        }
+        #hb-chat-toast .toast-btn.open:hover { background: #3d8b40; }
+
+        /* 加载提示 Toast */
+        .loading-toast {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.9);
+            color: white;
+            padding: 16px 32px;
+            border-radius: 8px;
+            z-index: 3000;
+            border: 1px solid #8b0000;
+            font-size: 16px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <!-- 固定顶部栏 -->
+    <div class="fixed-header">
+        <div class="header-content">
+            <div class="header-left">
+                <div class="header-title">论坛</div>
+            </div>
+            <button class="close-btn" onclick="closeForum()">
+                <i class="fas fa-times"></i>
+                关闭窗口
+            </button>
+        </div>
+    </div>
+
+    <!-- 论坛主体容器 -->
+    <div class="forum-container">
+        <!-- 版头卡片 -->
+        <div class="logo-card">
+            <div class="forum-name">▇▇▇▇</div>
+            <div class="forum-subtitle">欢迎来到▇▇▇▇的世界</div>
+        </div>
+
+        <!-- 工具栏卡片 -->
+        <div class="toolbar-card">
+            <div class="main-toolbar">
+                <div class="search-section">
+                    <div class="search-label">管理员检索</div>
+                    <div class="forum-search">
+                        <input type="text" id="forumSearch" placeholder="检索帖子、用户或关键词...">
+                        <button class="search-btn" onclick="searchForum()">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                    <button class="special-btn" onclick="showGhostTalkAlert()">灵异杂谈</button>
+                    <button class="special-btn" onclick="showBlockedAlert('档案记录')">档案记录</button>
+                    <button class="special-btn" onclick="showBlockedAlert('隐藏信息')">隐藏信息</button>
+                </div>
+                
+                <div class="user-section">
+                    <div class="user-status-area" id="userStatusArea">
+                        <!-- 动态生成 -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 内容卡片 -->
+        <div class="content-card">
+            <!-- 导航标签 -->
+            <div class="forum-nav" id="forumNav">
+                <!-- 动态生成 -->
+            </div>
+            
+            <!-- 帖子内容区域 -->
+            <div class="forum-posts-area" id="forumPostsArea">
+                <!-- 动态生成 -->
+            </div>
+            
+            <!-- 分页控件 -->
+            <div class="pagination" id="pagination">
+                <!-- 动态生成 -->
+            </div>
+        </div>
+    </div>
+
+    <!-- 发帖按钮 -->
+    <button class="new-post-btn" id="newPostBtn">
+        <i class="fas fa-plus"></i>
+    </button>
+    
+    <!-- 在线人数显示 -->
+    <div class="online-counter">
+        <div class="online-dot"></div>
+        <div>当前在线人数：<span class="online-number" id="onlineNumber">27</span> 人</div>
+    </div>
+    
+    <!-- 聊天软件通知 -->
+    <div id="hb-chat-toast">
+        <div class="toast-header">
+            <div class="toast-title">
+                <i class="fas fa-comment-dots"></i>
+                聊天软件通知
+            </div>
+            <button class="toast-close" id="hb-toast-close"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="toast-body">明月夜发来了新消息</div>
+        <div class="toast-btns">
+            <button class="toast-btn later" id="hb-toast-later">稍后</button>
+            <button class="toast-btn open" id="hb-toast-open">查看消息</button>
+        </div>
+    </div>
+    
+    <!-- 供奉对话框 -->
+    <div class="worship-dialog" id="worshipDialog">
+        <div class="worship-dialog-content">
+            <div class="worship-dialog-title">说出你的心愿吧！</div>
+            <div class="worship-dialog-subtitle"><strong>可输入任意内容</strong></div>
+            <div class="worship-input-group">
+                <textarea class="worship-input" id="wishInput" rows="4" placeholder="在此处写下你的愿望..."></textarea>
+            </div>
+            <div class="worship-buttons">
+                <button class="worship-dialog-btn cancel" onclick="closeWorshipDialog()">取消</button>
+                <button class="worship-dialog-btn submit" onclick="submitWish()">供奉</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 供奉结果对话框 -->
+    <div class="worship-result-dialog" id="worshipResultDialog">
+        <div class="worship-result-content">
+            <div class="worship-result-title">供奉结果</div>
+            <div class="worship-result-text" id="worshipResultText">您已供奉过，愿望为"<strong>平安</strong>"。天尊正在施与愿力，请静候天时。</div>
+            <div class="worship-result-note">请耐心等待愿力生效</div>
+            <div class="worship-buttons">
+                <button class="worship-dialog-btn submit" onclick="closeWorshipResultDialog()">确定</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 锁定帖子对话框 -->
+    <div class="locked-post-dialog" id="lockedPostDialog">
+        <div class="locked-post-dialog-content">
+            <div class="locked-post-dialog-title" id="lockedPostDialogTitle">帖子已锁定</div>
+            <div class="locked-post-dialog-subtitle" id="lockedPostDialogSubtitle"></div>
+            <div class="locked-post-input-group">
+                <input type="text" class="locked-post-input" id="lockedPostInput" placeholder="">
+            </div>
+            <div class="locked-post-buttons">
+                <button class="locked-post-dialog-btn cancel" onclick="closeLockedPostDialog()">取消</button>
+                <button class="locked-post-dialog-btn submit" onclick="submitLockedPostPassword()">提交</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 加载提示 Toast -->
+    <div id="loadingToast" class="loading-toast">正在打开隐藏贴...</div>
+
+    <script>
+        // ==================== 论坛数据 ====================
+        let currentForumTab = 'home';
+        let currentPage = 1;
+        const postsPerPage = 4;
+
+        let currentLockedPost = null;
+
+        let userState = {
+            isLoggedIn: true,
+            username: '温水青',
+            realName: '温妍',
+            birth: '癸未年 甲子月 庚申日 辛亥时',
+            registerDays: 999,
+            forumLevel: '管理员'
+        };
+
+        // 所有帖子数据
+        const allForumPosts = {
+            home: [
+                [
+                    { id: 101, title: "活不下去了，一场车祸毁了我的家", author: "破折号", date: "今天", status: "ongoing", postFile: "post-qingshen.html", special: true },
+                    { id: 102, title: "关注的探险主播好久没更新了", author: "天涯共此时hcx", date: "七个月前", status: "tomb", postFile: "post-zhubo.html", special: true },
+                    { id: 103, title: "求助！！我被活埋了，请救救我", author: "这里好黑啊", date: "一年前", status: "tomb", postFile: "post-huomai.html", special: true },
+                    { id: 104, title: "寻找记忆中的一档生存综艺", author: "鬼不觉", date: "一年前", status: "tomb", postFile: "post-zongyi.html", special: true }
+                ],
+                [
+                    { id: 105, title: "最近总有奇怪的东西跟着我", author: "温水青", date: "一个月前", status: "locked", postFile: "post-shuiqing.html", special: true, locked: true, lockType: "admin", password: "平安" },
+                    { id: 106, title: "怎样才能再见到死去的人？", author: "******", date: "半年前", status: "locked", postFile: "post-zaijian.html", special: true, locked: true, lockType: "user", password: "一线牵", realAuthor: "一线牵" },
+                    { id: 107, title: "【已封存】帖子1", author: "系统", date: "两年前", status: "deleted", postFile: "", locked: true },
+                    { id: 108, title: "【已封存】帖子2", author: "系统", date: "两年前", status: "deleted", postFile: "", locked: true }
+                ]
+            ],
+            hidden: [
+                [
+                    { id: 101, title: "活不下去了，一场车祸毁了我的家", author: "破折号", date: "今天", status: "ongoing", postFile: "post-qingshen.html", special: true },
+                    { id: 102, title: "关注的探险主播好久没更新了", author: "天涯共此时hcx", date: "七个月前", status: "tomb", postFile: "post-zhubo.html", special: true },
+                    { id: 103, title: "求助！！我被活埋了，请救救我", author: "这里好黑啊", date: "一年前", status: "tomb", postFile: "post-huomai.html", special: true },
+                    { id: 104, title: "寻找记忆中的一档生存综艺", author: "鬼不觉", date: "一年前", status: "tomb", postFile: "post-zongyi.html", special: true }
+                ]
+            ],
+            locked: [
+                [
+                    { id: 105, title: "最近总有奇怪的东西跟着我", author: "温水青", date: "一个月前", status: "locked", postFile: "post-shuiqing.html", special: true, locked: true, lockType: "admin", password: "平安" },
+                    { id: 106, title: "怎样才能再见到死去的人？", author: "******", date: "半年前", status: "locked", postFile: "post-zaijian.html", special: true, locked: true, lockType: "user", password: "一线牵", realAuthor: "一线牵" }
+                ]
+            ],
+            myPosts: [
+                [
+                    { id: 105, title: "最近总有奇怪的东西跟着我", author: "温水青", date: "一个月前", status: "locked", postFile: "post-shuiqing.html", special: true, locked: true, lockType: "admin", password: "平安" }
+                ]
+            ]
+        };
+
+        // ==================== 辅助函数 ====================
+        function initializeForum() {
+            loadUserStateFromStorage();
+            updateUIState();
+            loadForumPosts();
+            setupOnlineCounter();
+            setupNewPostButton();
+            checkChatNotification();
+        }
+
+        function loadUserStateFromStorage() {
+            try {
+                const savedState = localStorage.getItem('forum_user_state');
+                if (savedState) {
+                    const parsedState = JSON.parse(savedState);
+                    userState.isLoggedIn = true;
+                    userState.username = '管理员';
+                    userState.realName = '管理员';
+                    userState.registerDays = 999;
+                    userState.forumLevel = '管理员';
+                }
+            } catch (e) { console.log('加载用户状态失败'); }
+        }
+
+        function saveUserStateToStorage() {
+            try { localStorage.setItem('forum_user_state', JSON.stringify(userState)); } catch (e) {}
+        }
+
+        function setupOnlineCounter() {
+            updateOnlineNumber();
+            setInterval(updateOnlineNumber, 5 * 60 * 1000);
+        }
+        function updateOnlineNumber() {
+            document.getElementById('onlineNumber').textContent = Math.floor(Math.random() * 41) + 10;
+        }
+
+        function setupNewPostButton() {
+            document.getElementById('newPostBtn').onclick = function() {
+                if (currentForumTab === 'home' && userState.isLoggedIn) return;
+                else if (!userState.isLoggedIn) alert('请先登录');
+                else alert('当前页面无法发帖');
+            };
+        }
+
+        function updateUIState() {
+            const userStatusArea = document.getElementById('userStatusArea');
+            const forumNav = document.getElementById('forumNav');
+            const newPostBtn = document.getElementById('newPostBtn');
+            const forumSearch = document.getElementById('forumSearch');
+            const searchBtn = document.querySelector('.search-btn');
+
+            if (userState.isLoggedIn) {
+                userStatusArea.innerHTML = `
+                    <div class="user-info">
+                        <div class="user-avatar eye-avatar">
+                            <i class="fas fa-eye"></i>
+                        </div>
+                        <div class="user-details">
+                            <div class="user-name">管理员</div>
+                            <div class="user-status">在线</div>
+                        </div>
+                    </div>
+                    <div class="user-actions">
+                        <button class="worship-btn" onclick="showWorshipDialog()">
+                            <i class="fas fa-yin-yang"></i> 供奉
+                        </button>
+                    </div>
+                `;
+                forumNav.innerHTML = `
+                    <div class="forum-nav-item ${currentForumTab === 'home' ? 'active' : ''}" onclick="switchForumTab('home')">全部</div>
+                    <div class="forum-nav-item ${currentForumTab === 'hidden' ? 'active' : ''}" onclick="switchForumTab('hidden')">隐藏</div>
+                    <div class="forum-nav-item ${currentForumTab === 'locked' ? 'active' : ''}" onclick="switchForumTab('locked')">锁定</div>
+                    <div class="forum-nav-item ${currentForumTab === 'myPosts' ? 'active' : ''}" onclick="switchForumTab('myPosts')">我的帖子</div>
+                `;
+                forumSearch.disabled = false;
+                forumSearch.placeholder = "搜索帖子、用户或关键词...";
+                searchBtn.disabled = false;
+                newPostBtn.classList.remove('disabled');
+            }
+        }
+
+        function switchForumTab(tab) {
+            currentForumTab = tab;
+            currentPage = 1;
+            loadForumPosts();
+            updateUIState();
+        }
+
+        function loadForumPosts() {
+            const forumPostsArea = document.getElementById('forumPostsArea');
+            const pagination = document.getElementById('pagination');
+            forumPostsArea.innerHTML = '';
+            pagination.innerHTML = '';
+
+            let posts = allForumPosts[currentForumTab];
+            if (!posts) return;
+
+            if (currentForumTab === 'myPosts' && (!posts || posts.length === 0 || posts[0].length === 0)) {
+                forumPostsArea.innerHTML = `<div class="empty-posts"><div class="empty-posts-icon"><i class="far fa-file-alt"></i></div><div class="empty-posts-text">暂无帖子</div><div class="empty-posts-hint">您还没有发表过任何帖子</div></div>`;
+                return;
+            }
+
+            if (posts && posts.length >= currentPage) {
+                let pagePosts = posts[currentPage - 1];
+                const postsList = document.createElement('div');
+                postsList.className = 'posts-list';
+                pagePosts.forEach(post => {
+                    const postElement = createPostElement(post);
+                    postsList.appendChild(postElement);
+                });
+                forumPostsArea.appendChild(postsList);
+                generatePagination(posts.length);
+            } else {
+                forumPostsArea.innerHTML = '<div style="padding: 30px; text-align: center; color: #666;">暂无帖子</div>';
+            }
+        }
+
+        function createPostElement(post) {
+            const postElement = document.createElement('div');
+            let postClasses = ['post-item'];
+            if (post.locked) postClasses.push('locked');
+            postElement.className = postClasses.join(' ');
+            postElement.dataset.id = post.id;
+
+            let titleContent = post.title;
+            let authorContent = `发帖人：${post.author}`;
+            if (post.status === 'deleted') {
+                titleContent = '***';
+                authorContent = '发帖人：***';
+            }
+
+            let badge = '';
+            if (post.status === 'deleted') badge = '<span class="post-badge deleted">已删除</span>';
+            else if (post.locked) badge = '<span class="post-badge locked">锁定</span>';
+            else if (post.status === 'ongoing') badge = '<span class="post-badge ongoing">进行中</span>';
+            else if (post.status === 'completed') badge = '<span class="post-badge completed">完结</span>';
+            else if (post.status === 'essence') badge = '<span class="post-badge essence">精华</span>';
+            else if (post.status === 'admin') badge = '<span class="post-badge admin">管理员</span>';
+            else if (post.status === 'tomb') badge = '<span class="post-badge tomb">坟贴</span>';
+
+            const titleClass = post.special ? 'post-title special-red' : 'post-title';
+            postElement.innerHTML = `
+                <div class="post-item-header">
+                    <div class="${titleClass} ${post.locked ? 'locked' : ''}">${badge}${titleContent}</div>
+                    <div class="post-date">${post.date}</div>
+                </div>
+                <div class="post-author ${post.status === 'deleted' ? 'locked' : ''}">${authorContent}</div>
+            `;
+
+            postElement.onclick = function() {
+                if (!userState.isLoggedIn) { alert('请先登录'); return; }
+                if (post.status === 'deleted') { alert('此数据已清除。'); return; }
+                if (post.locked) {
+                    currentLockedPost = post;
+                    if (post.lockType === 'admin') {
+                        document.getElementById('lockedPostDialogTitle').textContent = '帖子已锁定';
+                        document.getElementById('lockedPostDialogSubtitle').textContent = '您的帖子已被管理员锁定，请输入您的愿望';
+                        document.getElementById('lockedPostInput').placeholder = '请输入您的愿望';
+                    } else {
+                        document.getElementById('lockedPostDialogTitle').textContent = '帖子已锁定';
+                        document.getElementById('lockedPostDialogSubtitle').textContent = '此贴已由用户自行锁定，请输入用户ID';
+                        document.getElementById('lockedPostInput').placeholder = '请输入用户ID';
+                    }
+                    document.getElementById('lockedPostDialog').classList.add('show');
+                    return;
+                }
+                if (post.postFile) window.open(post.postFile, '_blank');
+                else window.open('post-placeholder.html', '_blank');
+            };
+            return postElement;
+        }
+
+        function generatePagination(totalPages) {
+            if (totalPages <= 1) return;
+            const pagination = document.getElementById('pagination');
+            const prev = document.createElement('button');
+            prev.className = `page-btn ${currentPage === 1 ? 'disabled' : ''}`;
+            prev.innerHTML = '&laquo; 上一页';
+            prev.onclick = function() { if (currentPage > 1) { currentPage--; loadForumPosts(); } };
+            pagination.appendChild(prev);
+            for (let i = 1; i <= totalPages; i++) {
+                const btn = document.createElement('button');
+                btn.className = `page-btn ${i === currentPage ? 'active' : ''}`;
+                btn.textContent = i;
+                btn.onclick = function() { currentPage = i; loadForumPosts(); };
+                pagination.appendChild(btn);
+            }
+            const next = document.createElement('button');
+            next.className = `page-btn ${currentPage === totalPages ? 'disabled' : ''}`;
+            next.innerHTML = '下一页 &raquo;';
+            next.onclick = function() { if (currentPage < totalPages) { currentPage++; loadForumPosts(); } };
+            pagination.appendChild(next);
+        }
+
+        // 按钮提示
+        function showGhostTalkAlert() { alert('杂谈版块入口暂时关闭，用户可通过搜索功能查找相关内容。'); }
+        function showBlockedAlert(name) { alert('板块已封锁。请用搜索功能查询'); }
+
+        // 供奉相关
+        function showWorshipDialog() { document.getElementById('worshipDialog').classList.add('show'); }
+        function closeWorshipDialog() { document.getElementById('worshipDialog').classList.remove('show'); document.getElementById('wishInput').value = ''; }
+        function submitWish() {
+            const wish = document.getElementById('wishInput').value.trim();
+            if (wish) {
+                document.getElementById('worshipResultDialog').classList.add('show');
+                document.getElementById('worshipDialog').classList.remove('show');
+                document.getElementById('wishInput').value = '';
+            } else alert('请输入您的愿望！');
+        }
+        function closeWorshipResultDialog() { document.getElementById('worshipResultDialog').classList.remove('show'); }
+
+        // 锁定帖子密码 + 2秒提示（修复跳转问题）
+        function closeLockedPostDialog() { 
+            document.getElementById('lockedPostDialog').classList.remove('show'); 
+            document.getElementById('lockedPostInput').value = ''; 
+            // 注意：不再在这里清空 currentLockedPost，因为我们需要在跳转后清空，但跳转是异步的。
+            // 为了安全，在密码正确时先保存引用再关闭，所以此处不清空，由 submit 函数控制。
+        }
+        
+        function submitLockedPostPassword() {
+            const input = document.getElementById('lockedPostInput').value.trim();
+            if (!currentLockedPost) { closeLockedPostDialog(); return; }
+            
+            if (input === currentLockedPost.password) {
+                // 保存目标 URL
+                const targetUrl = currentLockedPost.postFile || 'post-placeholder.html';
+                
+                // 关闭对话框（不清空 currentLockedPost，因为还要用？但后面不会再用到，其实可以清空，但必须先用 targetUrl）
+                document.getElementById('lockedPostDialog').classList.remove('show');
+                document.getElementById('lockedPostInput').value = '';
+                // 清空 currentLockedPost 避免后续误用
+                currentLockedPost = null;
+                
+                // 显示加载提示
+                const toast = document.getElementById('loadingToast');
+                toast.style.display = 'block';
+                
+                // 2秒后打开新窗口并隐藏提示
+                setTimeout(() => {
+                    toast.style.display = 'none';
+                    window.open(targetUrl, '_blank');
+                }, 2000);
+            } else {
+                alert('输入错误，请重新输入！');
+                document.getElementById('lockedPostInput').value = '';
+            }
+        }
+
+        // 搜索
+        function searchForum() {
+            const term = document.getElementById('forumSearch').value.trim();
+            if (!term) { alert('请输入搜索关键词！'); return; }
+            sessionStorage.setItem('searchTerm', term);
+            window.open('search-manage.html', '_blank');
+        }
+        document.getElementById('forumSearch').addEventListener('keypress', function(e) { if (e.key === 'Enter') searchForum(); });
+
+        // 聊天通知
+        function checkChatNotification() {
+            const forumOpened = localStorage.getItem('forum_manage_opened');
+            if (!forumOpened) {
+                setTimeout(() => showChatNotification(), 2000);
+                localStorage.setItem('forum_manage_opened', 'true');
+                setChatAppTriggerFlag();
+            } else {
+                const notificationShown = localStorage.getItem('chat_notification_shown');
+                if (!notificationShown) setTimeout(() => showChatNotification(), 2000);
+            }
+        }
+        function setChatAppTriggerFlag() {
+            try {
+                // 1. 写入独立标志键（chat.html 的 storage 事件监听这个键）
+                //    这会实时通知已经打开的 chat.html 标签页
+                localStorage.setItem('forumManage_chatTriggered', 'true');
+                
+                // 2. 同时更新 chatGameState 里的标志（兼容旧逻辑）
+                let chatGameState = localStorage.getItem('chatGameState');
+                if (chatGameState) {
+                    const parsedState = JSON.parse(chatGameState);
+                    parsedState.forumManageTriggered = true;
+                    localStorage.setItem('chatGameState', JSON.stringify(parsedState));
+                }
+                
+                sessionStorage.setItem('forumManageTriggered', 'true');
+            } catch (e) {
+                console.error('设置触发标志失败:', e);
+            }
+        }
+        function showChatNotification() { document.getElementById('hb-chat-toast').style.display = 'block'; }
+        function closeChatNotification() {
+            document.getElementById('hb-chat-toast').style.display = 'none';
+            localStorage.setItem('chat_notification_shown', 'true');
+        }
+        function openChatApplication() {
+            closeChatNotification();
+            window.open('chat.html?trigger=forum-manage', '_blank');
+            localStorage.setItem('chat_notification_shown', 'true');
+        }
+        
+        // 为新的通知按钮添加事件监听器
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('hb-toast-close').addEventListener('click', closeChatNotification);
+            document.getElementById('hb-toast-later').addEventListener('click', closeChatNotification);
+            document.getElementById('hb-toast-open').addEventListener('click', openChatApplication);
+        });
+
+        function closeForum() { saveUserStateToStorage(); window.close(); }
+
+        window.onload = initializeForum;
+    </script>
+</body>
+</html>

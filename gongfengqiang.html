@@ -1,0 +1,524 @@
+﻿﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>供奉 · 惠慈天尊</title>
+    <style>
+        /* ---------- 全局：阴冷基调，汇文明朝体 ---------- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "汇文明朝体", "DFMing-SC", "SimSun", "Songti SC", "STSong", "宋体", serif;
+        }
+
+        body {
+            background: #000 url('https://img.remit.ee/api/file/BQACAgUAAyEGAASHRsPbAAEQ34NpjIIhxFRhaQ-VZrZIQykrCcC0NwACpyMAAoLCYFT26w4pZU90LjoE.png') no-repeat center center fixed;
+            background-size: cover;
+            color: #d6d6d6;
+            line-height: 1.6;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.78);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .container, .modal, .file-panel, .petition-grid-wrapper {
+            position: relative;
+            z-index: 10;
+        }
+
+        /* ========== 主供奉界面 ========= */
+        .main-altar {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 700px;
+            max-width: 90%;
+            text-align: center;
+            background: rgba(15, 15, 20, 0.7);
+            backdrop-filter: blur(3px);
+            border: 1px solid #5a3a3a;
+            box-shadow: 0 0 50px rgba(100, 0, 0, 0.3), inset 0 0 30px rgba(0,0,0,0.8);
+            padding: 50px 30px;
+            border-radius: 0;
+        }
+
+        /* 供奉 —— 繁体、黑色、明朝体，去除红光 */
+        .main-altar h1 {
+            font-size: 58px;
+            font-weight: bold;
+            color: #b33a3a;
+            text-shadow: none;
+            letter-spacing: 16px;
+            margin-bottom: 30px;
+            font-family: "汇文明朝体", "DFMing-SC", "SimSun", "Songti SC", serif;
+        }
+
+        .divine-line {
+            width: 80%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #a00, transparent);
+            margin: 20px auto;
+        }
+
+        .offering-choices {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 50px;
+        }
+
+        /* 按钮：明朝体/楷体，去红光，仅边框微亮 */
+        .ritual-btn {
+            background: rgba(0, 0, 0, 0.75);
+            border: 2px solid #6e2e2e;
+            color: #e6c3c3;
+            padding: 18px 45px;
+            font-size: 32px;
+            font-weight: bold;
+            letter-spacing: 12px;
+            cursor: pointer;
+            transition: 0.2s;
+            box-shadow: none;
+            text-shadow: none;
+            border-radius: 0;
+            font-family: "汇文明朝体", "KaiTi", "楷体", serif;
+        }
+
+        .ritual-btn:hover {
+            background: #2a0f0f;
+            border-color: #d88;      /* 仅边框微亮 */
+            color: #ffd7d7;
+            box-shadow: none;
+            text-shadow: none;
+        }
+
+        /* ========== 请愿界面（黑底红字网格）======== */
+        .petition-grid-wrapper {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            min-height: 100vh;
+            background: rgba(0, 0, 0, 0.92);
+            padding: 30px 30px;       /* 整体内边距略缩 */
+            overflow-y: auto;
+            display: none;
+        }
+
+        /* 返回按钮——缩小，仅保留“返回” */
+        .back-btn {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: #a77;
+            border: 1px solid #733;
+            padding: 6px 18px;        /* 缩小 */
+            font-size: 18px;
+            background: #0a0a0a;
+            cursor: pointer;
+            letter-spacing: 6px;
+            font-family: "汇文明朝体", serif;
+        }
+        .back-btn:hover {
+            background: #2a0a0a;
+            color: #ecc;
+            border-color: #b00;
+        }
+
+        /* 願籍 —— 繁体，明朝体，高度缩减一半 */
+        .soul-title {
+            text-align: center;
+            font-size: 28px;           /* 原38px，缩小 */
+            color: #c44;
+            text-shadow: none;
+            letter-spacing: 20px;
+            margin-bottom: 15px;        /* 缩减 */
+            border-bottom: 1px solid #633;
+            padding-bottom: 10px;       /* 缩减 */
+            font-family: "汇文明朝体", serif;
+        }
+
+        .petition-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 25px;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .name-card {
+            background: #0a0505;
+            border: 1.5px solid #6a1f1f;
+            color: #e05a5a;
+            padding: 20px 10px;
+            text-align: center;
+            font-size: 22px;
+            font-weight: bold;
+            text-shadow: none;
+            box-shadow: inset 0 0 15px rgba(100,0,0,0.3); /* 仅内阴影，无外发光 */
+            transition: 0.15s;
+            cursor: pointer;
+            letter-spacing: 4px;
+        }
+
+        .name-card.sealed {
+            color: #6a4a4a;
+            text-shadow: none;
+            border-color: #3a2a2a;
+            background: #0c0c0c;
+            cursor: not-allowed;
+            letter-spacing: 2px;
+        }
+
+        /* 仅边框微亮，无大红光 */
+        .name-card:not(.sealed):hover {
+            background: #1a0a0a;
+            border-color: #d66;
+            color: #ff9e9e;
+            box-shadow: inset 0 0 15px rgba(100,0,0,0.3); /* 保留内阴影，无外发光 */
+            text-shadow: none;
+        }
+
+        /* ======= 模态框 (心愿弹窗) ======= */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.85);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 999;
+        }
+
+        .wish-modal {
+            background: #120808;
+            border: 3px solid #9e2b2b;
+            padding: 40px 50px;
+            max-width: 550px;
+            width: 90%;
+            color: #ffffff;
+            box-shadow: 0 0 100px #300, inset 0 0 40px #1a0000;
+            position: relative;
+        }
+
+        .wish-modal h3 {
+            font-size: 32px;
+            color: #d77;
+            border-bottom: 1px solid #b44;
+            padding-bottom: 15px;
+            margin-bottom: 25px;
+            letter-spacing: 10px;
+            font-family: "汇文明朝体", serif;
+        }
+
+        .wish-content {
+            font-size: 24px;
+            line-height: 1.8;
+            color: #ffc1c1;
+            text-shadow: none;
+            margin: 30px 0;
+            min-height: 120px;
+            font-family: "汇文明朝体", serif;
+        }
+
+        .close-modal {
+            background: #2a0f0f;
+            border: 1px solid #a44;
+            color: #ecc;
+            padding: 12px 35px;
+            font-size: 22px;
+            cursor: pointer;
+            letter-spacing: 8px;
+            margin-top: 20px;
+            font-family: "汇文明朝体", serif;
+        }
+        .close-modal:hover {
+            background: #5a1e1e;
+            border-color: #f66;
+        }
+
+        /* ========== 祈祷页面 ========= */
+        .prayer-panel {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            min-height: 100vh;
+            background: rgba(0, 0, 0, 0.94);
+            padding: 30px 30px;
+            display: none;
+            overflow-y: auto;
+        }
+
+        .sacred-docs {
+            max-width: 800px;
+            margin: 40px auto;         /* 缩减上边距 */
+            background: #0c0707;
+            border: 1px solid #e05a5a;
+            padding: 40px;
+            box-shadow: 0 0 70px #200000;
+        }
+
+        /* 願籍 —— 祈祷页面标题，繁体明朝体，缩小 */
+        .prayer-title {
+            color: #b77;
+            font-size: 28px;           /* 缩小 */
+            margin-bottom: 30px;
+            text-align: center;
+            letter-spacing: 12px;
+            text-shadow: none;
+            font-family: "汇文明朝体", serif;
+            border-bottom: 1px solid #733;
+            padding-bottom: 12px;
+        }
+
+        .doc-item {
+            margin: 30px 0;
+            border-left: 8px solid #a22;
+            padding: 15px 25px;
+            background: #0a0202;
+            transition: 0.2s;
+        }
+        .doc-item:hover {
+            background: #1e0808;
+            border-left-color: #f44;
+        }
+
+        .doc-link {
+            color: #ebb5b5;
+            text-decoration: none;
+            font-size: 24px;           /* 缩小 */
+            font-weight: bold;
+            letter-spacing: 6px;
+            display: block;
+            text-shadow: none;
+            font-family: "汇文明朝体", serif;
+        }
+
+        .doc-desc {
+            color: #b99;
+            font-size: 16px;           /* 缩小 */
+            margin-top: 8px;
+            font-style: italic;
+        }
+
+        /* 祷告文占位文字样式 */
+        .prayer-text-placeholder {
+            width: 100%;
+            min-height: 200px;
+            background: #1e1a1a;
+            border: 2px solid #a4a4a4;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: rgb(255, 255, 255);
+            font-size: 22px;
+            margin: 25px 0;
+            padding: 30px;
+            flex-direction: column;
+            line-height: 1.8;
+            font-family: "汇文明朝体", serif;
+        }
+
+        /* 通用隐藏类 */
+        .hidden { display: none; }
+
+        /* 响应式 */
+        @media (max-width: 900px) {
+            .petition-grid { grid-template-columns: repeat(2, 1fr); }
+            .ritual-btn { font-size: 24px; padding: 12px 25px; }
+        }
+        @media (max-width: 550px) {
+            .petition-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ========= 主祭坛界面 ========= -->
+<div id="mainAltar" class="main-altar">
+    <h1>供奉</h1>   <!-- 繁体“供奉” -->
+    <div class="divine-line"></div>
+    <div class="offering-choices">
+        <div id="petitionBtn" class="ritual-btn">请愿</div>
+        <div id="prayerBtn" class="ritual-btn">祈告</div>
+    </div>
+    <div style="margin-top: 60px; color: #7a5a5a; font-size: 16px; letter-spacing: 4px;">ༀ 惠慈天尊 ༀ</div>
+</div>
+
+<!-- ========= 请愿 · 黑底红字网格 ========= -->
+<div id="petitionGridWrapper" class="petition-grid-wrapper">
+    <div id="backFromPetition" class="back-btn">⟨ 返回</div>   <!-- 仅保留“返回” -->
+    <div class="soul-title">願籍</div>   <!-- 繁体、明朝体、高度缩减 -->
+    <div class="petition-grid" id="nameGrid"></div>
+</div>
+
+<!-- ========= 祈告 · 文件圣物 ========= -->
+<div id="prayerPanel" class="prayer-panel">
+    <div id="backFromPrayer" class="back-btn">⟨ 返回</div>   <!-- 仅保留“返回” -->
+    <div class="sacred-docs">
+        <!-- 愿籍（繁体）取代原“契藏” -->
+        <div class="prayer-title">心念</div>
+        <!-- 祷告文：无书籍符号，字体缩小 -->
+        <div class="doc-item" id="prayerDoc">
+            <span class="doc-link">祈告文·虔呈</span>   <!-- 删除📄图标 -->
+            <div class="doc-desc">—— 向天尊呈诉之辞，焚化可达天听</div>
+        </div>
+        <!-- 《心经》：无书籍符号，字体缩小 -->
+        <div class="doc-item" id="sutraDoc">
+            <a href="wenjian-jingwen.html" class="doc-link" target="_blank">祈告文·祝祷</a>   <!-- 删除📖图标 -->
+            <div class="doc-desc">—— 持诵千遍，运契自成</div>
+        </div>
+    </div>
+</div>
+
+<!-- ========= 通用模态框 (心愿/祷告文) ========= -->
+<div id="modalOverlay" class="modal-overlay">
+    <div class="wish-modal" id="dynamicModal">
+        <h3 id="modalTitle">□□ 之愿</h3>
+        <div id="modalBody" class="wish-content"></div>
+        <button id="closeModalBtn" class="close-modal">闭 契</button>
+    </div>
+</div>
+
+<script>
+    (function() {
+        "use strict";
+
+        // ---------- 九位供奉者 · 完全按用户要求 ----------
+        const NAMED_SOULS = [
+            { name: "破折号", wish: "想要一家人能够永远在一起。" },
+            { name: "笼中之雀", wish: "我想获得关注，被所有人看见、记住。" },
+            { name: "落雨", wish: "希望能遇见那个让我心动的人。" },
+            { name: "smile", wish: "每晚都有人敲门……请帮帮我，赶走那个缠着我的鬼魂" },
+            { name: "喵喵神", wish: "好孤独，真想朋友们都还在身边。" },
+            { name: "温水青", wish: "平安" },
+            { name: "一线牵", wish: "我要她回来，再也不离开我。" },
+            { name: "天涯共此时hcx", wish: "如果世上真的有鬼，我想亲眼看看。" },
+            { name: "这里好黑啊", wish: "不想死不想死不想死不想死不想死" }
+        ];
+
+        const TOTAL_CELLS = 32;   // 四的倍数，阴森感
+
+        // ---------- 渲染请愿网格 ----------
+        const gridContainer = document.getElementById('nameGrid');
+        function renderPetitionGrid() {
+            let html = '';
+            for (let i = 0; i < TOTAL_CELLS; i++) {
+                if (i < NAMED_SOULS.length) {
+                    const soul = NAMED_SOULS[i];
+                    html += `<div class="name-card" data-index="${i}" data-name="${soul.name}" data-wish="${soul.wish}">${soul.name}</div>`;
+                } else {
+                    html += `<div class="name-card sealed">已 封 存</div>`;
+                }
+            }
+            gridContainer.innerHTML = html;
+
+            // 绑定点击事件（仅前九个可点）
+            const cards = document.querySelectorAll('.name-card:not(.sealed)');
+            cards.forEach(card => {
+                card.addEventListener('click', function(e) {
+                    const name = this.dataset.name;
+                    const wish = this.dataset.wish;
+                    showWishModal(name, wish);
+                });
+            });
+        }
+
+        // ---------- 模态框: 显示心愿 ----------
+        const modalOverlay = document.getElementById('modalOverlay');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalBody = document.getElementById('modalBody');
+
+        function showWishModal(name, wishText) {
+            modalTitle.innerText = `${name} 之愿`;
+            modalBody.innerText = wishText;
+            modalOverlay.style.display = 'flex';
+        }
+
+        // 关闭模态框
+        document.getElementById('closeModalBtn').addEventListener('click', function() {
+            modalOverlay.style.display = 'none';
+        });
+        modalOverlay.addEventListener('click', function(e) {
+            if (e.target === modalOverlay) {
+                modalOverlay.style.display = 'none';
+            }
+        });
+
+        // ---------- 页面切换 ----------
+        const mainAltar = document.getElementById('mainAltar');
+        const petitionWrapper = document.getElementById('petitionGridWrapper');
+        const prayerPanel = document.getElementById('prayerPanel');
+
+        function showMain() {
+            mainAltar.style.display = 'block';
+            petitionWrapper.style.display = 'none';
+            prayerPanel.style.display = 'none';
+        }
+
+        function showPetition() {
+            mainAltar.style.display = 'none';
+            petitionWrapper.style.display = 'block';
+            prayerPanel.style.display = 'none';
+            renderPetitionGrid();
+        }
+
+        function showPrayer() {
+            mainAltar.style.display = 'none';
+            petitionWrapper.style.display = 'none';
+            prayerPanel.style.display = 'block';
+        }
+
+        showMain();
+
+        // 按钮监听
+        document.getElementById('petitionBtn').addEventListener('click', showPetition);
+        document.getElementById('prayerBtn').addEventListener('click', showPrayer);
+        document.getElementById('backFromPetition').addEventListener('click', showMain);
+        document.getElementById('backFromPrayer').addEventListener('click', showMain);
+
+        // ---------- 祷告文 → 纯文字占位模态框（无图片）----------
+        const prayerDoc = document.getElementById('prayerDoc');
+        prayerDoc.addEventListener('click', function(e) {
+            e.stopPropagation();
+            modalTitle.innerText = '祷 告 文';
+            modalBody.innerHTML = `
+                    <span style="font-size:26px; margin-bottom:20px; color:#ffffff;">䖍 呈 </span>
+                    <span style="font-size:20px; line-height:1.7; color:#ffffff;">
+                    <p>慈光普照，惠泽无边。弟子今以虔心，恭叩天尊。</p>
+                    <p>自惟夙世积愆，今生罹难，身历百般煎熬，心受万种摧磨。所求无安放之处，所愿皆飘零之尘。瞻前而恐大灾将至，顾后而无依托之凭。</p>
+                    <p>惟赖天尊，垂慈度世，应微诚于刹那。但能默念，即沐恩光。</p>
+                    <p>弟子伏望天尊垂悯，若得灾消厄散、病去福临，弟子愿献残运，尽酬覆载之恩；更祈众生离苦，皆得圆满。</p>
+                    <p>——《<strong>惠慈天尊圆满广愿心经</strong>》</p>
+                </div>
+            `;
+            modalOverlay.style.display = 'flex';
+        });
+
+        // 心经链接保留原有跳转，仅缩小字体、删图标——已在HTML完成
+
+        // 初始化网格
+        renderPetitionGrid();
+    })();
+</script>
+
+<!-- 阴冷氛围小点缀 -->
+<div style="position: fixed; bottom: 15px; right: 25px; color: #3f2a2a; font-size: 14px; opacity: 0.2; letter-spacing: 6px; z-index: 999; pointer-events: none;">࿓ ࿓ 契 ࿓ ࿓</div>
+</body>
+</html>

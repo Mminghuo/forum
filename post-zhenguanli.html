@@ -1,0 +1,555 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>【七月半】用户必读 - 七月半论坛</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* ========== 基本样式 - 调整为表世界色调 ========== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+        }
+        
+        body {
+            background-color: #f0f2f5;        /* 灰白色背景 */
+            color: #1e293b;                    /* 深灰色文字 */
+            min-height: 100vh;
+        }
+        
+        /* 顶部栏 - 白色背景，灰蓝色点缀 */
+        .forum-header {
+            background-color: #ffffff;
+            padding: 10px 20px;
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 60px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+        }
+        
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .header-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #4a6fa5;                    /* 灰蓝色 */
+            letter-spacing: 2px;
+            text-shadow: none;
+        }
+        
+        .close-btn {
+            background-color: #4a6fa5;          /* 灰蓝色 */
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 13px;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .close-btn:hover {
+            background-color: #3a5a87;
+            box-shadow: 0 2px 8px rgba(74, 111, 165, 0.3);
+        }
+        
+        /* Logo版头 - 浅蓝渐变 */
+        .forum-logo-header {
+            height: 15vh;
+            min-height: 100px;
+            background: linear-gradient(135deg, #a0c4ff 0%, #7aa5d9 100%); /* 加深雾霾蓝 */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+            border-bottom: 1px solid #d4e2f0;
+            margin-top: 60px;
+        }
+        
+        .forum-name {
+            font-size: 36px;
+            font-weight: 900;
+            color: #1e293b;
+            text-shadow: 1px 1px 0 rgba(255,255,255,0.5);
+            margin-bottom: 5px;
+            letter-spacing: 3px;
+        }
+        
+        .forum-subtitle {
+            font-size: 14px;
+            color: #334155;
+            font-style: italic;
+        }
+        
+        /* 帖子标题区域 - 固定跟随滚动，白色背景 */
+        .post-title-bar {
+            position: sticky;
+            top: 60px;
+            background-color: #ffffff;
+            border-bottom: 1px solid #e2e8f0;
+            padding: 12px 20px;
+            z-index: 999;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.02);
+        }
+        
+        .post-title-main {
+            font-size: 20px;
+            font-weight: 700;
+            color: #1e293b;
+            text-align: center;
+        }
+        
+        .post-title-main b {
+            color: #4a6fa5;
+        }
+        
+        /* 帖子内容区域 - 加宽至1100px */
+        .post-content-area {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        /* 楼层样式 */
+        .post-floor {
+            background-color: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 16px;
+            padding: 15px;
+            margin-bottom: 15px;
+            transition: all 0.2s;
+        }
+        
+        .post-floor:hover {
+            border-color: #4a6fa5;
+            box-shadow: 0 4px 12px rgba(74, 111, 165, 0.08);
+        }
+        
+        .floor-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 12px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #4a6fa5, #2c4a73);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 16px;
+            border: 2px solid #4a6fa5;
+            margin-right: 12px;
+        }
+        
+        .user-info {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .user-name {
+            font-weight: 600;
+            color: #4a6fa5;
+            font-size: 14px;
+        }
+        
+        .user-name.admin {
+            color: #4a6fa5;
+            font-weight: 700;
+        }
+        
+        .floor-number {
+            font-size: 12px;
+            color: #64748b;
+            margin-top: 2px;
+        }
+        
+        .floor-content {
+            line-height: 1.6;
+            color: #1e293b;
+            font-size: 14px;
+            padding-left: 52px; /* 头像宽度 + 边距 */
+        }
+        
+        .floor-content p {
+            margin-bottom: 10px;
+        }
+        
+        .floor-content p:last-child {
+            margin-bottom: 0;
+        }
+        
+        /* 规则内容样式 */
+        .rule-content {
+            line-height: 1.8;
+            color: #1e293b;
+            font-size: 15px;
+        }
+        
+        .rule-title {
+            font-size: 18px;
+            color: #4a6fa5;
+            margin: 20px 0 10px;
+            padding-bottom: 5px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        
+        .rule-item {
+            margin-bottom: 12px;
+            padding-left: 15px;
+            position: relative;
+        }
+        
+        .rule-item:before {
+            content: "•";
+            color: #4a6fa5;
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+        }
+        
+        .rule-divider {
+            height: 1px;
+            background-color: #e2e8f0;
+            margin: 25px 0;
+            width: 100%;
+        }
+        
+        .admin-signature {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 15px;
+            border-top: 1px solid #e2e8f0;
+            color: #64748b;
+            font-style: italic;
+        }
+        
+        /* 新功能公告样式 */
+        .new-feature-notice {
+            border-left: 4px solid #4a6fa5;
+            padding-left: 15px;
+            margin: 15px 0;
+            background-color: #f8fafc;
+            padding: 10px 15px;
+            border-radius: 8px;
+        }
+        
+        /* 回帖输入区域 */
+        .reply-area {
+            max-width: 1100px;
+            margin: 30px auto;
+            padding: 0 20px 40px;
+        }
+        
+        .reply-title {
+            font-size: 18px;
+            color: #4a6fa5;
+            margin-bottom: 15px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        
+        .reply-box {
+            background-color: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 16px;
+            padding: 15px;
+        }
+        
+        .reply-input {
+            width: 100%;
+            min-height: 120px;
+            background-color: #f8fafc;
+            border: 1px solid #cbd5e1;
+            border-radius: 12px;
+            padding: 12px;
+            color: #1e293b;
+            font-size: 14px;
+            resize: vertical;
+            margin-bottom: 15px;
+        }
+        
+        .reply-input:focus {
+            outline: none;
+            border-color: #4a6fa5;
+        }
+        
+        .reply-buttons {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+        
+        .reply-btn {
+            background-color: #4a6fa5;
+            color: white;
+            border: none;
+            border-radius: 30px;
+            padding: 8px 24px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .reply-btn:hover {
+            background-color: #3a5a87;
+        }
+        
+        .reply-btn.disabled {
+            background-color: #cbd5e1;
+            color: #64748b;
+            cursor: not-allowed;
+        }
+        
+        /* 特殊样式 - 管理员楼层 */
+        .admin-floor {
+            border: 2px solid #4a6fa5;
+            box-shadow: 0 0 10px rgba(74, 111, 165, 0.3);
+        }
+        
+        /* 返回论坛按钮已删除 */
+    </style>
+</head>
+<body>
+    <!-- 顶部栏 -->
+    <div class="forum-header">
+        <div class="header-left">
+            <div class="header-title">论坛</div>
+        </div>
+        <button class="close-btn" onclick="closePost()">
+            <i class="fas fa-times"></i>
+            关闭窗口
+        </button>
+    </div>
+    
+    <!-- Logo版头 -->
+    <div class="forum-logo-header">
+        <div class="forum-name">七月半</div>
+        <div class="forum-subtitle">欢迎来到未知的世界</div>
+    </div>
+    
+    <!-- 帖子标题栏 - 固定跟随滚动 -->
+    <div class="post-title-bar">
+        <div class="post-title-main"><b>【七月半】用户必读</b></div>
+    </div>
+    
+    <!-- 帖子内容区域 -->
+    <div class="post-content-area">
+        <!-- 一楼 -->
+        <div class="post-floor admin-floor">
+            <div class="floor-header">
+                <div class="user-avatar">
+                    <i class="fas fa-user-shield"></i>
+                </div>
+                <div class="user-info">
+                    <div class="user-name admin">管理员</div>
+                    <div class="floor-number">#1 楼主</div>
+                </div>
+            </div>
+            <div class="floor-content">
+                <div class="rule-content">
+                    <p>欢迎来到【七月半】，一个分享与探讨都市传说、灵异经历及未解之谜的角落。为维护讨论环境，请用户遵守以下规则。</p>
+                    
+                    <div class="rule-divider"></div>
+                    
+                    <div class="rule-title">1. 专注主题，理性讨论</div>
+                    <div class="rule-item">本论坛以亲身经历、各地怪谈为核心内容，请勿讨论无关的社会热点或政治话题。</div>
+                    
+                    <div class="rule-title">2. 发言请注意尺度</div>
+                    <div class="rule-item">尊重不同观点，严禁人身攻击、恶意引战或任何形式的传教。</div>
+                    <div class="rule-item">鼓励大家分享自己的真实经历或原创故事。</div>
+                    
+                    <div class="rule-title">3. 保护隐私安全</div>
+                    <div class="rule-item">为防诈骗与骚扰，请勿在帖子或个人主页发布网址、二维码、社交账号、电话等联系方式。</div>
+                    
+                    <div class="rule-title">4. 禁绝不良信息</div>
+                    <div class="rule-item">严禁发布广告、刷屏、色情、暴恐及诱导性内容。一经发现，永久封禁。</div>
+                    
+                    <div class="rule-divider"></div>
+                    
+                    <p>感谢每一位探秘者的理解与配合，愿这里成为故事安心栖息的角落。</p>
+                    
+                    <div class="admin-signature">
+                        —— 七月半管理员 ——
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 二楼 -->
+        <div class="post-floor admin-floor">
+            <div class="floor-header">
+                <div class="user-avatar">
+                    <i class="fas fa-user-shield"></i>
+                </div>
+                <div class="user-info">
+                    <div class="user-name admin">管理员</div>
+                    <div class="floor-number">#2</div>
+                </div>
+            </div>
+            <div class="floor-content">
+                <div class="new-feature-notice">
+                    <p><strong>个人主页功能建设完毕。</strong></p>
+                    <p>用户可通过站内搜索查看用户主页。</p>
+                    <p>注意，只有用户自行公开的主页可以被搜索到。</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 三楼 -->
+        <div class="post-floor admin-floor">
+            <div class="floor-header">
+                <div class="user-avatar">
+                    <i class="fas fa-user-shield"></i>
+                </div>
+                <div class="user-info">
+                    <div class="user-name admin">管理员</div>
+                    <div class="floor-number">#3</div>
+                </div>
+            </div>
+            <div class="floor-content">
+                <div class="new-feature-notice">
+                    <p><strong>私聊功能已创建。</strong></p>
+                    <p>用户可通过个人主页的私聊功能创建聊天。</p>
+                    <p>此功能可由用户自行决定是否开通。</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 空白楼层提示（无其他用户回复） -->
+        <div class="post-floor" style="text-align: center; color: #64748b; padding: 30px 15px;">
+            <i class="fas fa-comment-slash" style="font-size: 40px; margin-bottom: 10px; color: #cbd5e1;"></i>
+            <p>请勿回复</p>
+        </div>
+    </div>
+    
+    <!-- 回帖区域 -->
+    <div class="reply-area">
+        <div class="reply-title">发表回复</div>
+        <div class="reply-box">
+            <textarea class="reply-input" placeholder="请输入回复内容..." id="replyInput"></textarea>
+            <div class="reply-buttons">
+                <button class="reply-btn disabled" id="submitReply">提交回复</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 返回论坛按钮已删除 -->
+    
+    <script>
+        // 初始化函数
+        function initializePost() {
+            // 设置回帖按钮无反应
+            setupReplyButton();
+            
+            // 设置滚动时标题栏的样式
+            setupTitleBarScroll();
+            
+            // 添加管理员楼层悬停效果
+            highlightAdminFloors();
+        }
+        
+        // 设置回帖按钮无反应
+        function setupReplyButton() {
+            const submitBtn = document.getElementById('submitReply');
+            const replyInput = document.getElementById('replyInput');
+            
+            // 提交按钮点击无反应
+            submitBtn.onclick = function() {
+                // 什么都不做 - 无反应
+                return false;
+            };
+            
+            // 输入框点击也无反应（防止触发任何操作）
+            replyInput.onclick = function() {
+                // 什么都不做 - 无反应
+                return false;
+            };
+            
+            // 输入框获得焦点时也无反应
+            replyInput.onfocus = function() {
+                // 什么都不做 - 无反应
+                return false;
+            };
+        }
+        
+        // 设置滚动时标题栏的样式
+        function setupTitleBarScroll() {
+            const titleBar = document.querySelector('.post-title-bar');
+            let lastScrollTop = 0;
+            
+            window.addEventListener('scroll', function() {
+                const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                
+                // 根据滚动方向调整标题栏阴影
+                if (scrollTop > lastScrollTop) {
+                    titleBar.style.boxShadow = '0 3px 10px rgba(0, 0, 0, 0.05)';
+                } else {
+                    titleBar.style.boxShadow = '0 3px 10px rgba(0, 0, 0, 0.02)';
+                }
+                
+                lastScrollTop = scrollTop;
+            });
+        }
+        
+        // 高亮显示所有管理员楼层
+        function highlightAdminFloors() {
+            const adminFloors = document.querySelectorAll('.admin-floor');
+            
+            // 为每个管理员楼层添加悬停效果
+            adminFloors.forEach(floor => {
+                floor.addEventListener('mouseenter', function() {
+                    this.style.boxShadow = '0 0 20px rgba(74, 111, 165, 0.5)';
+                    this.style.transform = 'translateY(-2px)';
+                });
+                
+                floor.addEventListener('mouseleave', function() {
+                    this.style.boxShadow = '0 0 10px rgba(74, 111, 165, 0.3)';
+                    this.style.transform = 'translateY(0)';
+                });
+            });
+        }
+        
+        // 关闭帖子页面 - 尝试关闭窗口
+        function closePost() {
+            window.close();
+        }
+        
+        // 按ESC键尝试关闭窗口（原返回论坛功能）
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closePost();
+            }
+        });
+        
+        // 初始化
+        window.onload = function() {
+            initializePost();
+        };
+    </script>
+</body>
+</html>

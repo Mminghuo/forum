@@ -1,0 +1,288 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>一封感谢信：承蒙厚爱，携手前行 - 七月半论坛</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* ========== 基本样式 - 蓝白色调 ========== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+        }
+        
+        body {
+            background-color: #f0f2f5;        /* 灰白色背景 */
+            color: #1e293b;                    /* 深灰色文字 */
+            min-height: 100vh;
+        }
+        
+        /* 顶部栏 - 白色背景，灰蓝色点缀 */
+        .forum-header {
+            background-color: #ffffff;
+            padding: 10px 20px;
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 60px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+        }
+        
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .header-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #4a6fa5;                    /* 灰蓝色 */
+            letter-spacing: 2px;
+            text-shadow: none;
+        }
+        
+        .close-btn {
+            background-color: #4a6fa5;          /* 灰蓝色 */
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 20px;                /* 圆角 */
+            cursor: pointer;
+            font-size: 13px;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .close-btn:hover {
+            background-color: #3a5a87;          /* 加深 */
+            box-shadow: 0 2px 8px rgba(74, 111, 165, 0.3);
+        }
+        
+        /* Logo版头 - 浅蓝渐变，文字深色 */
+        .forum-logo-header {
+            height: 15vh;
+            min-height: 100px;
+            background: linear-gradient(135deg, #a0c4ff 0%, #7aa5d9 100%); /* 加深雾霾蓝 */;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+            border-bottom: 1px solid #d4e2f0;
+        }
+        
+        .forum-name {
+            font-size: 36px;
+            font-weight: 900;
+            color: #1e293b;
+            text-shadow: 1px 1px 0 rgba(255,255,255,0.5);
+            margin-bottom: 5px;
+            letter-spacing: 3px;
+        }
+        
+        .forum-subtitle {
+            font-size: 14px;
+            color: #334155;
+            font-style: italic;
+        }
+        
+        /* 页面内容区域 */
+        .page-content {
+            padding: 20px;
+            min-height: calc(100vh - 160px);
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        /* 当前位置导航（搜索框已删除） */
+        .location-nav {
+            font-size: 13px;
+            color: #64748b;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        
+        .location-nav a {
+            color: #4a6fa5;                    /* 灰蓝色 */
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+        
+        .location-nav a:hover {
+            color: #3a5a87;
+            text-decoration: underline;
+        }
+        
+        /* 新闻内容框 - 灰蓝色边框，白底黑字 */
+        .news-content-box {
+            border: 2px solid #4a6fa5;          /* 灰蓝色边框 */
+            border-radius: 16px;                 /* 圆角 */
+            background-color: #ffffff;
+            color: #1e293b;
+            padding: 30px;
+            box-shadow: 0 8px 20px rgba(74, 111, 165, 0.08);
+        }
+        
+        /* 文章标题区域 */
+        .article-header {
+            margin-bottom: 25px;
+            border-bottom: 1px solid #e2e8f0;
+            padding-bottom: 20px;
+        }
+        
+        .article-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 8px;
+            line-height: 1.3;
+        }
+        
+        .article-subtitle {
+            font-size: 14px;
+            color: #4a6fa5;                    /* 灰蓝色 */
+            font-style: italic;
+        }
+        
+        /* 文章内容 */
+        .article-content {
+            line-height: 1.8;
+            font-size: 16px;
+        }
+        
+        .article-content p {
+            margin-bottom: 20px;
+            text-align: justify;
+            text-indent: 2em;
+        }
+        
+        .article-content h3 {
+            font-size: 18px;
+            font-weight: 700;
+            color: #1e293b;
+            margin: 25px 0 15px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        
+        /* 感谢信特殊样式 */
+        .letter-signature {
+            text-align: right;
+            font-style: italic;
+            margin-top: 40px;
+            color: #334155;
+        }
+        
+        .letter-date {
+            text-align: right;
+            margin-top: 10px;
+            color: #64748b;
+            font-size: 14px;
+        }
+        
+        /* 返回论坛按钮已删除，无需保留 */
+        
+        /* 页脚 */
+        .page-footer {
+            text-align: center;
+            padding: 15px;
+            color: #94a3b8;
+            font-size: 13px;
+            border-top: 1px solid #e2e8f0;
+            margin-top: 30px;
+        }
+    </style>
+</head>
+<body>
+    <!-- 顶部栏 -->
+    <div class="forum-header">
+        <div class="header-left">
+            <div class="header-title">论坛</div>
+        </div>
+        <button class="close-btn" onclick="closePage()">
+            <i class="fas fa-times"></i>
+            关闭窗口
+        </button>
+    </div>
+    
+    <!-- Logo版头 -->
+    <div class="forum-logo-header">
+        <div class="forum-name">七月半</div>
+        <div class="forum-subtitle">欢迎来到未知的世界</div>
+    </div>
+    
+    <!-- 页面内容 -->
+    <div class="page-content">
+        <!-- 当前位置导航（搜索框已删除） -->
+        <div class="location-nav">
+            <a href="forum.html">首页</a> &gt;&gt; 
+            <a href="#">灵异杂谈</a> &gt;&gt; 
+            捐助鸣谢 &gt;&gt; 
+            正文
+        </div>
+        
+        <!-- 新闻内容框 -->
+        <div class="news-content-box">
+            <!-- 文章标题区域 -->
+            <div class="article-header">
+                <h1 class="article-title">一封感谢信：承蒙厚爱，携手前行</h1>
+                <div class="article-subtitle">管理员上传</div>
+            </div>
+            
+            <!-- 文章内容 -->
+            <div class="article-content">
+                
+                <p>尊敬的各位论坛用户、所有关心我们的朋友们：</p>
+                
+                <p>自本论坛创立以来，我们致力于为大家提供一个友好交流、分享灵异见闻的开放平台。承蒙各位厚爱，论坛用户数量持续增长。然而，随着规模扩大，论坛运营所需的技术维护、服务器扩容及日常管理成本也远超初期预期，使我们逐渐感到力不从心。<strong>为维持论坛长期稳定运行，前段时期我们不得不发起求助，恳请各位用户予以支持。</strong></p>
+                
+                <p>令人感动的是，公告发出后短短数日内，我们便收到了大量来自用户的慷慨捐助。这让我们深刻体会到何谓"众人拾柴火焰高"，也重新坚定了我们继续运营下去的信心。</p>
+                
+                <p>在此，我们要特别向南鄣<strong>泰永集团</strong>致以最诚挚的谢意。贵集团的捐助数额之大、支持之迅速，完全出乎我们的意料，令我们备受鼓舞。泰永集团董事长<strong>张豪</strong>先生亲自与我们联络，不仅给予了实质性的帮助，还表达了对论坛存在价值的充分肯定。我们欣喜地得知，张豪先生本人亦是论坛的长期关注者，这份来自用户深处的认同，对我们而言无比珍贵。</p>
+                
+                <p>我们从未想过，一个始于兴趣的小小论坛，能收获如此多的关注与帮助。<strong>为了不辜负每一份支持，我们将在泰永集团的帮助下，系统性升级论坛的管理体系，打造更加稳定、友善、内容丰富的交流环境。</strong></p>
+                
+                <p>前路漫漫，携手同行。再次向所有伸出援手的用户、朋友以及泰永集团表示最深切的感谢。是你们的支持，让"七月半"得以继续承载大家的故事，继续点亮这片属于灵异文化爱好者的自由空间。</p>
+                
+                <div class="letter-signature">
+                    <p>七月半论坛管理团队 敬上</p>
+                </div>
+                
+                <div class="letter-date">
+                    <p>2024年 谨启</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 返回论坛按钮已删除 -->
+    </div>
+    
+    <!-- 页脚 -->
+    <div class="page-footer">
+        <p>© 七月半论坛 </p>
+    </div>
+    
+    <script>
+        // 关闭页面
+        function closePage() {
+            window.close();
+        }
+        
+        // 搜索功能已移除，因为搜索框已被删除
+        
+        // 初始化
+        window.onload = function() {
+            console.log('页面加载完成 - 感谢信杂谈页');
+        };
+    </script>
+</body>
+</html>

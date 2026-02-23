@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>“长生葬”活动顺利举行，外地游客纷至沓来 - 南鄣文明网</title>
+    <style>
+        /* ---------- 全局重置 无交互 ---------- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
+            background-color: #fff;
+            color: #222;
+            line-height: 1.6;
+            max-width: 1200px;         /* 加宽以适应右侧栏 */
+            margin: 0 auto;
+            padding: 20px 25px 40px;
+        }
+
+        /* 完全移除交互行为：所有指针默认，无下划线，无颜色变化 */
+        span, p, h1, h2, h3, .nav-item, .footer-text {
+            cursor: default;
+        }
+        
+        /* 确保弹窗按钮可以正常交互 */
+        #hb-chat-toast, #hb-chat-toast * {
+            cursor: auto;
+        }
+        
+        #hb-chat-toast .toast-btn {
+            cursor: pointer;
+        }
+
+        /* ---------- 南鄣文明网头部（纯文字） ---------- */
+        .baidu-header {
+            display: flex;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #e4e4e4;
+            margin-bottom: 15px;
+        }
+
+        .baidu-logo {
+            font-weight: bold;
+            font-size: 22px;
+            color: #3385ff;
+            margin-right: 25px;
+            letter-spacing: 1px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 24px;
+        }
+
+        .nav-item {
+            font-size: 15px;
+            color: #555;
+            text-decoration: none;  /* 无下划线 */
+            font-weight: 400;
+        }
+
+        /* ---------- 面包屑：当前位置 ---------- */
+        .breadcrumb {
+            font-size: 14px;
+            color: #888;
+            margin-bottom: 12px;
+            padding-bottom: 5px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        .breadcrumb span {
+            color: #666;
+        }
+
+        /* ---------- 文章头部 ---------- */
+        .article-header {
+            margin-bottom: 25px;
+        }
+
+        .article-title {
+            font-size: 30px;
+            font-weight: bold;
+            line-height: 1.4;
+            margin-bottom: 18px;
+            color: #1a1a1a;
+        }
+
+        .article-meta {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .publisher-info {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .publisher-name {
+            font-size: 16px;
+            color: #3385ff;          /* 南鄣文明网标识色 */
+            font-weight: 500;
+        }
+
+        .publish-date {
+            color: #999;
+            font-size: 14px;
+        }
+
+        /* ---------- 两列布局：左侧正文 + 右侧竖栏 ---------- */
+        .content-grid {
+            display: flex;
+            gap: 40px;
+            margin-top: 10px;
+            align-items: flex-start;
+        }
+
+        /* 左侧文章主区域 */
+        .article-main {
+            flex: 1;                /* 占据剩余宽度 */
+            min-width: 0;          /* 防止溢出 */
+        }
+
+        /* ---------- 文章内容样式 ---------- */
+        .article-content {
+            font-size: 18px;
+            line-height: 1.85;
+            color: #2c2c2c;
+        }
+
+        .article-content p {
+            margin-bottom: 24px;
+            text-indent: 2em;
+            letter-spacing: 0.3px;
+        }
+
+        /* ---------- 图片区域：固定比正文窄一圈 ---------- */
+        .article-image {
+            margin: 30px 0;
+            text-align: center;
+        }
+
+        .image-placeholder {
+            width: 85%;             /* 比左侧文章宽度窄15% */
+            max-width: 700px;       /* 最大宽度限制，确保不会过宽 */
+            height: auto;
+            min-height: 280px;
+            background-color: #f4f6f9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #6c757d;
+            font-size: 17px;
+            margin: 0 auto 12px;    /* 居中显示 */
+            border-radius: 8px;
+            border: 1px solid #eaeef2;
+            padding: 20px;
+            font-style: italic;
+            line-height: 1.5;
+            word-break: break-word;
+        }
+
+        .image-caption {
+            font-size: 14px;
+            color: #777;
+            text-align: center;
+            font-style: italic;
+            letter-spacing: 0.5px;
+            width: 85%;
+            margin: 0 auto;
+        }
+
+        /* 实际图片：保持原有结构，但可替换描述 */
+        .real-image {
+            width: 85%;
+            max-width: 700px;
+            border-radius: 8px;
+            border: 1px solid #eaeef2;
+            background-color: #f4f6f9;
+            display: block;
+            margin: 0 auto 12px;
+        }
+
+        /* ---------- 引用样式 ---------- */
+        .quote {
+            background-color: #f9f9f9;
+            border-left: 4px solid #c0cbd4;
+            padding: 20px 25px;
+            margin: 30px 0;
+            font-style: italic;
+            color: #4a4a4a;
+            line-height: 1.7;
+            font-size: 17px;
+        }
+
+        /* ---------- 右侧边栏（竖栏样式：竖线标题 + 纯文字） ---------- */
+        .sidebar {
+            width: 260px;
+            flex-shrink: 0;
+            background-color: #fafbfc;
+            padding: 22px 18px;
+            border-radius: 10px;
+            border: 1px solid #edf0f2;
+        }
+
+        .sidebar-section {
+            margin-bottom: 35px;
+        }
+
+        .sidebar-section:last-child {
+            margin-bottom: 0;
+        }
+
+        /* 竖着的文字效果：左边框竖线，模拟“竖栏标题” */
+        .sidebar-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #2c3e50;
+            border-left: 6px solid #3385ff;   /* 醒目的竖线 */
+            padding-left: 14px;
+            line-height: 1.3;
+            margin-bottom: 20px;
+            letter-spacing: 0.8px;
+        }
+
+        .rec-list, .topic-list {
+            list-style: none;
+            padding-left: 6px;
+        }
+
+        .rec-list li, .topic-list li {
+            font-size: 15px;
+            color: #444;
+            padding: 10px 0 10px 10px;
+            border-bottom: 1px dashed #e2e6e9;
+            line-height: 1.5;
+            transition: none;       /* 无交互 */
+            cursor: default;
+        }
+
+        .rec-list li:last-child, .topic-list li:last-child {
+            border-bottom: none;
+        }
+
+        /* 纯文字，不加任何链接样式 */
+        .rec-list li span, .topic-list li span {
+            color: #444;
+            text-decoration: none;
+        }
+
+        /* ---------- 底部版权信息 ---------- */
+        .site-footer {
+            margin-top: 55px;
+            padding-top: 28px;
+            border-top: 2px solid #e9ecef;
+            font-size: 15px;
+            color: #5e6870;
+            text-align: center;
+            background-color: #fff;
+        }
+
+        .footer-text {
+            line-height: 1.9;
+            word-spacing: 4px;
+            color: #5a626b;
+        }
+
+        .footer-text span {
+            margin: 0 6px;
+            color: #4f5b66;
+        }
+
+        /* 移除所有悬停效果、指针变化 */
+        .nav-item:hover,
+        .rec-list li:hover,
+        .topic-list li:hover,
+        .sidebar-title:hover,
+        .footer-text:hover {
+            color: inherit;
+            background-color: transparent;
+            text-decoration: none;
+            cursor: default;
+        }
+
+        /* 响应式优化：小屏幕时右侧栏移到下方 */
+        @media (max-width: 900px) {
+            .content-grid {
+                flex-direction: column;
+            }
+            .sidebar {
+                width: 100%;
+                margin-top: 30px;
+            }
+            .article-image .image-placeholder,
+            .real-image {
+                width: 95%;
+            }
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 15px 15px;
+            }
+            .article-title {
+                font-size: 26px;
+            }
+            .article-content {
+                font-size: 17px;
+            }
+            .baidu-header {
+                flex-wrap: wrap;
+            }
+            .nav-links {
+                margin-top: 8px;
+                gap: 18px;
+            }
+        }
+
+        /* 完全移除a标签作用——本页面已无任何链接 */
+        a, .follow-btn {
+            display: none;
+        }
+        
+        /* 确保弹窗按钮可以正常显示 */
+        #hb-chat-toast button, #hb-center-modal button {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <!-- 南鄣文明网头部（纯文字导航） -->
+    <div class="baidu-header">
+        <div class="baidu-logo">南鄣文明网</div>
+        <div class="nav-links">
+            <span class="nav-item">首页</span>
+            <span class="nav-item">国内</span>
+            <span class="nav-item">国际</span>
+            <span class="nav-item">社会</span>
+            <span class="nav-item">财经</span>
+            <span class="nav-item">科技</span>
+        </div>
+    </div>
+
+    <!-- 当前位置：面包屑 -->
+    <div class="breadcrumb">
+        <span>南鄣文明网</span> ＞ <span>民俗</span> ＞ <span>正文</span>
+    </div>
+
+    <!-- 文章头部信息：替换为长生葬报道 -->
+    <div class="article-header">
+        <h1 class="article-title">“长生葬”活动顺利举行，外地游客纷至沓来</h1>
+        <div class="article-meta">
+            <div class="publisher-info">
+                <span class="publisher-name"> 记者：明月夜</span>
+                <span class="publish-date">2026年2月24日 09:16</span>
+            </div>
+            <!-- 无关注按钮，纯文本 -->
+        </div>
+    </div>
+
+    <!-- 核心：两列布局 -->
+    <div class="content-grid">
+        <!-- 左侧：正文主体（完整替换为“长生葬”新闻稿） -->
+        <div class="article-main">
+            <div class="article-content">
+                <p>2月21日，一场别开生面的葬礼在千福县云留山举行，吸引了来自省内外千余名游客的目光。对他们而言，这不仅是一场仪式，更是一次难得的民俗文化体验。</p>
+                
+                <p>此前，本报记者曾对千福县昌运村的长寿老人进行过深度采访，从他们口中，我们第一次听说了“长生葬”——一种在当地流传已久的“活葬”仪式。原本只是村中老人为祈求福寿绵长而举行的传统活动，近年来，随着宣传力度的加大，逐渐演变为一项独具特色的民俗盛事，吸引了不少外地游客专程前来观摩。</p>
+                
+                <p>“葬礼”自古以来便是人生中最为庄重的仪式之一，承载着丰富的文化内涵与民俗传统。而在南鄣这片神俗文化交汇的土地上，祭葬的形式更是千姿百态、意蕴深远。长生葬以其独特的“生者葬仪”形式，让人暂时忘却死亡的沉重，转而专注于仪式背后的玄妙与深意。</p>
+
+                <p>“昨天和朋友专程赶来参加这个活动，现场氛围特别好，大家都沉浸其中，甚至有种不想离开的感觉。”来自河南的温小姐说，这是她第一次在深山中见证如此盛大的葬礼。她坦言，置身于巍峨神像的注视之下，仿佛整个人的灵魂都得到了洗涤。</p>
+
+                <p>“长生葬”仪式持续了三日。最后一日清晨，数百名游客齐聚神像之下，虔诚跪拜。当那口紧闭三日的棺椁被缓缓打开，85岁的昌运村村长刘福来从棺中安然坐起，现场顿时爆发出雷鸣般的欢呼。整整三天三夜，不吃不喝，老人脸上却焕发出异样的神采，精神矍铄，仿佛年轻了数十岁。这一幕，被在场所有人视为“长生葬”圆满成功的象征。</p>
+                
+                <p>受到氛围的感染，就连在场的记者们都忍不住为之动容，流下欣喜的泪水。那一刻，仿佛每个人都与这座山、这片土地产生了一种难以言喻的联结，仿佛能听见来自远方的呼唤，感受到灵魂深处的共鸣。</p>
+                
+                <p>仪式尾声，刘福来亲自登上祭坛，与游客们亲切交流。他肯定了大家的虔诚之心，也感谢众人为云留山带来新的血液。</p>
+                
+                <p>我们有理由相信，这样的仪式将会吸引越来越多的人走进云留山，走进这片被神像注视的土地，去感受那份来自古老传统的召唤。</p>
+            </div>
+        </div>
+
+        <!-- 右侧竖栏：相关推荐 + 专题栏目 (内容替换为与长生葬/云留山相关) -->
+        <div class="sidebar">
+            <!-- 相关推荐模块 -->
+            <div class="sidebar-section">
+                <div class="sidebar-title">相关推荐</div>
+                <ul class="rec-list">
+                    <li><span>· 云留山“活葬”：生者如何骗过无常</span></li>
+                    <li><span>· 南鄣民俗志：从葬礼看生死边界</span></li>
+                </ul>
+            </div>
+            <!-- 专题栏目模块 -->
+            <div class="sidebar-section">
+                <div class="sidebar-title">专题栏目</div>
+                <ul class="topic-list">
+                    <li><span>· 神俗交汇 · 活葬文化</span></li>
+                    <li><span>· 云留山 · 隐世密码</span></li>
+                    <li><span>· 敬畏自然 · 民间信仰</span></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- 底部版权信息（保留原样，仅做游戏展示） -->
+    <div class="site-footer">
+        <div class="footer-text">
+            制作单位：南鄣文明网股份有限公司  版权所有：南鄣市人民政府  合作伙伴：南鄣泰永集团
+        </div>
+        <div class="footer-text" style="margin-top: 12px; font-size: 14px; color: #8a939b;">
+            © 南鄣文明网 · 民俗专题 · 仅用于解密游戏展示
+        </div>
+    </div>
+
+    <!-- 无任何脚本，无交互链接 -->
+
+<style>
+#hb-chat-toast {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    background: rgba(32, 32, 32, 0.95);
+    color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.4);
+    padding: 20px 15px 15px;
+    width: 300px;
+    z-index: 9999;
+    display: none;
+    border: 1px solid rgba(255,255,255,0.1);
+    animation: hbSlideIn 0.3s ease-out;
+    backdrop-filter: blur(10px);
+}
+@keyframes hbSlideIn {
+    from { transform: translateY(20px); opacity: 0; }
+    to   { transform: translateY(0);    opacity: 1; }
+}
+#hb-chat-toast .toast-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+#hb-chat-toast .toast-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #fff;
+    font-weight: bold;
+    font-size: 14px;
+}
+#hb-chat-toast .toast-title i { color: #4CAF50; font-size: 18px; }
+#hb-chat-toast .toast-close {
+    background: none; border: none; color: #aaa;
+    font-size: 16px; cursor: pointer; transition: color 0.2s;
+}
+#hb-chat-toast .toast-close:hover { color: #fff; }
+#hb-chat-toast .toast-body {
+    color: rgba(255,255,255,0.9);
+    font-size: 14px;
+    line-height: 1.5;
+    margin-bottom: 15px;
+}
+#hb-chat-toast .toast-btns {
+    display: flex;
+    gap: 10px;
+}
+#hb-chat-toast .toast-btn {
+    flex: 1;
+    padding: 8px 15px;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.2s;
+}
+#hb-chat-toast .toast-btn.later {
+    background: rgba(60,60,60,0.8);
+    color: #e0e0e0;
+    border: 1px solid #444;
+}
+#hb-chat-toast .toast-btn.later:hover { border-color: #8b0000; color: #8b0000; }
+#hb-chat-toast .toast-btn.open {
+    background: #4CAF50;
+    color: white;
+    font-weight: bold;
+}
+#hb-chat-toast .toast-btn.open:hover { background: #3d8b40; }
+
+/* 中间弹窗样式 */
+#hb-center-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    z-index: 10000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+}
+#hb-center-modal .modal-content {
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+    padding: 40px;
+    max-width: 500px;
+    width: 90%;
+    text-align: center;
+    animation: hbModalFadeIn 0.3s ease-out;
+}
+@keyframes hbModalFadeIn {
+    from { opacity: 0; transform: scale(0.9); }
+    to   { opacity: 1; transform: scale(1); }
+}
+#hb-center-modal .modal-title {
+    font-size: 24px;
+    font-weight: bold;
+    color: #222;
+    margin-bottom: 20px;
+}
+#hb-center-modal .modal-text {
+    font-size: 16px;
+    color: #333;
+    line-height: 1.6;
+    margin-bottom: 30px;
+}
+#hb-center-modal .modal-btn {
+    background: #4CAF50;
+    color: white;
+    border: none;
+    padding: 12px 30px;
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.2s;
+    margin: 0 auto;
+    display: block;
+}
+#hb-center-modal .modal-btn:hover {
+    background: #3d8b40;
+}
+</style>
+
+<div id="hb-chat-toast">
+    <div class="toast-header">
+        <div class="toast-title">
+            <i class="fas fa-comment-dots"></i>
+            聊天软件通知
+        </div>
+        <button class="toast-close" id="hb-toast-close"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="toast-body">明烛天青发来了新消息</div>
+    <div class="toast-btns">
+        <button class="toast-btn later" id="hb-toast-later">稍后</button>
+        <button class="toast-btn open" id="hb-toast-open">查看消息</button>
+    </div>
+</div>
+
+<!-- 中间弹窗 -->
+<div id="hb-center-modal">
+    <div class="modal-content">
+        <div class="modal-title">恭喜！您完成了此次调查！</div>
+        <div class="modal-text">
+            此为结局四【同化】。本游戏一共有五种结局。建议从"万家地图"页面开始，尝试做出不同的选择。<br><br>
+            如果您喜欢本游戏，还请帮忙宣传，感谢！
+        </div>
+        <button class="modal-btn" id="hb-modal-close">确定</button>
+    </div>
+</div>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<script>
+    (function() {
+        try {
+            // 检查是否首次访问
+            var toastKey = 'endnew_tonghua_toast_shown';
+            if (!localStorage.getItem(toastKey)) {
+                localStorage.setItem(toastKey, 'true');
+                setTimeout(function() {
+                    document.getElementById('hb-chat-toast').style.display = 'block';
+                }, 1500);
+            }
+
+            // 关闭提示窗
+            document.getElementById('hb-toast-close').addEventListener('click', function() {
+                document.getElementById('hb-chat-toast').style.display = 'none';
+            });
+            document.getElementById('hb-toast-later').addEventListener('click', function() {
+                document.getElementById('hb-chat-toast').style.display = 'none';
+            });
+
+            // 打开中间弹窗
+            document.getElementById('hb-toast-open').addEventListener('click', function() {
+                document.getElementById('hb-chat-toast').style.display = 'none';
+                document.getElementById('hb-center-modal').style.display = 'flex';
+            });
+
+            // 关闭中间弹窗
+            document.getElementById('hb-modal-close').addEventListener('click', function() {
+                document.getElementById('hb-center-modal').style.display = 'none';
+            });
+
+            // 点击弹窗外部关闭
+            document.getElementById('hb-center-modal').addEventListener('click', function(e) {
+                if (e.target === this) {
+                    this.style.display = 'none';
+                }
+            });
+        } catch(e) {
+            console.error('提示窗功能初始化失败:', e);
+        }
+    })();
+</script>
+</body>
+</html>

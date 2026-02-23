@@ -1,0 +1,193 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>管理页面 · 线上档案记录</title>
+    <style>
+        /* 全局黑底，无滚动条，固定一页 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100vh;
+            overflow: hidden;        /* 固定一页，完全无滚动条 */
+            background-color: black;
+            font-family: "Courier New", monospace, "Microsoft YaHei", sans-serif;
+            position: relative;
+        }
+
+        /* 秘密数据滤镜层：半透明红色网格+微弱杂色，营造隐秘感 */
+        body::after {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;      /* 不干扰点击 */
+            background: repeating-linear-gradient(45deg, rgba(255, 0, 0, 0.02) 0px, rgba(255, 0, 0, 0.02) 2px, transparent 2px, transparent 8px);
+            z-index: 10;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            padding: 20px 20px 0 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* 页面主标题 — 全红字体，居中，并向下移动 */
+        .page-title {
+            color: #ff3333;
+            font-size: 32px;
+            font-weight: bold;
+            letter-spacing: 8px;
+            text-shadow: 0 0 8px rgba(255, 0, 0, 0.7);
+            margin-bottom: 28px;        /* 增大下边距，使标题下移 */
+            border-bottom: 1px solid #a00;
+            padding-bottom: 12px;
+            text-align: center;         /* 居中对齐 */
+            flex-shrink: 0;
+            margin-top: 15px;           /* 额外下移 */
+        }
+
+        /* 表格容器：控制整体下移，并让表格变窄居中 */
+        .table-wrapper {
+            width: 100%;
+            flex: 1;
+            overflow: visible;
+            display: flex;
+            justify-content: center;    /* 水平居中 */
+            align-items: flex-start;    /* 顶部对齐，表格本身已有margin-top下移 */
+            margin-top: 15px;           /* 表格整体下移 */
+        }
+
+        /* 表格样式：纯红线条，红字，变窄居中 */
+        table {
+            width: 85%;                /* 变窄，两侧留空 */
+            max-width: 1300px;        /* 最大宽度限制 */
+            border-collapse: collapse;
+            color: #ff4444;
+            border: 2px solid #b00;
+            font-size: 16px;
+            background-color: black;
+            table-layout: fixed;       /* 固定布局，列宽平均 */
+            word-break: break-word;
+            margin: 0 auto;           /* 额外居中保障 */
+        }
+
+        th, td {
+            border: 1px solid #e60012;  /* 红色边框 */
+            padding: 10px 6px;         /* 增加垂直内边距，方便居中 */
+            text-align: center;        /* 水平居中 */
+            vertical-align: middle;    /* 垂直居中 */
+            color: #ff6666;
+            background-color: black;
+            font-weight: normal;
+        }
+
+        th {
+            color: #ffa0a0;
+            font-weight: bold;
+            background-color: #1a0000;   /* 深红黑背景 */
+            border-bottom: 2px solid #c00;
+            letter-spacing: 2px;
+        }
+
+        /* 所有单元格文字都居中（包括表头） */
+        th {
+            text-align: center;
+        }
+
+        /* 空单元格占位（实际上我们不再有空单元格，全部填***，但保留样式以防万一） */
+        td:empty::before {
+            content: " ";
+            white-space: pre;
+        }
+
+        /* 数据行通用颜色 */
+        .data-row {
+            color: #ff7777;
+        }
+
+        /* 自适应：窄屏时表格宽度仍保持90%左右 */
+        @media (max-width: 900px) {
+            table {
+                width: 95%;
+            }
+            .page-title {
+                font-size: 28px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="page-title">管理 · 线上档案记录</div>
+    <div class="table-wrapper">
+        <table id="archiveTable">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>姓名</th>
+                    <th>生辰八字</th>
+                    <th>档案编号</th>
+                    <th>记录人</th>
+                </tr>
+            </thead>
+            <tbody id="tableBody">
+                <!-- 由JS动态生成50行，前三行固定数据，后47行全部填"***" -->
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        (function() {
+            const tbody = document.getElementById('tableBody');
+            if (!tbody) return;
+
+            const TOTAL_ROWS = 50;
+            // 前三行数据（严格按图示）
+            const firstThreeRows = [
+                { id: '一线牵', name: '***', birth: '2003.04.25', fileNo: 'ymx20250719', recorder: '管理员' },
+                { id: '温水青', name: '温妍', birth: '2003.12.13', fileNo: '等待上传', recorder: '一线牵' },
+                { id: '破折号', name: '杨薇', birth: '2006.07.03', fileNo: 'yw20260128', recorder: '管理员' }
+            ];
+
+            tbody.innerHTML = '';
+
+            for (let i = 0; i < TOTAL_ROWS; i++) {
+                const tr = document.createElement('tr');
+                
+                if (i < firstThreeRows.length) {
+                    // 前三行：填充真实数据
+                    const data = firstThreeRows[i];
+                    tr.appendChild(createCell(data.id));
+                    tr.appendChild(createCell(data.name));
+                    tr.appendChild(createCell(data.birth));
+                    tr.appendChild(createCell(data.fileNo));
+                    tr.appendChild(createCell(data.recorder));
+                } else {
+                    // 后47行：全部填充 "***"
+                    for (let j = 0; j < 5; j++) {
+                        tr.appendChild(createCell('***'));   // 每个单元格都是 ***
+                    }
+                }
+                tbody.appendChild(tr);
+            }
+
+            // 辅助函数：生成带文本内容的td
+            function createCell(text) {
+                const td = document.createElement('td');
+                td.textContent = text;
+                return td;
+            }
+        })();
+    </script>
+</body>
+</html>

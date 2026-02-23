@@ -1,0 +1,349 @@
+﻿<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>论坛 · 男朋友家附近有个巨大的神像</title>
+    <!-- Font Awesome 6 (免费线条图标) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #f0f2f5;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            padding: 20px 12px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* 帖子卡片容器 — 宽度稍微加宽 (原600px → 650px) */
+        .post-container {
+            max-width: 650px;
+            width: 100%;
+            background-color: #ffffff;
+            border-radius: 18px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            padding: 16px 0 12px 0;
+        }
+
+        /* 标题区 */
+        .post-header {
+            padding: 0 16px 12px 16px;
+            border-bottom: 1px solid #e9e9e9;
+        }
+
+        .post-title {
+            font-size: 22px;
+            font-weight: 700;
+            color: #1c1e21;
+            line-height: 1.3;
+            margin-bottom: 6px;
+        }
+
+        .post-meta {
+            font-size: 13px;
+            color: #8a8f99;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .post-meta i {
+            margin-right: 4px;
+        }
+
+        /* 楼层通用样式 */
+        .floor-item {
+            padding: 14px 16px 12px 16px;
+            border-bottom: 1px solid #f0f0f0;
+            position: relative;
+            background-color: #ffffff;
+        }
+
+        .floor-header {
+            display: flex;
+            align-items: baseline;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .floor-number {
+            font-weight: 600;
+            color: #385898;       /* 淡淡的蓝色，模仿论坛链接色 */
+            margin-right: 8px;
+        }
+
+        .floor-username {
+            color: #8a8f99;
+            font-size: 13px;
+        }
+
+        /* 楼主特殊标记 */
+        .floor-header .is-op {
+            background-color: #e7f3ff;
+            color: #1877f2;
+            font-size: 12px;
+            font-weight: 600;
+            padding: 2px 8px;
+            border-radius: 12px;
+            margin-left: 6px;
+            display: inline-block;
+        }
+
+        .floor-content {
+            font-size: 15px;
+            line-height: 1.5;
+            color: #1c1e21;
+            word-break: break-word;
+            margin-right: 70px;      /* 为右侧点赞留出空间 */
+        }
+
+        /* 引用/回复特殊样式 */
+        .floor-content .reply-to {
+            color: #385898;
+            font-weight: 500;
+            background-color: #f2f3f5;
+            padding: 2px 6px;
+            border-radius: 6px;
+            font-size: 13px;
+            display: inline-block;
+            margin-right: 4px;
+        }
+
+        /* 链接样式 */
+        .floor-content a {
+            color: #1877f2;
+            text-decoration: underline;
+            font-weight: 500;
+            word-break: break-all;
+            cursor: pointer;
+        }
+
+        .floor-content a:hover {
+            color: #0d5ab9;
+        }
+
+        /* 右下角点赞区域 */
+        .like-area {
+            position: absolute;
+            bottom: 12px;
+            right: 16px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: #8a8f99;
+            font-size: 14px;
+            background-color: #ffffff;
+            padding-left: 8px;
+        }
+
+        .like-icon {
+            font-size: 18px;
+            color: #8a8f99;
+            transition: color 0.1s;
+            cursor: default;
+        }
+
+        .like-count {
+            font-weight: 500;
+            color: #4b4f5c;
+        }
+
+        /* 模拟链接样式（但已改用真实a标签，保留类用于装饰） */
+        .demo-link {
+            color: #1877f2;
+            text-decoration: underline;
+        }
+
+        /* 回复引用的底色 */
+        .reply-context {
+            background-color: #f2f3f5;
+            border-radius: 12px;
+            padding: 4px 10px;
+            margin-top: 8px;
+            font-size: 14px;
+            color: #4b4f5c;
+            display: inline-block;
+        }
+
+        hr {
+            border: none;
+            border-top: 1px solid #e9e9e9;
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+
+<div class="post-container">
+    <!-- 头部：标题 + 楼主信息 -->
+    <div class="post-header">
+        <div class="post-title">男朋友家附近有个巨大的神像</div>
+        <div class="post-meta">
+            <span><i class="far fa-user-circle"></i> 楼主</span>
+            <span><i class="far fa-clock"></i> 2025-02-15 22:34</span>
+        </div>
+    </div>
+
+    <!-- 楼层列表 -->
+    <div class="thread-list" id="floorList"></div>
+</div>
+
+<script>
+    (function() {
+        // 原始楼层数据
+        const floorsData = [
+            { type: 'op', floor: '楼主 1楼', content: '过年跟男朋友回他老家，第一次来，在大山深处，七拐八绕总算到了。来了才发现这山不简单，属于未开发区，除了本地人，外来游客一律禁入，还有政府的人把守，挺严格的，搞得我还有点小紧张哈哈哈' },
+            { type: 'normal', floor: '2楼', content: '南鄣啊，那不奇怪' },
+            { type: 'op', floor: '楼主 3楼', content: '离我住的地方不远，有尊巨——大的神像，不知道是哪路神仙，得有半座山高，嵌在山壁里。刚来的时候走盘山公路，慢慢靠近，从下往上看，简直遮天蔽日，震撼到失语。' },
+            { type: 'normal', floor: '4楼', content: '跟乐山大佛似的？' },
+            { type: 'op', floor: '楼主 5楼', content: '比那大多了！我从来没见过这么高大的神像。可惜在山里，路不好走，只能远远看着，不然高低得去拜拜。' },
+            { type: 'normal', floor: '6楼', content: '吹牛吧？这么牛的东西咋从来没听说过？知道是哪位神仙吗？' },
+            { type: 'op', floor: '楼主 7楼', content: '我刚问了男朋友，他就说什么“天尊”之类的，没多问，才说几句，他爸妈就朝神像方向拜了拜，还让我也跟着拜，求保佑。估计是他们这儿有名的神，都信这个。' },
+            { type: 'normal', floor: '8楼', content: '南鄣这边叫“天尊”的神仙可多了，楼主说个具体位置，我帮你猜猜看。' },
+            { type: 'op', floor: '楼主 9楼', content: '我在千福县，具体哪座山忘了，今晚已经躺下了，等我明天我打听一下。', extra: '回复8楼' },
+            { type: 'normal', floor: '10楼', content: '千福县？那儿的深山老林可不少，你说未开发，那估计是彭越公园、隅山或者云留山，就这三个地方。' },
+            { type: 'normal', floor: '11楼', content: '我更想知道楼主用的啥手机卡，大山里居然有信号？' },
+            { type: 'op', floor: '楼主 12楼', content: '今天早上问清楚了，就是云留山。正好今天要去那边上坟，我打算偷偷拍几张照片，嘿嘿' },
+            { type: 'normal', floor: '13楼', content: '可以可以，坐等' },
+            { type: 'normal', floor: '14楼', content: '赶紧还是要对神明要敬畏之心，最好别乱拍。' },
+            { type: 'normal', floor: '15楼', content: '楼主拍照了没？' },
+            { type: 'op', floor: '楼主 16楼', content: '我已经在神像附近了，发生了一件特别奇怪的事，太不可思议了，等我捋一捋。' },
+            { type: 'op', floor: '楼主 17楼', content: '刚才男朋友一家拜祖宗，我趁他们没注意，想用手机拍远处的神像，结果不知道咋回事，拍不出来！' },
+            { type: 'normal', floor: '18楼', content: '什么意思？拍不到吗？' },
+            { type: 'op', floor: '楼主 19楼', content: '超级奇怪！第一张拍出来全黑，啥也看不见。我以为没调好，又拍了第二张，结果摄像头直接坏了！' },
+            { type: 'normal', floor: '20楼', content: '你用的啥手机？换个设备试试？' },
+            { type: 'normal', floor: '21楼', content: '哎，这么神奇？我可好奇了，到底哪里的神像？' },
+            { type: 'op', floor: '楼主 22楼', content: '不行了，我刚才被吓到，反应太大，男朋友发现我了，没机会再拍了。', extra: '回复20楼' },
+            { type: 'normal', floor: '23楼', content: '我听说神像都是有灵性的，不能随便拍，算大不敬' },
+            { type: 'normal', floor: '24楼', content: '拉倒吧，没听过这说法，网上多少人拍神像，也没见谁出问题啊。' },
+            { type: 'normal', floor: '25楼', content: '真出问题人早没了，还能托梦告诉你不成？', extra: '回复24楼' },
+            { type: 'normal', floor: '26楼', content: '神像长啥样啊？' },
+            { type: 'op', floor: '楼主 27楼', content: '嗯，应该是女神像，看衣服像道教的神仙，坐着的。眼睛上蒙了块红布，不知道啥意思。虽然隔得远，但材质好像不是普通石头，灰黑色？说不清，特别精细，跟真的似的。' },
+            { type: 'normal', floor: '28楼', content: '奇怪，这种造型的女神，按理说应该有名字啊。' },
+            { type: 'normal', floor: '29楼', content: '有时间查查《南鄣民俗志》，看有没有记载。' },
+            { type: 'op', floor: '楼主 30楼', content: '你们真该亲眼看看，那神像身上还披着宝幡，可壮观了。可能因为太大太高了，看着心里发毛，算是理解为什么会有人崇拜了。' },
+            { type: 'normal', floor: '31楼', content: '神神叨叨的，楼主不会是旅游社的托吧，拿这个当噱头发展生意呢' },
+            { type: 'normal', floor: '32楼', content: '更像是编故事，谁家搞旅游选这种未开发区？' },
+            { type: 'normal', floor: '33楼', content: '管他呢，我还真想看看那个神像什么样子，楼主还在吗？能不能给个具体地址？我也是南鄣人，有空想去看看。' },
+            { type: 'normal', floor: '34楼', content: '兄弟这么猛？封禁区也敢去？' },
+            { type: 'normal', floor: '35楼', content: '我们驴友就是这样，越是封禁的地方就越有挑战性，大不了罚款，不在怕的' },
+            { type: 'op', floor: '楼主 36楼', content: '行，我试试……我用导航定了个位，不一定准，你们看看。\n*链接：万家地图' },
+            { type: 'normal', floor: '37楼', content: '这地方真够偏的，真有人去？不怕迷路？' },
+            { type: 'normal', floor: '38楼', content: '按楼主说的，更可能遇到啥神神鬼鬼的吧哈哈哈' },
+            { type: 'normal', floor: '39楼', content: '我也想去，有没有人组队？最近闲得慌' },
+            { type: 'normal', floor: '40楼', content: '我可以！' },
+            { type: 'normal', floor: '41楼', content: '想来的都私信我，大家一起组个团，人多力量大。' },
+            { type: 'normal', floor: '42楼', content: '哎，太刑了，你们自求多福吧。' },
+            { type: 'normal', floor: '43楼', content: '去的几位记得回来发帖，看看那神像到底啥样，能不能拍下来。' },
+            { type: 'normal', floor: '44楼', content: '蹲后续' },
+            { type: 'normal', floor: '45楼', content: '一个月了都' },
+            { type: 'normal', floor: '46楼', content: '这么久了怎么还没消息？' }
+        ];
+
+        // 随机生成点赞数 (5~54)
+        function randomLikes() {
+            return Math.floor(Math.random() * 50) + 5;
+        }
+
+        const container = document.getElementById('floorList');
+
+        floorsData.forEach((item, index) => {
+            const floorDiv = document.createElement('div');
+            floorDiv.className = 'floor-item';
+
+            // 头部
+            const headerDiv = document.createElement('div');
+            headerDiv.className = 'floor-header';
+            const floorSpan = document.createElement('span');
+            floorSpan.className = 'floor-number';
+            floorSpan.textContent = item.floor;
+            headerDiv.appendChild(floorSpan);
+
+            if (item.type === 'op') {
+                const opBadge = document.createElement('span');
+                opBadge.className = 'is-op';
+                opBadge.textContent = '楼主';
+                headerDiv.appendChild(opBadge);
+            }
+            floorDiv.appendChild(headerDiv);
+
+            // 内容区域
+            const contentDiv = document.createElement('div');
+            contentDiv.className = 'floor-content';
+
+            // 处理回复引用
+            if (item.extra) {
+                const replySpan = document.createElement('span');
+                replySpan.className = 'reply-to';
+                replySpan.textContent = `回复 ${item.extra} :`;
+                contentDiv.appendChild(replySpan);
+                contentDiv.appendChild(document.createTextNode(' '));
+            }
+
+            // 特殊处理第36楼（楼主 36楼）使其包含可点击链接
+            if (item.floor === '楼主 36楼') {
+                // 拆分为两部分：前半段文字 + 链接
+                const beforeText = '行，我试试……我用导航定了个位，不一定准，你们看看。\n';
+                // 创建链接元素
+                const link = document.createElement('a');
+                link.href = 'zhangyinshanu.html';      // 跳转目标
+                link.target = '_self';                  // 当前页面打开
+                link.className = 'demo-link';
+                link.textContent = '📎 万家地图';
+                // 将文字和链接放入内容
+                contentDiv.appendChild(document.createTextNode(beforeText));
+                contentDiv.appendChild(link);
+            } else {
+                // 普通楼层直接设置文本
+                contentDiv.textContent = item.content;
+            }
+
+            floorDiv.appendChild(contentDiv);
+
+            // 右下角点赞
+            const likeArea = document.createElement('div');
+            likeArea.className = 'like-area';
+            likeArea.innerHTML = `<i class="far fa-heart like-icon"></i><span class="like-count">${randomLikes()}</span>`;
+            floorDiv.appendChild(likeArea);
+
+            container.appendChild(floorDiv);
+        });
+
+        // 额外处理：给9楼、22楼、25楼添加回复标记（因为extra内容已在文本中，但为了美观加上回复样式）
+        // 这些楼层内容里已经包含了“回复xx”字样，但我们可以用span包装使样式一致。
+        // 通过索引定位（9楼索引8, 22楼索引21, 25楼索引24）
+        const allFloors = document.querySelectorAll('.floor-item');
+        const extraIndices = [8, 21, 24];
+        extraIndices.forEach(idx => {
+            if (allFloors[idx]) {
+                const floor = allFloors[idx];
+                const contentDiv = floor.querySelector('.floor-content');
+                if (contentDiv && floorsData[idx] && floorsData[idx].extra) {
+                    const extraText = floorsData[idx].extra;
+                    // 原文本内容可能包含“回复xx”字样，但我们重新构造：去掉原文本，用span包裹
+                    // 简便：直接替换innerHTML，保留原文本但套上span
+                    let originalText = contentDiv.textContent;
+                    // 如果originalText以“回复”开头，直接包装；否则不处理
+                    if (originalText.includes(`回复${extraText}`) || originalText.includes(`回复 ${extraText}`)) {
+                        // 替换第一个出现的“回复xx”部分
+                        const regex = new RegExp(`(回复\\s*${extraText}\\s*)`);
+                        const newHtml = originalText.replace(regex, '<span class="reply-to">$1</span> ');
+                        contentDiv.innerHTML = newHtml;
+                    }
+                }
+            }
+        });
+
+    })();
+</script>
+
+</body>
+</html>

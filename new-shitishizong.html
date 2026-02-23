@@ -1,0 +1,355 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>女大学生遗体离奇失踪，家属悬赏20万- 热点关注</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Microsoft YaHei", "SimHei", sans-serif;
+            background-color: #f4f5f7;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* 顶部导航栏 */
+        .top-nav {
+            background-color: #e60012;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+        }
+
+        .hot-focus {
+            color: #fff;
+            font-size: 16px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 6px;  /* 图标与文字间距 */
+        }
+
+        .nav-links {
+            display: flex;
+            margin-left: auto;
+            gap: 25px;
+        }
+
+        .nav-links a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        /* 第二导航栏 */
+        .second-nav {
+            background-color: #fff;
+            border-bottom: 1px solid #e0e0e0;
+            padding: 10px 20px;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .second-nav a {
+            color: #666;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        /* 主内容区 */
+        .content-container {
+            max-width: 900px;
+            margin: 20px auto;
+            background-color: #fff;
+            padding: 30px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        /* ----- 粘性标题栏 (滚动固定) ----- */
+        .article-title {
+            position: sticky;
+            top: 0;
+            background: #fff;
+            z-index: 200;
+            text-align: center;
+            font-size: 28px;
+            font-weight: bold;
+            color: #222;
+            margin: 0 0 20px 0;
+            padding: 15px 0 10px;
+            line-height: 1.4;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+            border-bottom: 1px solid #f0f0f0;
+            transition: box-shadow 0.2s;
+        }
+
+        .article-meta {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            color: #999;
+            font-size: 14px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eee;
+            margin-bottom: 25px;
+        }
+
+        .article-content {
+            font-size: 18px;
+            line-height: 1.8;
+        }
+
+        .article-content p {
+            margin-bottom: 22px;
+            text-indent: 2em;
+        }
+
+        /* ----- 图片区域：比正文窄一圈，绝不溢出 ----- */
+        .article-image {
+            margin: 25px 0;
+            text-align: center;
+        }
+
+        /* 真实图片样式——固定比文字窄，居中，圆角，轻边框 */
+        .article-image img {
+            width: 85%;              /* 窄于正文 */
+            max-width: 700px;        /* 避免过大，与原占位符一致 */
+            height: auto;
+            display: block;
+            margin: 0 auto 10px;     /* 水平居中，下方留白 */
+            border-radius: 6px;
+            border: 1px solid #eaeef2;
+            background-color: #f9f9f9; /* 图片加载前后占位 */
+        }
+
+        /* 图片下方说明文字同样窄于正文 */
+        .image-caption {
+            font-size: 14px;
+            color: #666;
+            text-align: center;
+            width: 85%;
+            margin: 0 auto;
+            font-style: italic;
+        }
+
+        /* 底部操作栏 */
+        .article-footer {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .share-icons, .report-icon, .comments-section {
+            display: flex;
+            align-items: center;
+        }
+
+        .icon-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-right: 25px;
+            color: #666;
+            font-size: 12px;
+            cursor: pointer;        /* 可点击但无交互 */
+        }
+
+        .icon-item i {
+            font-size: 20px;
+            margin-bottom: 5px;
+        }
+
+        .report-icon .icon-item {
+            margin-right: 0;
+            cursor: pointer;
+        }
+
+        .comments-section {
+            color: #e60012;
+            font-size: 14px;
+            cursor: pointer;        /* 手型，点击无跳转 */
+        }
+
+        /* 新浪页面底部 */
+        .sina-footer {
+            background-color: #fff;
+            border-top: 1px solid #e0e0e0;
+            padding: 30px 20px;
+            text-align: center;
+            color: #666;
+            font-size: 12px;
+            margin-top: 40px;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: 15px 0;
+        }
+
+        .footer-links a {
+            color: #666;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        /* 响应式 */
+        @media (max-width: 768px) {
+            .content-container {
+                padding: 20px;
+                margin: 10px;
+            }
+
+            .article-title {
+                font-size: 24px;
+                padding: 12px 0 8px;
+            }
+
+            .article-content {
+                font-size: 16px;
+            }
+
+            .article-image img {
+                width: 95%;         /* 移动端同样保持窄于文字 */
+            }
+
+            .image-caption {
+                width: 95%;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .article-footer {
+                flex-direction: column;
+                gap: 20px;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- 顶部导航栏 · 热点关注左侧加关注图标（星形） -->
+    <div class="top-nav">
+        <div class="hot-focus">
+            <i class="fas fa-star"></i> 热点关注
+        </div>
+        <div class="nav-links">
+            <a href="javascript:void(0);">新闻</a>
+            <a href="javascript:void(0);">体育</a>
+            <a href="javascript:void(0);">财经</a>
+            <a href="javascript:void(0);">娱乐</a>
+            <a href="javascript:void(0);">科技</a>
+            <a href="javascript:void(0);">博客</a>
+            <a href="javascript:void(0);">图片</a>
+            <a href="javascript:void(0);">专栏</a>
+            <a href="javascript:void(0);">更多</a>
+        </div>
+    </div>
+
+    <!-- 第二导航栏 (面包屑) 链接均无跳转 -->
+    <div class="second-nav">
+        <a href="javascript:void(0);">新闻中心</a> &gt; 
+        <a href="javascript:void(0);">国内新闻</a> &gt; 正文
+    </div>
+
+    <!-- 主内容区 -->
+    <div class="content-container">
+        <!-- 标题添加 [热议] 红色前缀，整个标题栏具有粘性固定效果 -->
+        <h1 class="article-title">
+            <span style="color: #e60012; margin-right: 8px;">[热议]</span>
+            女大学生遗体离奇失踪，家属悬赏20万
+        </h1>
+
+        <div class="article-meta">
+            <span>2025年6月23日，13:26</span>
+            <span>作者：“热点关注”独家报道</span>
+        </div>
+
+        <div class="article-content">
+
+            <p>近日，一则悬赏20万元的"寻尸启事"在各大社交平台被广泛转发，引发网友关注。启事中的主人公，是年仅24岁、在半个月前南鄣市暴雨灾害中遇难的女大学生<strong>陈菲</strong>。令其家人与公众难以置信的是，在她本应入土为安之际，遗体却神秘失踪。</p>
+                
+            <p>今年4月3日，<strong>南鄣市</strong>遭遇了气象记录中五十年未见的特大暴雨。持续强降水导致市区水位急剧暴涨，河水漫过堤岸，倒灌入中心城区部分低洼路段。尽管市政府已提前发布预警并组织疏散，但仍有部分行人因撤离不及被洪水卷入。据调查，陈菲是大四学生，当时正利用毕业前的闲暇时间来南鄣市旅游。不幸的是，她于当日下午在市中心文化广场附近遭遇洪水突袭，虽经救援人员奋力搜救，最终仍未能生还。这场突如其来的灾害，最终造成了包括陈菲在内的5人遇难。</p>
+
+            <!-- 图片1：插入真实图片，宽度固定窄于正文，无溢出 -->
+            <div class="article-image">
+                <img src="https://img.remit.ee/api/file/BQACAgUAAyEGAASHRsPbAAEQZOxpeL0emzCdTF7Gd2nhD9nY49kBVQACbSQAAnG8wVeNk_Zx4Gl9WTgE.png" 
+                     alt="寻尸启事相关图片">
+                <div class="image-caption">陈菲</div>
+            </div>
+                
+            <p>灾难带来的悲痛尚未平息，更令人匪夷所思的事情发生了。4月10日，在完成所有必要的司法检验后，陈菲的遗体被送至医院太平间暂存，等待家属安排葬礼。然而，就在4月12日上午，陈家人接到院方通知：陈菲的遗体不见了。</p>
+                
+            <p>"我们接到电话时，以为听错了。"陈菲的父亲在电话采访中声音沙哑，"医院说他们进行了内部排查，但找不到。一具遗体，在管理严格的太平间里，怎么会凭空消失？"</p>
+                
+            <p>事发后，陈家人立即报警。南鄣市公安局迅速介入，调取了医院太平间及其周边区域近72小时内的所有监控录像进行仔细排查。</p>
+                
+            <p>陈先生说："从遗体送入，到我们发现失踪，监控里没有拍到任何人非法闯入或搬运物体的画面。门禁记录也没有显示异常开启。这这完全不不可思议。"</p>
+                
+             <p>在当今管理系统如此发达的时代，悄无声息地转移走一具遗体，几乎是一项"不可能完成的任务"。究竟是何人、出于何种目的要盗走遗体？这一切都笼罩在迷雾之中。</p>
+                
+            <p>遗体失踪的打击，对刚刚承受丧女之痛的陈菲父母而言，无疑是雪上加霜。"菲菲走了，我们连让她入土为安都做不到吗？"陈母在发布的视频中泣不成声，"我们什么都不要，只求能找到她，带她回家。让她不要再漂泊了。"</p>
+                
+            <p>为发动社会力量寻找线索，陈家人于4月15日正式发布"寻尸启事"，承诺对提供有效线索并最终协助找回陈菲遗体的人士，给予人民币20万元酬谢。启事中详细描述了陈菲的体貌特征及失踪时所着的衣物。</p>
+                
+            <p>截至本报发稿时，陈菲的遗体仍下落不明，警方尚未公布突破性进展。网友们在表达对陈家人的同情之余，也纷纷提出各种分析与疑问，呼吁有关部门尽快查明真相，告慰逝者与生者。</p>
+        </div>
+
+        <!-- 底部操作栏：所有按钮均可点击但无交互 (指针样式已设) -->
+        <div class="article-footer">
+            <div class="share-icons">
+                <div class="icon-item">
+                    <i class="fab fa-weixin"></i>
+                    <span>微信</span>
+                </div>
+                <div class="icon-item">
+                    <i class="fab fa-weibo"></i>
+                    <span>微博</span>
+                </div>
+                <div class="icon-item">
+                    <i class="fas fa-link"></i>
+                    <span>复制链接</span>
+                </div>
+            </div>
+
+            <div class="report-icon">
+                <div class="icon-item">
+                    <i class="fas fa-flag"></i>
+                    <span>举报</span>
+                </div>
+            </div>
+
+            <div class="comments-section">
+                最新评论（579）<span style="margin-left: 10px; color: #666;">点击查看</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- 新浪页面底部：所有链接均无实际跳转 -->
+    <div class="sina-footer">
+        <div class="footer-links">
+            <a href="javascript:void(0);">关于新浪</a>
+            <a href="javascript:void(0);">广告服务</a>
+            <a href="javascript:void(0);">联系我们</a>
+            <a href="javascript:void(0);">招聘信息</a>
+            <a href="javascript:void(0);">网站律师</a>
+            <a href="javascript:void(0);">通行证注册</a>
+            <a href="javascript:void(0);">产品答疑</a>
+        </div>
+    </div>
+</body>
+</html>

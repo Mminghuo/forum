@@ -1,0 +1,797 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>通灵游戏害死了我的三个同学- 七月半论坛</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* ========== 基本样式 - 调整为表世界色调 ========== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+        }
+        
+        body {
+            background-color: #f0f2f5;        /* 灰白色背景 */
+            color: #1e293b;                    /* 深灰色文字 */
+            min-height: 100vh;
+        }
+        
+        /* 顶部栏 - 白色背景，灰蓝色点缀 */
+        .forum-header {
+            background-color: #ffffff;
+            padding: 10px 20px;
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 60px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+        }
+        
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .header-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #4a6fa5;                    /* 灰蓝色 */
+            letter-spacing: 2px;
+            text-shadow: none;
+        }
+        
+        .close-btn {
+            background-color: #4a6fa5;          /* 灰蓝色 */
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 13px;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .close-btn:hover {
+            background-color: #3a5a87;
+            box-shadow: 0 2px 8px rgba(74, 111, 165, 0.3);
+        }
+        
+        /* Logo版头 - 浅蓝渐变，文字深色 */
+        .forum-logo-header {
+            height: 15vh;
+            min-height: 100px;
+            background: linear-gradient(135deg, #a0c4ff 0%, #7aa5d9 100%); /* 加深雾霾蓝 */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+            border-bottom: 1px solid #d4e2f0;
+            margin-top: 60px;
+        }
+        
+        .forum-name {
+            font-size: 36px;
+            font-weight: 900;
+            color: #1e293b;
+            text-shadow: 1px 1px 0 rgba(255,255,255,0.5);
+            margin-bottom: 5px;
+            letter-spacing: 3px;
+        }
+        
+        .forum-subtitle {
+            font-size: 14px;
+            color: #334155;
+            font-style: italic;
+        }
+        
+        /* 帖子标题区域 - 固定跟随滚动，白色背景 */
+        .post-title-bar {
+            position: sticky;
+            top: 60px;
+            background-color: #ffffff;
+            border-bottom: 1px solid #e2e8f0;
+            padding: 12px 20px;
+            z-index: 999;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.02);
+        }
+        
+        .post-title-main {
+            font-size: 20px;
+            font-weight: 700;
+            color: #1e293b;
+            text-align: center;
+        }
+        
+        .post-title-main b {
+            color: #4a6fa5;
+        }
+        
+        /* 帖子内容区域 - 加宽到1100px */
+        .post-content-area {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        /* 楼层样式 - 白色卡片 */
+        .post-floor {
+            background-color: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 16px;
+            padding: 15px;
+            margin-bottom: 15px;
+            transition: all 0.2s;
+        }
+        
+        .post-floor:hover {
+            border-color: #4a6fa5;
+            box-shadow: 0 4px 12px rgba(74, 111, 165, 0.08);
+        }
+        
+        .floor-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 12px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #4a6fa5, #2c4a73);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 16px;
+            border: 2px solid #4a6fa5;
+            margin-right: 12px;
+        }
+        
+        .user-info {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .user-name {
+            font-weight: 600;
+            color: #4a6fa5;
+            font-size: 14px;
+        }
+        
+        .floor-number {
+            font-size: 12px;
+            color: #64748b;
+            margin-top: 2px;
+        }
+        
+        .floor-content {
+            line-height: 1.6;
+            color: #1e293b;
+            font-size: 14px;
+            padding-left: 52px;
+        }
+        
+        /* 图片自适应 - 保证不溢出容器 */
+        .floor-content img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 10px 0;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+        }
+        
+        .floor-content p {
+            margin-bottom: 10px;
+        }
+        
+        .floor-content p:last-child {
+            margin-bottom: 0;
+        }
+        
+        /* 引用样式 */
+        .quote {
+            background-color: #f8fafc;
+            border-left: 3px solid #4a6fa5;
+            padding: 10px;
+            margin: 10px 0;
+            font-size: 13px;
+            color: #334155;
+            border-radius: 4px;
+        }
+        
+        .quote-author {
+            color: #4a6fa5;
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+        
+        /* 回帖输入区域 - 加宽到1100px */
+        .reply-area {
+            max-width: 1100px;
+            margin: 30px auto;
+            padding: 0 20px 40px;
+        }
+        
+        .reply-title {
+            font-size: 18px;
+            color: #4a6fa5;
+            margin-bottom: 15px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        
+        .reply-box {
+            background-color: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 16px;
+            padding: 15px;
+        }
+        
+        .reply-input {
+            width: 100%;
+            min-height: 120px;
+            background-color: #f8fafc;
+            border: 1px solid #cbd5e1;
+            border-radius: 12px;
+            padding: 12px;
+            color: #1e293b;
+            font-size: 14px;
+            resize: vertical;
+            margin-bottom: 15px;
+        }
+        
+        .reply-input:focus {
+            outline: none;
+            border-color: #4a6fa5;
+        }
+        
+        .reply-buttons {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+        
+        .reply-btn {
+            background-color: #4a6fa5;
+            color: white;
+            border: none;
+            border-radius: 30px;
+            padding: 8px 24px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .reply-btn:hover {
+            background-color: #3a5a87;
+        }
+        
+        .reply-btn.disabled {
+            background-color: #a0afc0;
+            color: white;
+            cursor: not-allowed;
+        }
+        
+        /* 特殊样式 - 楼主楼层 */
+        .louzhu-floor {
+            border-left: 4px solid #4a6fa5;
+        }
+    </style>
+</head>
+<body>
+    <!-- 顶部栏 -->
+    <div class="forum-header">
+        <div class="header-left">
+            <div class="header-title">论坛</div>
+        </div>
+        <button class="close-btn" onclick="closePost()">
+            <i class="fas fa-times"></i>
+            关闭窗口
+        </button>
+    </div>
+    
+    <!-- Logo版头 -->
+    <div class="forum-logo-header">
+        <div class="forum-name">七月半</div>
+        <div class="forum-subtitle">欢迎来到未知的世界</div>
+    </div>
+    
+    <!-- 帖子标题栏 - 固定跟随滚动 -->
+    <div class="post-title-bar">
+        <div class="post-title-main"><b>通灵游戏害死了我的三个同学</b></div>
+    </div>
+    
+    <!-- 帖子内容区域 (宽度已加宽) -->
+    <div class="post-content-area">
+        <!-- 一楼 -->
+        <div class="post-floor louzhu-floor">
+            <div class="floor-header">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info">
+                    <div class="user-name">喵喵神</div>
+                    <div class="floor-number">#1 楼主</div>
+                </div>
+            </div>
+            <div class="floor-content">
+                <p>这件事藏在我心里好久，不敢在外面说，只能来这里讲了。</p>
+                <p>有人知道前阵子九华高中的集体自杀案吗？</p>
+            </div>
+        </div>
+        
+        <!-- 二楼 -->
+        <div class="post-floor">
+            <div class="floor-header">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info">
+                    <div class="user-name">南柯一梦</div>
+                    <div class="floor-number">#2</div>
+                </div>
+            </div>
+            <div class="floor-content">
+                <p>刷到过新闻，是不是三个女生一起跳楼那个？报道说是抑郁症。</p>
+            </div>
+        </div>
+        
+        <!-- 三楼 -->
+        <div class="post-floor">
+            <div class="floor-header">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info">
+                    <div class="user-name">鬼不觉</div>
+                    <div class="floor-number">#3</div>
+                </div>
+            </div>
+            <div class="floor-content">
+                <p>楼主难道知道什么内情？</p>
+            </div>
+        </div>
+        
+        <!-- 四楼 -->
+        <div class="post-floor louzhu-floor">
+            <div class="floor-header">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info">
+                    <div class="user-name">喵喵神</div>
+                    <div class="floor-number">#4 楼主</div>
+                </div>
+            </div>
+            <div class="floor-content">
+                <p>跳楼的三个女生，都是我朋友。</p>
+                <p>那天，我也在天台上。</p>
+            </div>
+        </div>
+        
+        <!-- 五楼 -->
+        <div class="post-floor">
+            <div class="floor-header">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info">
+                    <div class="user-name">咕噜咕噜</div>
+                    <div class="floor-number">#5</div>
+                </div>
+            </div>
+            <div class="floor-content">
+                <p>居然是当事人？！</p>
+            </div>
+        </div>
+        
+        <!-- 六楼 -->
+        <div class="post-floor">
+            <div class="floor-header">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info">
+                    <div class="user-name">笼中之雀</div>
+                    <div class="floor-number">#6</div>
+                </div>
+            </div>
+            <div class="floor-content">
+                <p>你也在现场的话，警察没怀疑你吗？</p>
+            </div>
+        </div>
+        
+        <!-- 七楼 -->
+        <div class="post-floor louzhu-floor">
+            <div class="floor-header">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info">
+                    <div class="user-name">喵喵神</div>
+                    <div class="floor-number">#7 楼主</div>
+                </div>
+            </div>
+            <div class="floor-content">
+                <p>警察前天才结束对我的调查。该说的我都说了，可根本没人信我。</p>
+            </div>
+        </div>
+        
+        <!-- 八楼 -->
+        <div class="post-floor">
+            <div class="floor-header">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info">
+                    <div class="user-name">疯狂睡大觉</div>
+                    <div class="floor-number">#8</div>
+                </div>
+            </div>
+            <div class="floor-content">
+                <p>所以到底发生了什么？</p>
+            </div>
+        </div>
+        
+        <!-- 九楼 -->
+        <div class="post-floor louzhu-floor">
+            <div class="floor-header">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info">
+                    <div class="user-name">喵喵神</div>
+                    <div class="floor-number">#9 楼主</div>
+                </div>
+            </div>
+            <div class="floor-content">
+                <p>我记得很清楚，事情是从半个月前开始的。那天我们四个在网上找了一个通灵游戏，仪式特别复杂，弄了很久。</p>
+                <p>中途我去上了个厕所，回来发现她们三个已经把仪式做完了。</p>
+                <p>三个人齐刷刷盯着我，眼神直勾勾的，把我吓了一大跳。她们这才笑起来，说是故意吓我的，恶作剧而已。</p>
+                <p>我也没多想，像平时一样打打闹闹就各自回家了。</p>
+            </div>
+        </div>
+        
+        <!-- 十楼 -->
+        <div class="post-floor louzhu-floor">
+            <div class="floor-header">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info">
+                    <div class="user-name">喵喵神</div>
+                    <div class="floor-number">#10 楼主</div>
+                </div>
+            </div>
+            <div class="floor-content">
+                <p>但那之后，事情就开始不对劲了。才过了一天，我再见到她们时，三个人都顶着很重的黑眼圈，整个人失魂落魄的，好像丢了魂一样。</p>
+            </div>
+        </div>
+        
+        <!-- 十一楼 -->
+        <div class="post-floor louzhu-floor">
+            <div class="floor-header">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info">
+                    <div class="user-name">喵喵神</div>
+                    <div class="floor-number">#11 楼主</div>
+                </div>
+            </div>
+            <div class="floor-content">
+                <p>有一天放学，她们突然叫我去学校后面的坟地。我当然不想去，可她们说："上次你已经错过一次了，这次还想丢下我们吗？"</p>
+                <p>她们三个人就那样直勾勾地看着我，我背后发凉，只好硬着头皮跟去了。</p>
+            </div>
+        </div>
+        
+        <!-- 十二楼 -->
+        <div class="post-floor louzhu-floor">
+            <div class="floor-header">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info">
+                    <div class="user-name">喵喵神</div>
+                    <div class="floor-number">#12 楼主</div>
+                </div>
+            </div>
+            <div class="floor-content">
+                <p>我跟着她们在坟地转了很久，快天黑的时候，其中一个女生突然停在一块墓碑前，笑着说："原来在这里啊。"</p>
+                <p>我凑过去看，墓碑上是个十几岁就去世的女孩。我问她们找这个干嘛，她慢慢转过头说："因为，这是我家啊。"说完，三个人一起笑了起来。</p>
+                <p>我以为又是恶作剧，可那种笑声让我浑身发冷。我干笑着应付了几句，赶紧找借口离开了。</p>
+                <p>走的时候，我能感觉到，背后的三个人的一直盯着我。</p>
+            </div>
+        </div>
+        
+        <!-- 十三楼 -->
+        <div class="post-floor">
+            <div class="floor-header">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info">
+                    <div class="user-name">破折号</div>
+                    <div class="floor-number">#13</div>
+                </div>
+            </div>
+            <div class="floor-content">
+                <p>这听起来像是被附身了</p>
+            </div>
+        </div>
+        
+        <!-- 十四楼 -->
+        <div class="post-floor">
+            <div class="floor-header">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info">
+                    <div class="user-name">疯狂睡大觉</div>
+                    <div class="floor-number">#14</div>
+                </div>
+            </div>
+            <div class="floor-content">
+                <p>所以说真的别乱玩通灵游戏，太容易招东西了</p>
+            </div>
+        </div>
+        
+        <!-- 十五楼 -->
+        <div class="post-floor louzhu-floor">
+            <div class="floor-header">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info">
+                    <div class="user-name">喵喵神</div>
+                    <div class="floor-number">#15 楼主</div>
+                </div>
+            </div>
+            <div class="floor-content">
+                <p>也许是因为发现我的回避，她们也不来找我了。可我那时只有这三个朋友，又怕是自己想太多，就想找机会和她们道歉。</p>
+                <p>有一天放学，我看到她们三个人排着队往楼上走，走廊人多，我没跟上。等我追上去的时候，她们越走越高，最后消失在通往天台的方向。</p>
+            </div>
+        </div>
+        
+        <!-- 十六楼 -->
+        <div class="post-floor louzhu-floor">
+            <div class="floor-header">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info">
+                    <div class="user-name">喵喵神</div>
+                    <div class="floor-number">#16 楼主</div>
+                </div>
+            </div>
+            <div class="floor-content">
+                <p>我记得天台的门明明是锁着的。可当我走过去，发现锁链已经被人打开了。</p>
+                <p>我推门走上天台，看见她们三个人并排站在天台边缘，大半个身子都探了出去。我吓坏了，边跑边喊让她们小心。</p>
+                <p>她们同时转过头，脸上挂着一样的僵硬笑容，对我说："我们要回家了。"</p>
+                <p>然后，就在我眼前，三个人一起跳了下去。</p>
+            </div>
+        </div>
+        
+        <!-- 十七楼 -->
+        <div class="post-floor">
+            <div class="floor-header">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info">
+                    <div class="user-name">南柯一梦</div>
+                    <div class="floor-number">#17</div>
+                </div>
+            </div>
+            <div class="floor-content">
+                <p>吓人，怪不得新闻讳莫如深</p>
+            </div>
+        </div>
+        
+        <!-- 十八楼 -->
+        <div class="post-floor louzhu-floor">
+            <div class="floor-header">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info">
+                    <div class="user-name">喵喵神</div>
+                    <div class="floor-number">#18 楼主</div>
+                </div>
+            </div>
+            <div class="floor-content">
+                <p>我一直在想，如果那天我没去上厕所，仪式没有出错，是不是一切都不会发生？</p>
+                <p>我真的，好想她们啊。</p>
+            </div>
+        </div>
+        
+        <!-- 十九楼 -->
+        <div class="post-floor">
+            <div class="floor-header">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info">
+                    <div class="user-name">鬼不觉</div>
+                    <div class="floor-number">#19</div>
+                </div>
+            </div>
+            <div class="floor-content">
+                <p>倒也不必。楼主不要想太多了，遇见这种事情只能自认倒霉，好歹你还活着</p>
+            </div>
+        </div>
+        
+        <!-- 二十楼 -->
+        <div class="post-floor">
+            <div class="floor-header">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info">
+                    <div class="user-name">一线牵</div>
+                    <div class="floor-number">#20</div>
+                </div>
+            </div>
+            <div class="floor-content">
+                <p>要不要去庙里拜一拜？</p>
+            </div>
+        </div>
+        
+        <!-- 二十一楼 -->
+        <div class="post-floor">
+            <div class="floor-header">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info">
+                    <div class="user-name">破折号</div>
+                    <div class="floor-number">#21</div>
+                </div>
+            </div>
+            <div class="floor-content">
+                <p>拜佛有什么用，求个心理安慰罢了。我建议楼主快点转校，可能是你们学校不太干净</p>
+            </div>
+        </div>
+        
+        <!-- 二十二楼 -->
+        <div class="post-floor">
+            <div class="floor-header">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info">
+                    <div class="user-name">笼中之雀</div>
+                    <div class="floor-number">#22</div>
+                </div>
+            </div>
+            <div class="floor-content">
+                <p>这种帖子看多了，感觉到处都是孤魂野鬼</p>
+            </div>
+        </div>
+        
+        <!-- 二十三楼 -->
+        <div class="post-floor">
+            <div class="floor-header">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info">
+                    <div class="user-name">咕噜咕噜</div>
+                    <div class="floor-number">#23</div>
+                </div>
+            </div>
+            <div class="floor-content">
+                <p>还是希望楼主早点走出来</p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 回帖区域 (宽度已加宽) -->
+    <div class="reply-area">
+        <div class="reply-title">发表回复</div>
+        <div class="reply-box">
+            <textarea class="reply-input" placeholder="请输入回复内容..." id="replyInput"></textarea>
+            <div class="reply-buttons">
+                <button class="reply-btn disabled" id="submitReply">提交回复</button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // 初始化函数
+        function initializePost() {
+            setupReplyButton();
+            setupTitleBarScroll();
+            highlightLouzhuFloors();
+        }
+        
+        // 设置回帖按钮无反应
+        function setupReplyButton() {
+            const submitBtn = document.getElementById('submitReply');
+            const replyInput = document.getElementById('replyInput');
+            
+            submitBtn.onclick = function() {
+                return false;
+            };
+            
+            replyInput.onclick = function() {
+                return false;
+            };
+            
+            replyInput.onfocus = function() {
+                return false;
+            };
+        }
+        
+        // 设置滚动时标题栏的样式
+        function setupTitleBarScroll() {
+            const titleBar = document.querySelector('.post-title-bar');
+            let lastScrollTop = 0;
+            
+            window.addEventListener('scroll', function() {
+                const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                
+                if (scrollTop > lastScrollTop) {
+                    titleBar.style.boxShadow = '0 3px 10px rgba(0, 0, 0, 0.05)';
+                } else {
+                    titleBar.style.boxShadow = '0 3px 10px rgba(0, 0, 0, 0.02)';
+                }
+                
+                lastScrollTop = scrollTop;
+            });
+        }
+        
+        // 高亮显示楼主楼层
+        function highlightLouzhuFloors() {
+            const louzhuFloors = document.querySelectorAll('.louzhu-floor');
+            
+            louzhuFloors.forEach(floor => {
+                floor.addEventListener('mouseenter', function() {
+                    this.style.boxShadow = '0 6px 16px rgba(74, 111, 165, 0.15)';
+                    this.style.transform = 'translateY(-2px)';
+                });
+                
+                floor.addEventListener('mouseleave', function() {
+                    this.style.boxShadow = 'none';
+                    this.style.transform = 'translateY(0)';
+                });
+            });
+        }
+        
+        // 关闭帖子页面 - 尝试关闭窗口
+        function closePost() {
+            window.close();
+        }
+        
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closePost();
+            }
+        });
+        
+        window.onload = function() {
+            initializePost();
+        };
+    </script>
+</body>
+</html>

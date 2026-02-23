@@ -1,0 +1,545 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>女高中生深夜遇害，凶手至今下落不明 - 热点关注</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Microsoft YaHei", "SimHei", sans-serif;
+            background-color: #f4f5f7;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* 顶部导航栏 */
+        .top-nav {
+            background-color: #e60012;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+        }
+
+        .hot-focus {
+            color: #fff;
+            font-size: 16px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 6px;  /* 图标与文字间距 */
+        }
+
+        .nav-links {
+            display: flex;
+            margin-left: auto;
+            gap: 25px;
+        }
+
+        .nav-links a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        /* 第二导航栏 */
+        .second-nav {
+            background-color: #fff;
+            border-bottom: 1px solid #e0e0e0;
+            padding: 10px 20px;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .second-nav a {
+            color: #666;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        /* 主内容区 */
+        .content-container {
+            max-width: 900px;
+            margin: 20px auto;
+            background-color: #fff;
+            padding: 30px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        /* ----- 粘性标题栏 (滚动固定) ----- */
+        .article-title {
+            position: sticky;
+            top: 0;
+            background: #fff;
+            z-index: 200;
+            text-align: center;
+            font-size: 28px;
+            font-weight: bold;
+            color: #222;
+            margin: 0 0 20px 0;
+            padding: 15px 0 10px;
+            line-height: 1.4;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+            border-bottom: 1px solid #f0f0f0;
+            transition: box-shadow 0.2s;
+        }
+
+        .article-meta {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            color: #999;
+            font-size: 14px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eee;
+            margin-bottom: 25px;
+        }
+
+        .article-content {
+            font-size: 18px;
+            line-height: 1.8;
+        }
+
+        .article-content p {
+            margin-bottom: 22px;
+            text-indent: 2em;
+        }
+
+        /* ----- 图片区域：比正文窄一圈，绝不溢出（已无图片，保留样式但未使用）----- */
+        .article-image {
+            margin: 25px 0;
+            text-align: center;
+        }
+
+        .article-image img {
+            width: 85%;
+            max-width: 700px;
+            height: auto;
+            display: block;
+            margin: 0 auto 10px;
+            border-radius: 6px;
+            border: 1px solid #eaeef2;
+            background-color: #f9f9f9;
+        }
+
+        .image-caption {
+            font-size: 14px;
+            color: #666;
+            text-align: center;
+            width: 85%;
+            margin: 0 auto;
+            font-style: italic;
+        }
+
+        /* 底部操作栏 */
+        .article-footer {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .share-icons, .report-icon, .comments-section {
+            display: flex;
+            align-items: center;
+        }
+
+        .icon-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-right: 25px;
+            color: #666;
+            font-size: 12px;
+            cursor: pointer;        /* 可点击但无交互 */
+        }
+
+        .icon-item i {
+            font-size: 20px;
+            margin-bottom: 5px;
+        }
+
+        .report-icon .icon-item {
+            margin-right: 0;
+            cursor: pointer;
+        }
+
+        .comments-section {
+            color: #e60012;
+            font-size: 14px;
+            cursor: pointer;        /* 手型，点击无跳转 */
+        }
+
+        /* 新浪页面底部 */
+        .sina-footer {
+            background-color: #fff;
+            border-top: 1px solid #e0e0e0;
+            padding: 30px 20px;
+            text-align: center;
+            color: #666;
+            font-size: 12px;
+            margin-top: 40px;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: 15px 0;
+        }
+
+        .footer-links a {
+            color: #666;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        /* 响应式 */
+        @media (max-width: 768px) {
+            .content-container {
+                padding: 20px;
+                margin: 10px;
+            }
+
+            .article-title {
+                font-size: 24px;
+                padding: 12px 0 8px;
+            }
+
+            .article-content {
+                font-size: 16px;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .article-footer {
+                flex-direction: column;
+                gap: 20px;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- 顶部导航栏 · 热点关注左侧加关注图标（星形） -->
+    <div class="top-nav">
+        <div class="hot-focus">
+            <i class="fas fa-star"></i> 热点关注
+        </div>
+        <div class="nav-links">
+            <a href="javascript:void(0);">新闻</a>
+            <a href="javascript:void(0);">体育</a>
+            <a href="javascript:void(0);">财经</a>
+            <a href="javascript:void(0);">娱乐</a>
+            <a href="javascript:void(0);">科技</a>
+            <a href="javascript:void(0);">博客</a>
+            <a href="javascript:void(0);">图片</a>
+            <a href="javascript:void(0);">专栏</a>
+            <a href="javascript:void(0);">更多</a>
+        </div>
+    </div>
+
+    <!-- 第二导航栏 (面包屑) 链接均无跳转 -->
+    <div class="second-nav">
+        <a href="javascript:void(0);">新闻中心</a> &gt; 
+        <a href="javascript:void(0);">国内新闻</a> &gt; 正文
+    </div>
+
+    <!-- 主内容区 -->
+    <div class="content-container">
+        <!-- 标题添加 [热议] 红色前缀，整个标题栏具有粘性固定效果 -->
+        <h1 class="article-title">
+            <span style="color: #e60012; margin-right: 8px;">[热议]</span>
+            女高中生深夜遇害，凶手至今下落不明
+        </h1>
+
+        <div class="article-meta">
+            <span>2026年2月24日 10:20</span>
+            <span>作者：热点关注</span>
+        </div>
+
+        <div class="article-content">
+            <p>近日，河南信阳发生一起令人痛心的命案。一名前来寻亲的17岁女学生小雨（化名），在一家酒店内不幸遇害。而随着警方调查的深入，案发现场的诡异之处，却让整起案件笼罩在一层难以驱散的迷雾之中。</p>
+
+            <p>据记者走访了解，小雨并非信阳本地人。今年二月，她独自一人来到信阳，是为了寻找在此打工的姐姐。因姐姐不在租住处，她便临时入住附近一家酒店的302号房间。谁也没想到，这竟成了她人生的终点。</p>
+
+            <p>接到报警后，警方迅速赶赴现场，封锁了整层楼并调取酒店监控。诡异的是，监控画面显示，21日晚8时许，小雨所在楼层的电梯门突然打开，但无人走出。约一分钟后，302号房间的门缓缓开启，却并没有看到小雨的身影。十秒后，房门再次关闭。此后，再无任何人进出该房间，直到第二天早晨工作人员进入。</p>
+
+            <p>也就是说，从监控来看，除了小雨本人和次日的保洁人员，没有任何人进入或离开过302房间。酒店大厅及其他楼层的监控也均未发现可疑人员出入。</p>
+
+            <p>然而，案发现场的情形，却让警方难以简单归结为自杀或意外。</p>
+
+            <p>据知情人士透露，小雨的尸体悬挂在距离门口约两米处的横梁上，脖颈处系有绳索，双手手腕却有明显的刀割伤口，血迹从高处流下，蔓延至地面，直至干涸。</p>
+
+            <p>更令人费解的是，尸体的姿态极为特殊——双手交叉于胸前，头颅低垂，像是某种仪式般的姿势。现场有明显挣扎痕迹，这与自杀行为难以吻合。同时，既割腕又上吊的行为方式，也让办案人员直呼“不合常理”。</p>
+
+            <p>小雨的家属告诉记者，她是一名高三学生，成绩优异，明年即将参加高考。平日里乖巧懂事，从无不良嗜好，也未表现出任何心理问题。就在来信阳之前，她还曾对母亲承诺，要把姐姐一起带回家。</p>
+
+            <p>谁也无法相信，一个满怀希望、正值青春的孩子，会在一个陌生的城市、陌生的酒店，以如此惨烈的方式失去生命。</p>
+
+            <p>厄运似乎笼罩着这个普通的家庭。更令人揪心的是，案发至今，小雨的姐姐仍处于失联状态。而小雨的母亲因承受不住打击，多次昏厥，目前仍在医院接受治疗。面对记者，她满是懊悔与自责，“我不该让她一个人去的。”</p>
+
+            <p>究竟是自杀、他杀，还是另有隐情？为何监控无进出，房门却自动开关？为何死状如此诡异，姿态如忏悔？小雨的死，留下太多无法解释的问号。</p>
+
+            <p>目前，警方正对该案展开进一步侦查。或许，只有真相水落石出的那一天，才能真正给逝者一个交代，给家属一个安慰。</p>
+
+            <p>热点关注将持续跟进此事，为您带来最新进展。</p>
+        </div>
+
+        <!-- 底部操作栏：所有按钮均可点击但无交互 (指针样式已设) -->
+        <div class="article-footer">
+            <div class="share-icons">
+                <div class="icon-item">
+                    <i class="fab fa-weixin"></i>
+                    <span>微信</span>
+                </div>
+                <div class="icon-item">
+                    <i class="fab fa-weibo"></i>
+                    <span>微博</span>
+                </div>
+                <div class="icon-item">
+                    <i class="fas fa-link"></i>
+                    <span>复制链接</span>
+                </div>
+            </div>
+
+            <div class="report-icon">
+                <div class="icon-item">
+                    <i class="fas fa-flag"></i>
+                    <span>举报</span>
+                </div>
+            </div>
+
+            <div class="comments-section">
+                最新评论（187）<span style="margin-left: 10px; color: #666;">点击查看</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- 新浪页面底部：所有链接均无实际跳转 -->
+    <div class="sina-footer">
+        <div class="footer-links">
+            <a href="javascript:void(0);">关于热点</a>
+            <a href="javascript:void(0);">广告服务</a>
+            <a href="javascript:void(0);">联系我们</a>
+            <a href="javascript:void(0);">招聘信息</a>
+            <a href="javascript:void(0);">网站律师</a>
+            <a href="javascript:void(0);">通行证注册</a>
+            <a href="javascript:void(0);">产品答疑</a>
+        </div>
+        <div>Copyright © 2025 热点关注 版权所有</div>
+        <div style="margin-top: 10px;">信阳报道 · 持续关注</div>
+    </div>
+
+<style>
+#hb-chat-toast {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    background: rgba(32, 32, 32, 0.95);
+    color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.4);
+    padding: 20px 15px 15px;
+    width: 300px;
+    z-index: 9999;
+    display: none;
+    border: 1px solid rgba(255,255,255,0.1);
+    animation: hbSlideIn 0.3s ease-out;
+    backdrop-filter: blur(10px);
+}
+@keyframes hbSlideIn {
+    from { transform: translateY(20px); opacity: 0; }
+    to   { transform: translateY(0);    opacity: 1; }
+}
+#hb-chat-toast .toast-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+#hb-chat-toast .toast-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #fff;
+    font-weight: bold;
+    font-size: 14px;
+}
+#hb-chat-toast .toast-title i { color: #4CAF50; font-size: 18px; }
+#hb-chat-toast .toast-close {
+    background: none; border: none; color: #aaa;
+    font-size: 16px; cursor: pointer; transition: color 0.2s;
+}
+#hb-chat-toast .toast-close:hover { color: #fff; }
+#hb-chat-toast .toast-body {
+    color: rgba(255,255,255,0.9);
+    font-size: 14px;
+    line-height: 1.5;
+    margin-bottom: 15px;
+}
+#hb-chat-toast .toast-btns {
+    display: flex;
+    gap: 10px;
+}
+#hb-chat-toast .toast-btn {
+    flex: 1;
+    padding: 8px 15px;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.2s;
+}
+#hb-chat-toast .toast-btn.later {
+    background: rgba(60,60,60,0.8);
+    color: #e0e0e0;
+    border: 1px solid #444;
+}
+#hb-chat-toast .toast-btn.later:hover { border-color: #8b0000; color: #8b0000; }
+#hb-chat-toast .toast-btn.open {
+    background: #4CAF50;
+    color: white;
+    font-weight: bold;
+}
+#hb-chat-toast .toast-btn.open:hover { background: #3d8b40; }
+
+/* 中间弹窗样式 */
+#hb-center-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    z-index: 10000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+}
+#hb-center-modal .modal-content {
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+    padding: 40px;
+    max-width: 500px;
+    width: 90%;
+    text-align: center;
+    animation: hbModalFadeIn 0.3s ease-out;
+}
+@keyframes hbModalFadeIn {
+    from { opacity: 0; transform: scale(0.9); }
+    to   { opacity: 1; transform: scale(1); }
+}
+#hb-center-modal .modal-title {
+    font-size: 24px;
+    font-weight: bold;
+    color: #222;
+    margin-bottom: 20px;
+}
+#hb-center-modal .modal-text {
+    font-size: 16px;
+    color: #333;
+    line-height: 1.6;
+    margin-bottom: 30px;
+}
+#hb-center-modal .modal-btn {
+    background: #4CAF50;
+    color: white;
+    border: none;
+    padding: 12px 30px;
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+#hb-center-modal .modal-btn:hover {
+    background: #3d8b40;
+}
+</style>
+
+<div id="hb-chat-toast">
+    <div class="toast-header">
+        <div class="toast-title">
+            <i class="fas fa-comment-dots"></i>
+            聊天软件通知
+        </div>
+        <button class="toast-close" id="hb-toast-close"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="toast-body">明烛天青发来了新消息</div>
+    <div class="toast-btns">
+        <button class="toast-btn later" id="hb-toast-later">稍后</button>
+        <button class="toast-btn open" id="hb-toast-open">查看消息</button>
+    </div>
+</div>
+
+<!-- 中间弹窗 -->
+<div id="hb-center-modal">
+    <div class="modal-content">
+        <div class="modal-title">恭喜！您完成了此次调查！</div>
+        <div class="modal-text">
+            此为结局二【遇害】。本游戏一共有五种结局。建议从"万家地图"页面开始，尝试做出不同的选择。<br><br>
+            如果您喜欢本游戏，还请帮忙宣传，感谢！
+        </div>
+        <button class="modal-btn" id="hb-modal-close">确定</button>
+    </div>
+</div>
+
+<script>
+    (function() {
+        try {
+            // 检查是否首次访问
+            var toastKey = 'endnew_yvhai_toast_shown';
+            if (!localStorage.getItem(toastKey)) {
+                localStorage.setItem(toastKey, 'true');
+                setTimeout(function() {
+                    document.getElementById('hb-chat-toast').style.display = 'block';
+                }, 1500);
+            }
+
+            // 关闭提示窗
+            document.getElementById('hb-toast-close').addEventListener('click', function() {
+                document.getElementById('hb-chat-toast').style.display = 'none';
+            });
+            document.getElementById('hb-toast-later').addEventListener('click', function() {
+                document.getElementById('hb-chat-toast').style.display = 'none';
+            });
+
+            // 打开中间弹窗
+            document.getElementById('hb-toast-open').addEventListener('click', function() {
+                document.getElementById('hb-chat-toast').style.display = 'none';
+                document.getElementById('hb-center-modal').style.display = 'flex';
+            });
+
+            // 关闭中间弹窗
+            document.getElementById('hb-modal-close').addEventListener('click', function() {
+                document.getElementById('hb-center-modal').style.display = 'none';
+            });
+
+            // 点击弹窗外部关闭
+            document.getElementById('hb-center-modal').addEventListener('click', function(e) {
+                if (e.target === this) {
+                    this.style.display = 'none';
+                }
+            });
+        } catch(e) {
+            console.error('提示窗功能初始化失败:', e);
+        }
+    })();
+</script>
+</body>
+</html>

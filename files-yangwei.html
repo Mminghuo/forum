@@ -1,0 +1,257 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>用户档案 · 七月半论坛</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* ========== 基本样式（与论坛保持一致） ========== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+        }
+        
+        body {
+            background-color: #0a0a0a;
+            color: #e0e0e0;
+            min-height: 100vh;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(20, 20, 20, 0.7) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(10, 10, 10, 0.7) 0%, transparent 20%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-top: 70px; /* 为固定顶部栏留出空间 */
+        }
+
+        /* ========== 固定顶部栏 ========== */
+        .forum-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: rgba(15, 15, 15, 0.95);
+            border-bottom: 1px solid #333;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 12px rgba(0,0,0,0.5);
+            z-index: 200;
+            padding: 0 20px;
+        }
+
+        .header-content {
+            width: 75%;
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .header-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #8b0000;
+            text-shadow: 0 0 10px rgba(139, 0, 0, 0.5);
+            letter-spacing: 2px;
+        }
+
+        .close-btn {
+            background-color: #8b0000;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 13px;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .close-btn:hover {
+            background-color: #a00000;
+            box-shadow: 0 0 10px rgba(139, 0, 0, 0.5);
+        }
+
+        /* ========== 主容器 ========== */
+        .archive-container {
+            width: 75%;
+            max-width: 1000px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        @media (max-width: 1000px) {
+            .archive-container {
+                width: 95%;
+            }
+        }
+
+        /* 卡片通用样式 */
+        .card {
+            background-color: rgba(20, 20, 20, 0.9);
+            border: 1px solid #333;
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+        }
+
+        /* 标题卡片（杨薇 档案） */
+        .title-card {
+            text-align: center;
+            padding: 30px 20px;
+        }
+        .white-name {
+            font-size: 36px;          /* 缩小字号，白色无发光 */
+            font-weight: 900;
+            color: #ffffff;
+            letter-spacing: 2px;
+            line-height: 1.2;
+        }
+        .sub-arch {
+            font-size: 18px;
+            color: #aaa;
+            font-style: italic;
+            margin-top: 8px;
+        }
+
+        /* 信息卡片 */
+        .info-card {
+            padding: 20px 25px;
+        }
+        .info-title {
+            font-size: 18px;
+            color: #8b0000;
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #333;
+            font-weight: 600;
+        }
+        .info-content {
+            font-size: 15px;
+            line-height: 1.7;
+            color: #e0e0e0;
+        }
+
+        /* 记录卡片 */
+        .record-card {
+            padding: 20px 25px;
+        }
+        .record-title {
+            font-size: 18px;
+            color: #8b0000;
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #333;
+            font-weight: 600;
+        }
+        .record-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .record-item {
+            font-size: 14px;
+            line-height: 1.8;
+            color: #e0e0e0;
+            margin-bottom: 12px;
+            padding-left: 0;           /* 移除左边框 */
+        }
+        .record-item:last-child {
+            margin-bottom: 0;
+        }
+        .record-item strong {
+            color: #e0e0e0;            /* 日期改为白色加粗 */
+            font-weight: 700;
+        }
+
+        /* 底部标语 */
+        .footer-slogan {
+            text-align: center;
+            color: #8b0000;
+            font-size: 20px;
+            font-weight: 700;
+            text-shadow: 0 0 10px rgba(139, 0, 0, 0.5);
+            letter-spacing: 2px;
+            padding: 20px 0 30px;
+        }
+    </style>
+</head>
+<body>
+    <!-- 固定顶部栏（与论坛一致） -->
+    <div class="forum-header">
+        <div class="header-content">
+            <div class="header-left">
+                <div class="header-title">七月半</div>
+            </div>
+            <button class="close-btn" onclick="closeWindow()">
+                <i class="fas fa-times"></i>
+                关闭窗口
+            </button>
+        </div>
+    </div>
+
+    <!-- 主内容区 -->
+    <div class="archive-container">
+        <!-- 标题卡片：杨薇 · 档案 -->
+        <div class="card title-card">
+            <div class="white-name">杨薇</div>
+            <div class="sub-arch">档案</div>
+        </div>
+
+        <!-- 用户信息卡片 -->
+        <div class="card info-card">
+            <div class="info-title">用户信息</div>
+            <div class="info-content">
+                杨薇，女，2006年出生，现为私企办公室职员。
+            </div>
+        </div>
+
+        <!-- 记录卡片 -->
+        <div class="card record-card">
+            <div class="record-title">记录</div>
+            <ul class="record-list">
+                <li class="record-item"><strong>2026年1月23日：</strong>监测到杨薇家中近期出现重大变故。已由宋生派人前去接触，授之以天尊信仰。</li>
+                <li class="record-item"><strong>2026年1月29日：</strong>杨薇父母将通过刘生向天尊许愿，他们希望献上杨薇以换取儿子恢复正常。并于家中供奉天尊神像，日夜祈祷，是为虔心信徒。</li>
+                <li class="record-item"><strong>2026年2曰2日：</strong>杨薇于论坛发帖求助，已因变故而心力交瘁，精神不济。判断为潜在用户。</li>
+                <li class="record-item"><strong>2026年2曰4日：</strong>经过管理员引导，杨薇成功通过“供奉”向天尊请愿，献上运力。</li>
+                <li class="record-item"><strong>2026年2曰7日：</strong>杨薇受论坛言论影响，似乎想要逃离家庭。已由使者前往修正，并限制杨薇帖子的浏览对象，以免影响供奉。</li>
+                <li class="record-item"><strong>2026年2曰11日：</strong>天尊降下神力，杨薇的植物人弟弟从医院苏醒，重返人间。契约达成。</li>
+                <li class="record-item"><strong>2026年2曰15日：</strong>杨薇已成功扭转思想，诚心皈依天尊。在她的奉献和付出之下，一家人再次其乐融融，幸福美满。</li>
+            </ul>
+        </div>
+
+        <!-- 底部红色标语 -->
+        <div class="footer-slogan">普世广愿，惠慈长生</div>
+    </div>
+
+    <script>
+        // 关闭窗口功能
+        function closeWindow() {
+            window.close();
+        }
+
+        // 按ESC键也可以关闭窗口（可选）
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeWindow();
+            }
+        });
+    </script>
+</body>
+</html>

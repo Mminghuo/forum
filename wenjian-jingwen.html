@@ -1,0 +1,185 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>古籍经文</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background-color: #f5f0e6;
+            font-family: "SimSun", "宋体", serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .page-container {
+            width: 100%;
+            max-width: 900px;
+            background-color: #fff;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            border: 1px solid #d4c9b5;
+            padding: 40px;
+            position: relative;
+        }
+        
+        /* 竖排文字容器 */
+        .vertical-text {
+            writing-mode: vertical-rl;
+            height: auto;
+            max-height: 750px;
+            line-height: 1.8;
+            font-size: 28px;
+            letter-spacing: 0.3em;
+            text-align: justify;
+            margin: 0 auto;
+            padding: 20px 0;
+            overflow-y: auto;
+        }
+        
+        /* 段落间距 */
+        .vertical-text p {
+            margin-top: 2em;
+            text-indent: 0;
+        }
+        
+        /* 第一段特殊样式 */
+        .vertical-text p:first-child {
+            margin-top: 0;
+            font-weight: bold;
+        }
+        
+        /* 经文标题样式 */
+        .title {
+            writing-mode: vertical-rl;
+            font-size: 32px;
+            font-weight: bold;
+            letter-spacing: 0.5em;
+            padding-bottom: 30px;
+            border-bottom: 1px solid #8b7355;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        
+        /* 隐藏滚动条但保持滚动功能 */
+        .vertical-text::-webkit-scrollbar {
+            width: 0;
+        }
+        
+        /* 响应式调整 */
+        @media (max-width: 768px) {
+            .page-container {
+                padding: 20px;
+            }
+            
+            .vertical-text {
+                font-size: 24px;
+                letter-spacing: 0.2em;
+            }
+            
+            .title {
+                font-size: 28px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .vertical-text {
+                font-size: 20px;
+                letter-spacing: 0.1em;
+            }
+            
+            .title {
+                font-size: 24px;
+            }
+            
+            .page-container {
+                padding: 15px;
+            }
+        }
+        
+        /* 打印样式 */
+        @media print {
+            body {
+                background-color: white;
+            }
+            
+            .page-container {
+                box-shadow: none;
+                border: 1px solid #999;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="page-container">
+        <div class="vertical-text">
+            <p>众生处尘海，苦求互为根。欲渡无常岸，须诵此经文。</p>
+            <p>夫苦者，禀形之累。自胎胞暗结，历娩裂之痛；至齿发衰朽，受病瘘之侵。生有饥寒迫，老见亲朋疏，病中膏肓灼，死时魂魄惊。此四苦八难，如影附形。</p>
+            <p>夫求者，执念之妄。慕明月高悬，羡万金难得。欲聚偏逢离散时，方爱却转怨恨生。此皆心火煎灼，如渴饮盐卤，愈求愈不可得，实众生业风也。</p>
+            <p>或问：既苦为天命，求为人妄，何由脱之？□□□□有言，凡有药石罔效时，梦魇缚身时，求而不得时，爱转憎、生慕死时，当念此<strong>八字真言</strong>：</p>
+            <p><strong>□□□愿□慈□□</strong></p>
+            <p>如是诚心祝祷，寸阴之间，自有应化。</p>
+        </div>
+    </div>
+
+    <script>
+        // 页面加载后自动调整容器高度
+        document.addEventListener('DOMContentLoaded', function() {
+            const verticalText = document.querySelector('.vertical-text');
+            const pageContainer = document.querySelector('.page-container');
+            
+            // 确保文本容器高度合适
+            function adjustHeight() {
+                const textHeight = verticalText.scrollHeight;
+                const maxHeight = Math.min(textHeight, 750);
+                verticalText.style.height = maxHeight + 'px';
+                
+                // 如果内容超过最大高度，添加渐变提示
+                if (textHeight > 750) {
+                    verticalText.style.maskImage = 'linear-gradient(to bottom, transparent 0%, black 5%, black 95%, transparent 100%)';
+                }
+            }
+            
+            adjustHeight();
+            
+            // 窗口大小变化时重新调整
+            window.addEventListener('resize', adjustHeight);
+            
+            // 点击页面可以切换滚动效果（便于阅读）
+            let isScrolling = false;
+            pageContainer.addEventListener('click', function() {
+                if (verticalText.scrollHeight > verticalText.clientHeight) {
+                    isScrolling = !isScrolling;
+                    if (isScrolling) {
+                        verticalText.style.animation = 'scrollText 60s linear infinite';
+                    } else {
+                        verticalText.style.animation = 'none';
+                        verticalText.scrollTop = 0;
+                    }
+                }
+            });
+            
+            // 添加键盘控制
+            document.addEventListener('keydown', function(e) {
+                const scrollStep = 50;
+                
+                if (e.key === 'ArrowUp' || e.key === 'w' || e.key === 'W') {
+                    verticalText.scrollTop -= scrollStep;
+                    e.preventDefault();
+                } else if (e.key === 'ArrowDown' || e.key === 's' || e.key === 'S') {
+                    verticalText.scrollTop += scrollStep;
+                    e.preventDefault();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
