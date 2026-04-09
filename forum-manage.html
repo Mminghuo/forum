@@ -931,7 +931,7 @@
                     { id: 101, title: "活不下去了，一场车祸毁了我的家", author: "破折号", date: "今天", status: "ongoing", postFile: "post-qingshen.html", special: true },
                     { id: 102, title: "关注的探险主播好久没更新了", author: "天涯共此时hcx", date: "七个月前", status: "tomb", postFile: "post-zhubo.html", special: true },
                     { id: 103, title: "求助！！我被活埋了，请救救我", author: "这里好黑啊", date: "一年前", status: "tomb", postFile: "post-huomai.html", special: true },
-                    { id: 104, title: "寻找记忆中的一档生存综艺", author: "八千里外", date: "一年前", status: "tomb", postFile: "post-zongyi.html", special: true }
+                    { id: 104, title: "寻找记忆中的一档生存综艺", author: "鬼不觉", date: "一年前", status: "tomb", postFile: "post-zongyi.html", special: true }
                 ],
                 [
                     { id: 105, title: "最近总有奇怪的东西跟着我", author: "温水青", date: "一个月前", status: "locked", postFile: "post-shuiqing.html", special: true, locked: true, lockType: "admin", password: "平安" },
@@ -945,7 +945,7 @@
                     { id: 101, title: "活不下去了，一场车祸毁了我的家", author: "破折号", date: "今天", status: "ongoing", postFile: "post-qingshen.html", special: true },
                     { id: 102, title: "关注的探险主播好久没更新了", author: "天涯共此时hcx", date: "七个月前", status: "tomb", postFile: "post-zhubo.html", special: true },
                     { id: 103, title: "求助！！我被活埋了，请救救我", author: "这里好黑啊", date: "一年前", status: "tomb", postFile: "post-huomai.html", special: true },
-                    { id: 104, title: "寻找记忆中的一档生存综艺", author: "八千里外", date: "一年前", status: "tomb", postFile: "post-zongyi.html", special: true }
+                    { id: 104, title: "寻找记忆中的一档生存综艺", author: "鬼不觉", date: "一年前", status: "tomb", postFile: "post-zongyi.html", special: true }
                 ]
             ],
             locked: [
@@ -1188,7 +1188,7 @@
                 // 保存目标 URL
                 const targetUrl = currentLockedPost.postFile || 'post-placeholder.html';
                 
-                // 关闭对话框（不清空 currentLockedPost，因为还要用？但后面不会再用到，其实可以清空，但必须先用 targetUrl）
+                // 关闭对话框
                 document.getElementById('lockedPostDialog').classList.remove('show');
                 document.getElementById('lockedPostInput').value = '';
                 // 清空 currentLockedPost 避免后续误用
@@ -1198,10 +1198,18 @@
                 const toast = document.getElementById('loadingToast');
                 toast.style.display = 'block';
                 
-                // 2秒后打开新窗口并隐藏提示
+                // 先创建窗口（在用户交互上下文中）
+                const newWindow = window.open('', '_blank');
+                
+                // 2秒后更新窗口位置并隐藏提示
                 setTimeout(() => {
                     toast.style.display = 'none';
-                    window.open(targetUrl, '_blank');
+                    if (newWindow) {
+                        newWindow.location.href = targetUrl;
+                    } else {
+                        // 如果窗口创建失败，尝试直接打开
+                        window.open(targetUrl, '_blank');
+                    }
                 }, 2000);
             } else {
                 alert('输入错误，请重新输入！');
@@ -1273,4 +1281,3 @@
     </script>
 </body>
 </html>
-
