@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
@@ -16,33 +16,43 @@
             font-family: "SimSun", "宋体", serif;
             display: flex;
             justify-content: center;
-            align-items: center;
+            align-items: flex-start;
             min-height: 100vh;
             padding: 20px;
+            overflow-x: hidden;
         }
         
         .page-container {
             width: 100%;
-            max-width: 900px;
+            max-width: 1200px;
             background-color: #fff;
             box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
             border: 1px solid #d4c9b5;
             padding: 40px;
             position: relative;
+            box-sizing: border-box;
+            min-height: calc(100vh - 40px);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
         }
         
         /* 竖排文字容器 */
         .vertical-text {
             writing-mode: vertical-rl;
             height: auto;
-            max-height: 750px;
+            max-height: calc(100vh - 120px);
             line-height: 1.8;
             font-size: 28px;
             letter-spacing: 0.3em;
             text-align: justify;
             margin: 0 auto;
-            padding: 20px 0;
-            overflow-y: auto;
+            padding: 20px;
+            overflow-x: auto;
+            overflow-y: hidden;
+            -webkit-overflow-scrolling: touch;
+            background-color: #fff;
         }
         
         /* 段落间距 */
@@ -75,33 +85,82 @@
         }
         
         /* 响应式调整 */
-        @media (max-width: 768px) {
+        @media (min-width: 1200px) {
             .page-container {
-                padding: 20px;
+                max-width: 1400px;
             }
             
             .vertical-text {
-                font-size: 24px;
+                font-size: 28px;
+                letter-spacing: 0.3em;
+            }
+        }
+        
+        @media (max-width: 1199px) {
+            .page-container {
+                max-width: 1000px;
+            }
+            
+            .vertical-text {
+                font-size: 26px;
+                letter-spacing: 0.25em;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            
+            .page-container {
+                padding: 20px;
+                min-height: calc(100vh - 20px);
+                max-width: 800px;
+            }
+            
+            .vertical-text {
+                font-size: 22px;
                 letter-spacing: 0.2em;
+                max-height: calc(100vh - 80px);
+                line-height: 1.6;
+                padding: 15px;
             }
             
             .title {
-                font-size: 28px;
+                font-size: 26px;
+                padding-bottom: 20px;
+                margin-bottom: 20px;
             }
         }
         
         @media (max-width: 480px) {
-            .vertical-text {
-                font-size: 20px;
-                letter-spacing: 0.1em;
-            }
-            
-            .title {
-                font-size: 24px;
+            body {
+                padding: 5px;
             }
             
             .page-container {
                 padding: 15px;
+                min-height: calc(100vh - 10px);
+                max-width: 450px;
+            }
+            
+            .vertical-text {
+                font-size: 18px;
+                letter-spacing: 0.15em;
+                max-height: calc(100vh - 60px);
+                line-height: 1.5;
+                padding: 10px;
+            }
+            
+            .title {
+                font-size: 22px;
+                padding-bottom: 15px;
+                margin-bottom: 15px;
+            }
+            
+            /* 手机上调整竖排文字的显示 */
+            .vertical-text p {
+                margin-top: 1.5em;
             }
         }
         
@@ -138,13 +197,21 @@
             
             // 确保文本容器高度合适
             function adjustHeight() {
-                const textHeight = verticalText.scrollHeight;
-                const maxHeight = Math.min(textHeight, 750);
-                verticalText.style.height = maxHeight + 'px';
+                const windowHeight = window.innerHeight;
+                const windowWidth = window.innerWidth;
                 
-                // 如果内容超过最大高度，添加渐变提示
-                if (textHeight > 750) {
-                    verticalText.style.maskImage = 'linear-gradient(to bottom, transparent 0%, black 5%, black 95%, transparent 100%)';
+                // 计算合适的容器高度
+                const paddingOffset = windowWidth <= 480 ? 60 : (windowWidth <= 768 ? 80 : 120);
+                const maxHeight = windowHeight - paddingOffset;
+                
+                // 设置文本容器高度
+                verticalText.style.height = 'auto';
+                verticalText.style.maxHeight = maxHeight + 'px';
+                
+                // 确保文本内容在容器内
+                const textHeight = verticalText.scrollHeight;
+                if (textHeight > maxHeight) {
+                    verticalText.style.height = maxHeight + 'px';
                 }
             }
             
@@ -152,6 +219,9 @@
             
             // 窗口大小变化时重新调整
             window.addEventListener('resize', adjustHeight);
+            
+            // 页面加载完成后再次调整（确保字体加载完成）
+            window.addEventListener('load', adjustHeight);
             
             // 点击页面可以切换滚动效果（便于阅读）
             let isScrolling = false;
