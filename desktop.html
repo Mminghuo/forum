@@ -1,9 +1,12 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>桌面</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="format-detection" content="telephone=no">
+    <title>电脑桌面 - 温水青的游戏世界</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
@@ -826,6 +829,236 @@
         .notification-btn.close:hover {
             background-color: rgba(255, 255, 255, 0.2);
         }
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .desktop-icons {
+                top: 15px;
+                left: 15px;
+                gap: 20px;
+            }
+            
+            .desktop-icon {
+                width: 70px;
+                padding: 8px;
+            }
+            
+            .icon-img {
+                width: 40px;
+                height: 40px;
+                font-size: 30px;
+            }
+            
+            .icon-label {
+                font-size: 11px;
+            }
+            
+            .desktop-clock {
+                top: 15px;
+                right: 15px;
+            }
+            
+            .desktop-time {
+                font-size: 36px;
+            }
+            
+            .desktop-date {
+                font-size: 14px;
+            }
+            
+            .app-window {
+                width: 90%;
+                height: 70%;
+            }
+            
+            .folder-window {
+                width: 90%;
+                height: 70%;
+            }
+            
+            .notes-window {
+                width: 90%;
+                height: 70%;
+            }
+            
+            .folder-content {
+                grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+                gap: 15px;
+                padding: 15px;
+            }
+            
+            .folder-item {
+                width: 100px;
+                height: 100px;
+            }
+            
+            .folder-icon {
+                width: 50px;
+                height: 50px;
+                font-size: 36px;
+            }
+            
+            .folder-item-name {
+                font-size: 12px;
+            }
+            
+            .chat-notification {
+                width: 300px;
+                padding: 15px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .desktop-icons {
+                top: 10px;
+                left: 10px;
+                gap: 15px;
+            }
+            
+            .desktop-icon {
+                width: 60px;
+                padding: 6px;
+            }
+            
+            .icon-img {
+                width: 32px;
+                height: 32px;
+                font-size: 24px;
+            }
+            
+            .icon-label {
+                font-size: 10px;
+            }
+            
+            .desktop-clock {
+                top: 10px;
+                right: 10px;
+            }
+            
+            .desktop-time {
+                font-size: 28px;
+            }
+            
+            .desktop-date {
+                font-size: 12px;
+            }
+            
+            .app-window {
+                width: 95%;
+                height: 65%;
+            }
+            
+            .app-window-content {
+                padding: 15px;
+            }
+            
+            .folder-content {
+                grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+                gap: 10px;
+                padding: 10px;
+            }
+            
+            .folder-item {
+                width: 80px;
+                height: 80px;
+                padding: 10px 5px;
+            }
+            
+            .folder-icon {
+                width: 40px;
+                height: 40px;
+                font-size: 28px;
+            }
+            
+            .folder-item-name {
+                font-size: 10px;
+                max-width: 70px;
+            }
+            
+            .notes-toolbar {
+                padding: 10px 15px;
+            }
+            
+            .category-btn {
+                padding: 6px 12px;
+                font-size: 12px;
+            }
+            
+            .notes-content {
+                padding: 15px;
+            }
+            
+            .note {
+                padding: 15px;
+            }
+            
+            .note-title {
+                font-size: 14px;
+            }
+            
+            .note-text {
+                font-size: 13px;
+            }
+            
+            .chat-notification {
+                width: 90%;
+                padding: 15px;
+                bottom: 50px;
+                right: 10px;
+            }
+            
+            .system-tray {
+                gap: 10px;
+                padding-right: 5px;
+            }
+            
+            .tray-icon {
+                font-size: 12px;
+            }
+            
+            .tray-icon i {
+                font-size: 14px;
+            }
+            
+            .time-display {
+                font-size: 12px;
+            }
+        }
+        
+        /* iOS 设备特定优化 */
+        @media screen and (max-width: 768px) and (-webkit-min-device-pixel-ratio: 2) {
+            body {
+                -webkit-text-size-adjust: 100%;
+            }
+            
+            .desktop-icon {
+                -webkit-tap-highlight-color: transparent;
+            }
+            
+            .power-btn {
+                -webkit-tap-highlight-color: transparent;
+            }
+            
+            .shutdown-option {
+                -webkit-tap-highlight-color: transparent;
+            }
+            
+            .window-control-btn {
+                -webkit-tap-highlight-color: transparent;
+            }
+            
+            .folder-item {
+                -webkit-tap-highlight-color: transparent;
+            }
+            
+            .category-btn {
+                -webkit-tap-highlight-color: transparent;
+            }
+            
+            .notification-btn {
+                -webkit-tap-highlight-color: transparent;
+            }
+        }
     </style>
 </head>
 <body>
@@ -1142,7 +1375,7 @@
                 category: 'recycle',
                 date: "半年前",
                 title: "",
-                content: "在微博随便发了个求助，竟然收到了\"灵异论坛\"的邀请码。里面氛围好邪乎，注册还要真名和生辰八字，有点吓人又有点带感。\n\n把密码记在这里吧：wyynlzdq，免得忘了。"
+                content: "之前在微博随便发了个求助，竟然收到了\"灵异论坛\"的邀请码。里面氛围好邪乎，注册还要真名和生辰八字，有点吓人又有点带感。\n\n把密码记在这里吧：wyynlzdq，免得忘了。"
             }
         ];
         
@@ -1618,5 +1851,3 @@
     </script>
 </body>
 </html>
-
-
