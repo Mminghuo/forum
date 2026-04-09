@@ -3,7 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-    <title>灵异论坛调查记录</title>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="format-detection" content="telephone=no">
+    <title>关于灵异论坛的调查记录</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
@@ -612,9 +615,15 @@
             .menu-option-title {
                 font-size: 28px;
             }
+            .dialog-content, .preface-content {
+                max-width: 90%;
+            }
         }
         
         @media (max-width: 480px) {
+            body {
+                padding: 15px 10px;
+            }
             .paper-container {
                 padding: 20px 18px 15px 18px;
             }
@@ -631,6 +640,10 @@
                 font-size: 30px;
                 margin: 3px 0;
             }
+            .menu-container {
+                max-width: 100%;
+                gap: 15px;
+            }
             .menu-option-title {
                 font-size: 24px;
             }
@@ -639,6 +652,27 @@
             }
             .dialog-content, .preface-content {
                 padding: 20px;
+                max-width: 95%;
+            }
+            .preface-text {
+                font-size: 14px;
+                line-height: 1.6;
+            }
+        }
+        
+        /* iOS 设备特定优化 */
+        @media screen and (max-width: 768px) and (-webkit-min-device-pixel-ratio: 2) {
+            body {
+                -webkit-text-size-adjust: 100%;
+            }
+            .paper-container {
+                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            }
+            .menu-option {
+                -webkit-tap-highlight-color: transparent;
+            }
+            .dialog-btn, .preface-btn {
+                -webkit-tap-highlight-color: transparent;
             }
         }
         
@@ -729,8 +763,8 @@
             <div class="preface-content-section active" id="preface">
                 <div class="preface-text">
                     <p>你是高三学生温乔。</p>
-                    <p>这个寒假，经理打电话说你的姐姐温妍已经一周没去上班，她失踪了。温妍给你的最后消息是一串数字：1234567890。</p>
-                    <p>你赶来温妍住处，找到这台电脑。这是你拥有的唯一线索。</p>
+                    <p>这个寒假，经理打电话说姐姐温妍未请假上班，已于一周前失踪。姐姐给你的最后一条消息是一串莫名其妙的数字：1234567890。</p>
+                    <p>你赶来姐姐住处，只找到这台电脑。这也是你拥有的唯一线索。</p>
                     <p style="margin-top: 15px; font-style: italic; color: #8b0000;">电脑屏幕闪烁着微弱的光，等待你的探索……</p>
                 </div>
             </div>
@@ -834,6 +868,7 @@
             localStorage.removeItem('userName');
             localStorage.removeItem('loginTime');
             localStorage.removeItem('chatGameState');
+            localStorage.removeItem('mingtian1GameState');
             localStorage.removeItem('forum_manage_opened');
             localStorage.removeItem('chat_notification_shown');
             localStorage.removeItem('trigger_chat_messages');
@@ -956,7 +991,7 @@
                 if (hasSavedGameData()) {
                     showConfirmDialog(
                         '开始新游戏',
-                        '开始新游戏将清除所有现有的游戏数据，您确定要继续吗？',
+                        '开始新游戏将清除所有游戏数据，您确定要继续吗？',
                         startNewGame
                     );
                 } else {
@@ -1034,6 +1069,3 @@
     </script>
 </body>
 </html>
-
-
-
