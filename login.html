@@ -1,8 +1,11 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="format-detection" content="telephone=no">
     <title>系统登录</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -245,31 +248,86 @@
         }
         
         /* 响应式设计 */
-        @media (max-width: 480px) {
+        @media (max-width: 768px) {
             .login-container {
                 margin: 20px;
-                padding: 30px 20px;
+                padding: 30px 25px;
+            }
+            
+            .top-time {
+                top: 30px;
+                right: 30px;
+                font-size: 70px;
+            }
+            
+            .top-date {
+                top: 110px;
+                right: 30px;
+                font-size: 20px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .login-container {
+                margin: 15px;
+                padding: 25px 20px;
+                width: calc(100% - 30px);
             }
             
             .user-avatar {
-                width: 80px;
-                height: 80px;
+                width: 70px;
+                height: 70px;
             }
             
             .avatar-icon {
-                font-size: 36px;
+                font-size: 32px;
+            }
+            
+            .user-name {
+                font-size: 20px;
             }
             
             .top-time {
                 top: 20px;
                 right: 20px;
-                font-size: 60px;
+                font-size: 50px;
             }
             
             .top-date {
-                top: 95px;
+                top: 85px;
                 right: 20px;
-                font-size: 18px;
+                font-size: 16px;
+            }
+            
+            .password-input {
+                padding: 12px 40px 12px 12px;
+                font-size: 14px;
+            }
+            
+            .login-button {
+                top: 30px;
+                width: 36px;
+                height: 36px;
+            }
+        }
+        
+        /* iOS 设备特定优化 */
+        @media screen and (max-width: 768px) and (-webkit-min-device-pixel-ratio: 2) {
+            body {
+                -webkit-text-size-adjust: 100%;
+            }
+            
+            .login-container {
+                backdrop-filter: blur(5px);
+            }
+            
+            .password-input {
+                -webkit-appearance: none;
+                border-radius: 4px;
+            }
+            
+            .login-button {
+                -webkit-tap-highlight-color: transparent;
             }
         }
     </style>
