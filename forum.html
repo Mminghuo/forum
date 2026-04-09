@@ -2,7 +2,10 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="format-detection" content="telephone=no">
     <title>七月半 - 论坛</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -814,6 +817,254 @@
             font-size: 13px;
             color: #94a3b8;
         }
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            body {
+                padding-top: 60px;
+            }
+            
+            .fixed-header {
+                height: 50px;
+            }
+            
+            .header-content {
+                padding: 0 15px;
+            }
+            
+            .header-title {
+                font-size: 16px;
+            }
+            
+            .close-btn {
+                padding: 5px 10px;
+                font-size: 12px;
+            }
+            
+            .forum-container {
+                width: 95%;
+                gap: 15px;
+            }
+            
+            .logo-card {
+                min-height: 80px;
+                padding: 15px 0;
+            }
+            
+            .logo-card .forum-name {
+                font-size: 32px;
+                letter-spacing: 2px;
+            }
+            
+            .logo-card .forum-subtitle {
+                font-size: 14px;
+            }
+            
+            .toolbar-card {
+                padding: 10px 15px;
+            }
+            
+            .main-toolbar {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 10px;
+            }
+            
+            .search-section {
+                justify-content: center;
+            }
+            
+            .forum-search {
+                width: 250px;
+            }
+            
+            .user-section {
+                justify-content: center;
+            }
+            
+            .content-card {
+                padding: 15px;
+            }
+            
+            .admin-notice {
+                padding: 12px 15px;
+                margin-bottom: 15px;
+            }
+            
+            .notice-title {
+                font-size: 14px;
+            }
+            
+            .notice-content {
+                font-size: 12px;
+            }
+            
+            .forum-nav {
+                border-radius: 30px;
+                margin-bottom: 12px;
+            }
+            
+            .forum-nav-item {
+                padding: 8px 16px;
+                font-size: 12px;
+            }
+            
+            .post-item {
+                padding: 12px 15px;
+            }
+            
+            .post-title {
+                font-size: 14px;
+            }
+            
+            .post-author {
+                font-size: 12px;
+            }
+            
+            .post-date {
+                font-size: 10px;
+            }
+            
+            .pagination {
+                margin-top: 15px;
+                gap: 5px;
+            }
+            
+            .page-btn {
+                padding: 5px 10px;
+                font-size: 12px;
+            }
+            
+            .online-counter {
+                padding: 10px 15px;
+                font-size: 12px;
+            }
+            
+            .new-post-btn {
+                bottom: 80px;
+                right: 20px;
+                width: 48px;
+                height: 48px;
+                font-size: 20px;
+            }
+            
+            .login-dialog-content, .security-dialog-content, .profile-dialog-content, .admin-dialog-content, .pm-dialog-content {
+                padding: 20px 25px;
+                max-width: 90%;
+            }
+            
+            .login-dialog-title, .security-dialog-title, .profile-dialog-title, .admin-dialog-title, .pm-dialog-title {
+                font-size: 18px;
+                margin-bottom: 15px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .forum-search {
+                width: 100%;
+            }
+            
+            .search-section {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .ghost-talk {
+                align-self: center;
+            }
+            
+            .logo-card .forum-name {
+                font-size: 28px;
+            }
+            
+            .forum-nav {
+                flex-wrap: wrap;
+                border-radius: 15px;
+            }
+            
+            .forum-nav-item {
+                flex: 1;
+                min-width: 80px;
+                text-align: center;
+            }
+            
+            .post-item-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 5px;
+            }
+            
+            .welcome-back {
+                padding: 20px 30px;
+            }
+            
+            .welcome-text {
+                font-size: 18px;
+            }
+        }
+        
+        /* iOS 设备特定优化 */
+        @media screen and (max-width: 768px) and (-webkit-min-device-pixel-ratio: 2) {
+            body {
+                -webkit-text-size-adjust: 100%;
+            }
+            
+            .close-btn {
+                -webkit-tap-highlight-color: transparent;
+            }
+            
+            .ghost-talk {
+                -webkit-tap-highlight-color: transparent;
+            }
+            
+            .admin-entry-btn {
+                -webkit-tap-highlight-color: transparent;
+            }
+            
+            .login-btn {
+                -webkit-tap-highlight-color: transparent;
+            }
+            
+            .profile-btn {
+                -webkit-tap-highlight-color: transparent;
+            }
+            
+            .pm-btn {
+                -webkit-tap-highlight-color: transparent;
+            }
+            
+            .forum-nav-item {
+                -webkit-tap-highlight-color: transparent;
+            }
+            
+            .post-item {
+                -webkit-tap-highlight-color: transparent;
+            }
+            
+            .page-btn {
+                -webkit-tap-highlight-color: transparent;
+            }
+            
+            .new-post-btn {
+                -webkit-tap-highlight-color: transparent;
+            }
+            
+            .login-dialog-btn {
+                -webkit-tap-highlight-color: transparent;
+            }
+            
+            .security-dialog-btn {
+                -webkit-tap-highlight-color: transparent;
+            }
+            
+            .profile-dialog-btn {
+                -webkit-tap-highlight-color: transparent;
+            }
+            
+            .admin-dialog-btn {
+                -webkit-tap-highlight-color: transparent;
+            }
+        }
     </style>
 </head>
 <body>
@@ -1305,7 +1556,17 @@
                 closeAdminDialog();
                 const openingForum = document.getElementById('openingForum');
                 openingForum.classList.add('show');
-                setTimeout(() => { window.open('forum-manage.html', '_blank'); openingForum.classList.remove('show'); }, 1500);
+                // iOS 兼容：先创建窗口引用，然后在 setTimeout 中使用
+                const newWindow = window.open('about:blank', '_blank');
+                setTimeout(() => {
+                    if (newWindow) {
+                        newWindow.location.href = 'forum-manage.html';
+                    } else {
+                        // 如果弹出窗口被阻止，使用当前窗口跳转
+                        window.location.href = 'forum-manage.html';
+                    }
+                    openingForum.classList.remove('show');
+                }, 1500);
             } else { alert('真言错误，请重新输入！'); document.getElementById('adminPassword').value = ''; document.getElementById('adminPassword').focus(); }
         }
         
