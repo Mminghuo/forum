@@ -39,6 +39,7 @@
         .chat-area { flex: 1; display: flex; flex-direction: column; min-width: 0; }
         .chat-header { padding: 12px 15px; border-bottom: 1px solid #e6e6e6; display: flex; align-items: center; justify-content: space-between; background-color: #f7f7f7; }
         .chat-header-left { display: flex; align-items: center; }
+        .back-btn { display: none; font-size: 18px; color: #07c160; margin-right: 10px; cursor: pointer; }
         .chat-contact-avatar { width: 36px; height: 36px; border-radius: 6px; margin-right: 12px; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 16px; border: 1px solid #f0f0f0; }
         .chat-contact-name { font-weight: bold; font-size: 16px; }
         .close-window-btn { background-color: #ff5f57; color: white; border: none; border-radius: 4px; padding: 8px 16px; cursor: pointer; font-size: 14px; transition: background-color 0.2s; }
@@ -57,14 +58,15 @@
         .time-divider::before { content: ''; position: absolute; top: 50%; left: 0; right: 0; height: 1px; background-color: #ddd; z-index: 1; }
         .time-divider-text { background-color: #f0f0f0; padding: 5px 15px; color: #999; font-size: 12px; border-radius: 10px; position: relative; z-index: 2; display: inline-block; }
         .system-message { text-align: center; color: #999; font-size: 12px; margin: 15px 0; }
-        .chat-input-area { padding: 15px; border-top: 1px solid #e6e6e6; display: flex; flex-direction: column; background-color: #f7f7f7; }
+        .chat-input-area { padding: 15px 15px 20px 15px; border-top: 1px solid #e6e6e6; display: flex; flex-direction: column; background-color: #f7f7f7; margin-bottom: 10px; }
         .chat-tools { display: flex; align-items: center; padding: 5px 0; color: #999; font-size: 20px; }
         .chat-tool-btn { margin-right: 15px; cursor: pointer; }
-        .chat-input-wrapper { flex: 1; background-color: white; border-radius: 4px; border: 1px solid #e6e6e6; overflow: hidden; margin-top: 10px; }
-        .chat-input { width: 100%; border: none; padding: 12px 15px; font-size: 14px; outline: none; resize: none; min-height: 40px; max-height: 120px; font-family: inherit; }
+        .input-row { display: flex; align-items: center; margin-top: 10px; gap: 10px; }
+        .chat-input-wrapper { flex: 1; background-color: white; border-radius: 4px; border: 1px solid #e6e6e6; overflow: hidden; }
+        .chat-input { width: 100%; border: none; padding: 12px 15px; font-size: 14px; outline: none; resize: none; min-height: 40px; max-height: 120px; line-height: 20px; font-family: inherit; }
         .chat-input:disabled { background-color: #f9f9f9; color: #999; }
         .chat-input.readonly { background-color: white; color: #333; cursor: pointer; }
-        .send-btn { background-color: #07c160; color: white; border: none; border-radius: 4px; padding: 8px 20px; margin-left: 10px; cursor: pointer; font-weight: bold; transition: background-color 0.2s; align-self: flex-end; margin-top: 10px; }
+        .send-btn { background-color: #07c160; color: white; border: none; border-radius: 4px; padding: 8px 20px; cursor: pointer; font-weight: bold; transition: background-color 0.2s; height: 40px; min-width: 80px; display: flex; align-items: center; justify-content: center; margin-bottom: 0; }
         .send-btn:hover:not(:disabled) { background-color: #06ad56; }
         .send-btn:disabled { background-color: #c0c0c0; cursor: not-allowed; }
         .empty-chat { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; color: #999; font-size: 14px; }
@@ -87,6 +89,63 @@
         .typing-dot:nth-child(2) { animation-delay: 0.2s; }
         .typing-dot:nth-child(3) { animation-delay: 0.4s; }
         @keyframes typing { 0%,60%,100% { transform: translateY(0); } 30% { transform: translateY(-5px); } }
+        
+        /* 手机布局 */
+        @media screen and (max-width: 768px) {
+            body { height: 100vh; width: 100vw; overflow: hidden; }
+            
+            .chat-container { flex-direction: column; height: 100vh; width: 100vw; }
+            
+            .nav-sidebar { width: 100%; height: 60px; flex-direction: row; justify-content: space-around; padding-top: 0; padding-bottom: 0; flex-shrink: 0; }
+            
+            .nav-item { margin-bottom: 0; }
+            
+            .sidebar { width: 100%; height: calc(100vh - 60px); border-right: none; border-top: 1px solid #e6e6e6; display: flex; flex-direction: column; }
+            
+            .chat-area { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; z-index: 1000; display: none; background-color: white; flex-direction: column; }
+            
+            .chat-area.active { display: flex; }
+            
+            .chat-header { padding: 12px 15px; background-color: #f7f7f7; border-bottom: 1px solid #e6e6e6; flex-shrink: 0; }
+            
+            .chat-messages { flex: 1; overflow-y: auto; padding: 15px; }
+            
+            .chat-input-area { flex-shrink: 0; padding: 10px 10px 20px 10px; margin-bottom: 0; }
+            
+            .back-btn { display: block !important; font-size: 18px; color: #07c160; margin-right: 10px; }
+            
+            .chat-contact-avatar { width: 36px; height: 36px; }
+            
+            .chat-contact-name { font-size: 16px; font-weight: bold; }
+            
+            .close-window-btn { padding: 6px 12px; font-size: 12px; }
+            
+            .message { margin-bottom: 15px; }
+            
+            .message-avatar { width: 32px; height: 32px; margin: 0 8px; }
+            
+            .message-content { max-width: 75%; padding: 8px 12px; font-size: 14px; }
+            
+            .input-row { align-items: center; }
+            
+            .chat-input { padding: 8px 10px; font-size: 14px; min-height: 36px; max-height: 100px; }
+            
+            .send-btn { padding: 6px 16px; height: 36px; min-width: 70px; font-size: 14px; }
+        }
+        
+        @media (max-width: 480px) {
+            .chat-header { padding: 10px 12px; }
+            
+            .chat-messages { padding: 10px; }
+            
+            .message-content { max-width: 80%; padding: 6px 10px; font-size: 13px; }
+            
+            .message-avatar { width: 28px; height: 28px; margin: 0 6px; }
+            
+            .chat-input { padding: 6px 8px; font-size: 13px; min-height: 32px; max-height: 80px; }
+            
+            .send-btn { padding: 4px 12px; font-size: 12px; height: 32px; min-width: 60px; }
+        }
     </style>
 </head>
 <body>
@@ -139,7 +198,7 @@
     <!-- 新闻提示（已去掉蓝色竖条、新闻标签和南鄣新闻） -->
     <div class="notification" id="news-notification">
         <div style="font-size: 14px; font-weight: 500; line-height: 1.4;">速报：南鄣市新市长，定了！</div>
-        <div style="font-size: 12px; color: #666; line-height: 1.3;">据官方消息，王玉萍当选南鄣市新任市长，将致力于城市发展和民生改善。</div>
+        <div style="font-size: 12px; color: #666; line-height: 1.3;">据官方消息，宋青云当选南鄣市新任市长，将致力于城市发展和民生改善。</div>
     </div>
 
     <script>
@@ -292,7 +351,7 @@
         const cannotSendContacts = ['qiaoqiao', 'mother', 'zhangmanager', 'father']; // 乔乔初始不可发，脚本③开始后才可
 
         // ----- 游戏状态 -----
-        let gameState = {
+        let gameState = loadGameState() || {
             chatData: JSON.parse(JSON.stringify(initialChatData)),
             contactsData: JSON.parse(JSON.stringify(initialContactsData)),
             currentChatId: null,
@@ -330,8 +389,27 @@
         const searchText = document.getElementById('search-text');
 
         // ----- 工具函数 -----
-        function saveGameState() { /* 本演示无需持久存储，略 */ }
+        function saveGameState() {
+            try {
+                localStorage.setItem('mingtian1GameState', JSON.stringify(gameState));
+            } catch (e) {
+                console.error('保存游戏状态失败:', e);
+            }
+        }
         function showNotification(msg) { alert(msg); } // 简化，用alert代替
+
+        // 加载游戏状态
+        function loadGameState() {
+            try {
+                const savedState = localStorage.getItem('mingtian1GameState');
+                if (savedState) {
+                    return JSON.parse(savedState);
+                }
+            } catch (e) {
+                console.error('加载游戏状态失败:', e);
+            }
+            return null;
+        }
 
         // 渲染聊天列表 (按时间戳倒序)
         function renderChatList() {
@@ -359,6 +437,7 @@
                     document.querySelectorAll('.contact-item').forEach(el => el.classList.remove('active'));
                     item.classList.add('active');
                     switchToChat(chat.id);
+                    saveGameState(); // 保存状态
                 });
                 chatListEl.appendChild(item);
             });
@@ -398,7 +477,17 @@
             if (!chat) { const c = gameState.contactsData.find(c => c.id===chatId); if(c) renderEmptyChat(c); return; }
 
             const avatar = getRandomAvatar(chat.id);
-            chatHeaderLeftEl.innerHTML = `<div class="chat-contact-avatar" style="background-color:${avatar.color};">${avatar.text}</div><div class="chat-contact-name">${chat.name}</div>`;
+            chatHeaderLeftEl.innerHTML = `
+                <div class="back-btn" id="back-btn"><i class="fas fa-arrow-left"></i></div>
+                <div class="chat-contact-avatar" style="background-color:${avatar.color};">${avatar.text}</div>
+                <div class="chat-contact-name">${chat.name}</div>
+            `;
+
+            // 添加返回按钮事件
+            const backBtn = document.getElementById('back-btn');
+            if (backBtn) {
+                backBtn.addEventListener('click', hideChatArea);
+            }
 
             // 渲染消息
             chatMessagesEl.innerHTML = '';
@@ -428,6 +517,13 @@
 
             renderChatInputArea(chatId);
             
+            // 手机端显示聊天区域
+            const isMobile = window.innerWidth <= 768;
+            if (isMobile) {
+                const chatArea = document.querySelector('.chat-area');
+                chatArea.classList.add('active');
+            }
+            
             // 如果切换到有脚本的聊天且脚本已开始但未完成，继续处理
             if (chatId === 'mingyueye' && gameState.mingyueyeNewStarted && !gameState.mingyueyeNewComplete) {
                 // 不主动启动，因为已经在启动时发送了第一条并调用了playNextReporter
@@ -437,6 +533,23 @@
             } else if (chatId === 'qiaoqiao' && gameState.qiaoqiaoNewStarted && !gameState.qiaoqiaoNewComplete) {
                 // 同上
             }
+        }
+        
+        // 隐藏聊天区域，返回聊天列表
+        function hideChatArea() {
+            const chatArea = document.querySelector('.chat-area');
+            chatArea.classList.remove('active');
+            
+            // 重置聊天区域内容
+            chatMessagesEl.innerHTML = '<div class="empty-chat"><i class="fas fa-comments"></i><div>选择一个聊天开始对话</div></div>';
+            chatInputAreaEl.innerHTML = '';
+            chatHeaderLeftEl.innerHTML = '';
+            
+            // 重置当前聊天ID
+            gameState.currentChatId = null;
+            
+            // 移除所有聊天项的active类
+            document.querySelectorAll('.contact-item').forEach(el => el.classList.remove('active'));
         }
 
         // 输入区域渲染 (支持脚本)
@@ -464,8 +577,10 @@
                     const area = document.createElement('div'); area.className = 'chat-input-area';
                     area.innerHTML = `
                         <div class="chat-tools"><div class="chat-tool-btn"><i class="fas fa-smile"></i></div></div>
-                        <div class="chat-input-wrapper"><textarea class="chat-input readonly" id="script-input" readonly placeholder="点击此处输入消息"></textarea></div>
-                        <button class="send-btn" id="script-send">发送</button>
+                        <div class="input-row">
+                            <div class="chat-input-wrapper"><textarea class="chat-input readonly" id="script-input" readonly placeholder="点击此处输入消息"></textarea></div>
+                            <button class="send-btn" id="script-send">发送</button>
+                        </div>
                     `;
                     chatInputAreaEl.appendChild(area);
                     const inp = document.getElementById('script-input');
@@ -491,7 +606,12 @@
                 } else {
                     // 对方发言，显示禁用
                     const area = document.createElement('div'); area.className = 'chat-input-area';
-                    area.innerHTML = `<div class="chat-input-wrapper"><textarea class="chat-input" disabled placeholder="对方正在输入..."></textarea></div><button class="send-btn" disabled>发送</button>`;
+                    area.innerHTML = `
+                        <div class="input-row">
+                            <div class="chat-input-wrapper"><textarea class="chat-input" disabled placeholder="对方正在输入..."></textarea></div>
+                            <button class="send-btn" disabled>发送</button>
+                        </div>
+                    `;
                     chatInputAreaEl.appendChild(area);
                 }
             } else {
@@ -500,8 +620,10 @@
                 const area = document.createElement('div'); area.className = 'chat-input-area';
                 area.innerHTML = `
                     <div class="chat-tools"><div class="chat-tool-btn"><i class="fas fa-smile"></i></div></div>
-                    <div class="chat-input-wrapper"><textarea class="chat-input" placeholder="输入消息..." id="free-input" ${!canSend ? 'disabled' : ''}></textarea></div>
-                    <button class="send-btn" id="free-send" ${!canSend ? 'disabled' : ''}>发送</button>
+                    <div class="input-row">
+                        <div class="chat-input-wrapper"><textarea class="chat-input" placeholder="输入消息..." id="free-input" ${!canSend ? 'disabled' : ''}></textarea></div>
+                        <button class="send-btn" id="free-send" ${!canSend ? 'disabled' : ''}>发送</button>
+                    </div>
                 `;
                 chatInputAreaEl.appendChild(area);
                 if (canSend) {
@@ -513,8 +635,11 @@
         }
 
         function playNextReporter(chatId, script, stageKey, completeKey, character) {
+            // 防御性检查
+            if (!gameState || !script) return;
+            
             let stage = gameState[stageKey];
-            if (stage >= script.length) {
+            if (stage === undefined || stage >= script.length) {
                 gameState[completeKey] = true;
                 const chat = gameState.chatData.find(c => c.id === chatId);
                 if (chat) chat.canSend = false;
@@ -523,30 +648,50 @@
                     switchToChat(chatId);
                 }
                 renderChatList();
+                saveGameState(); // 保存状态
                 checkAllScriptsDone(); // 检查是否前两个完成
                 return;
             }
             const line = script[stage];
-            if (line[character]) {
-                // 只有当当前显示的是对应聊天时，才显示输入指示器
-                if (gameState.currentChatId === chatId) {
-                    showTypingIndicator(chatId);
-                }
+            if (line && line[character]) {
+                // 显示输入指示器（无论是否当前显示该聊天）
+                // 因为在手机端，用户可能正在查看该聊天
+                showTypingIndicator(chatId);
+                
                 setTimeout(() => {
-                    // 移除输入指示器（如果存在）
-                    removeTypingIndicator();
-                    const chat = gameState.chatData.find(c => c.id === chatId);
-                    const nowTime = new Date(); const ts = `${nowTime.getHours().toString().padStart(2,'0')}:${nowTime.getMinutes().toString().padStart(2,'0')}`;
-                    chat.messages.push({ type: 'received', time: `今天 ${ts}`, content: line[character] });
-                    chat.lastTimestamp = Date.now(); chat.lastTime = '刚刚'; chat.preview = line[character].substring(0,15);
-                    gameState[stageKey] = stage + 1;
-                    // 只有当当前显示的是对应聊天时，才刷新聊天界面
-                    if (gameState.currentChatId === chatId) {
-                        switchToChat(chatId);
+                    try {
+                        // 移除输入指示器（如果存在）
+                        removeTypingIndicator();
+                        
+                        const chat = gameState.chatData.find(c => c.id === chatId);
+                        if (!chat) return;
+                        
+                        const nowTime = new Date(); 
+                        const ts = `${nowTime.getHours().toString().padStart(2,'0')}:${nowTime.getMinutes().toString().padStart(2,'0')}`;
+                        chat.messages.push({ type: 'received', time: `今天 ${ts}`, content: line[character] });
+                        chat.lastTimestamp = Date.now(); 
+                        chat.lastTime = '刚刚'; 
+                        chat.preview = line[character].substring(0,15);
+                        gameState[stageKey] = stage + 1;
+                        
+                        // 无论当前是否显示该聊天，都更新聊天界面
+                        // 这样在手机端切换回来时，消息已经存在
+                        if (gameState.currentChatId === chatId) {
+                            switchToChat(chatId);
+                        }
+                        
+                        renderChatList();
+                        saveGameState(); // 保存状态
+                        
+                        // 继续处理下一条
+                        playNextReporter(chatId, script, stageKey, completeKey, character);
+                    } catch (e) {
+                        console.error('处理消息时出错:', e);
+                        // 即使出错，也要确保脚本继续执行
+                        gameState[stageKey] = stage + 1;
+                        saveGameState();
+                        playNextReporter(chatId, script, stageKey, completeKey, character);
                     }
-                    renderChatList();
-                    // 继续处理下一条
-                    playNextReporter(chatId, script, stageKey, completeKey, character);
                 }, line.delay || 2000);
             } else {
                 // 没有对方发言，直接进入下一步（玩家发言）
@@ -557,20 +702,34 @@
         }
 
         function showTypingIndicator(chatId) {
+            // 防御性检查
+            if (!gameState || !chatMessagesEl) return;
+            
             // 只有当当前显示的聊天窗口是对应聊天时，才显示输入指示器
             if (gameState.currentChatId !== chatId) return;
             
-            const typingDiv = document.createElement('div'); 
-            typingDiv.className = 'message received'; 
-            typingDiv.id = 'typing-indicator';
-            const avatar = getRandomAvatar(chatId);
-            typingDiv.innerHTML = `<div class="message-avatar" style="background-color:${avatar.color};">${avatar.text}</div><div class="typing-indicator"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div>`;
-            chatMessagesEl.appendChild(typingDiv);
-            chatMessagesEl.scrollTop = chatMessagesEl.scrollHeight;
+            try {
+                // 先移除已存在的输入指示器
+                removeTypingIndicator();
+                
+                const typingDiv = document.createElement('div'); 
+                typingDiv.className = 'message received'; 
+                typingDiv.id = 'typing-indicator';
+                const avatar = getRandomAvatar(chatId);
+                typingDiv.innerHTML = `<div class="message-avatar" style="background-color:${avatar.color};">${avatar.text}</div><div class="typing-indicator"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div>`;
+                chatMessagesEl.appendChild(typingDiv);
+                chatMessagesEl.scrollTop = chatMessagesEl.scrollHeight;
+            } catch (e) {
+                console.error('显示输入指示器时出错:', e);
+            }
         }
         function removeTypingIndicator() { 
-            const el = document.getElementById('typing-indicator'); 
-            if(el) el.remove(); 
+            try {
+                const el = document.getElementById('typing-indicator'); 
+                if(el) el.remove(); 
+            } catch (e) {
+                console.error('移除输入指示器时出错:', e);
+            }
         }
 
         function sendFreeMessage(chatId, text) {
@@ -581,6 +740,7 @@
             chat.messages.push({ type: 'sent', time: `今天 ${ts}`, content: text });
             chat.lastTimestamp = Date.now(); chat.lastTime = '刚刚'; chat.preview = text.substring(0,15);
             switchToChat(chatId); renderChatList();
+            saveGameState(); // 保存状态
         }
 
         // 启动脚本（修改后：第一条消息直接展示，无“正在输入”环节）
@@ -612,6 +772,7 @@
                     playNextReporter('mingyueye', mingyueyeNewScript, 'mingyueyeNewStage', 'mingyueyeNewComplete', 'reporter');
                 }
                 renderChatList(); // 更新列表预览和红点
+                saveGameState(); // 保存状态
             }
         }
 
@@ -638,6 +799,7 @@
                     playNextReporter('zhizuchangle', zhizuchangleNewScript, 'zhizuchangleNewStage', 'zhizuchangleNewComplete', 'reporter');
                 }
                 renderChatList();
+                saveGameState(); // 保存状态
             }
         }
 
@@ -646,6 +808,7 @@
                 gameState.bothFirstDone = true;
                 // 触发乔乔脚本③
                 startQiaoqiaoScript();
+                saveGameState(); // 保存状态
             }
         }
 
@@ -672,6 +835,7 @@
                     playNextReporter('qiaoqiao', qiaoqiaoNewScript, 'qiaoqiaoNewStage', 'qiaoqiaoNewComplete', 'reporter');
                 }
                 renderChatList();
+                saveGameState(); // 保存状态
             }
         }
 
@@ -703,11 +867,31 @@
             renderChatList();
             renderContacts();
 
-            // 默认选中第一个聊天 (妈妈)
+            // 检查是否是手机端
+            const isMobile = window.innerWidth <= 768;
+
+            // 桌面端默认选中第一个聊天，手机端只显示聊天列表
             if (gameState.chatData.length) {
-                gameState.currentChatId = gameState.chatData[0].id;
-                switchToChat(gameState.currentChatId);
-                document.querySelector(`.contact-item[data-id="${gameState.currentChatId}"]`)?.classList.add('active');
+                if (!isMobile && !gameState.currentChatId) {
+                    // 桌面端自动显示聊天内容
+                    gameState.currentChatId = gameState.chatData[0].id;
+                    switchToChat(gameState.currentChatId);
+                    document.querySelector(`.contact-item[data-id="${gameState.currentChatId}"]`)?.classList.add('active');
+                } else if (isMobile) {
+                    // 手机端只显示聊天列表，不自动打开聊天
+                    // 确保聊天区域默认隐藏
+                    const chatArea = document.querySelector('.chat-area');
+                    chatArea.classList.remove('active');
+                    
+                    // 重置聊天区域内容
+                    chatMessagesEl.innerHTML = '<div class="empty-chat"><i class="fas fa-comments"></i><div>选择一个聊天开始对话</div></div>';
+                    chatInputAreaEl.innerHTML = '';
+                    chatHeaderLeftEl.innerHTML = '';
+                } else if (gameState.currentChatId) {
+                    // 有保存的聊天ID，显示对应聊天
+                    switchToChat(gameState.currentChatId);
+                    document.querySelector(`.contact-item[data-id="${gameState.currentChatId}"]`)?.classList.add('active');
+                }
             }
 
             // 0.1秒后启动明月夜和知足常乐脚本
@@ -721,12 +905,26 @@
                 navChatBtn.classList.add('active'); navContactsBtn.classList.remove('active');
                 chatListEl.style.display = 'block'; contactsPageEl.classList.remove('active');
                 gameState.isContactsPageActive = false; searchText.textContent = '搜索'; addBtn.style.display = 'flex';
+                
+                // 手机端确保聊天区域隐藏
+                if (isMobile) {
+                    const chatArea = document.querySelector('.chat-area');
+                    chatArea.classList.remove('active');
+                }
+                saveGameState(); // 保存状态
             });
             navContactsBtn.addEventListener('click', () => {
                 navContactsBtn.classList.add('active'); navChatBtn.classList.remove('active');
                 chatListEl.style.display = 'none'; contactsPageEl.classList.add('active');
                 gameState.isContactsPageActive = true; searchText.textContent = '搜索'; addBtn.style.display = 'none';
                 chatHeaderLeftEl.innerHTML = ''; chatMessagesEl.innerHTML = '<div class="empty-chat"><i class="fas fa-address-book"></i><div>通讯录</div></div>'; chatInputAreaEl.innerHTML = '';
+                
+                // 手机端确保聊天区域隐藏
+                if (isMobile) {
+                    const chatArea = document.querySelector('.chat-area');
+                    chatArea.classList.remove('active');
+                }
+                saveGameState(); // 保存状态
             });
 
             addContactBtn.addEventListener('click', () => { addContactModal.style.display = 'flex'; contactIdInput.focus(); });
@@ -738,6 +936,7 @@
                     if (!gameState.contactsData.find(c => c.id === 'zhizuchangle')) {
                         gameState.contactsData.push({ id: 'zhizuchangle', name: '知足常乐' });
                         renderContacts();
+                        saveGameState(); // 保存状态
                     }
                 } else {
                     alert('联系人不存在');
@@ -746,10 +945,15 @@
             });
             closeWindowBtn.addEventListener('click', () => { window.close(); });
             addContactModal.addEventListener('click', (e) => { if (e.target === addContactModal) { addContactModal.style.display = 'none'; contactIdInput.value = ''; } });
+            
+            // 页面关闭前保存状态
+            window.addEventListener('beforeunload', saveGameState);
+            
+            // 定期保存状态（每30秒）
+            setInterval(saveGameState, 30000);
         }
 
         document.addEventListener('DOMContentLoaded', init);
     </script>
 </body>
-
 </html>
