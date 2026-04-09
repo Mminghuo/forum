@@ -2,7 +2,10 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="format-detection" content="telephone=no">
     <title>微信聊天</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -28,6 +31,135 @@
             background-color: white;
             display: flex;
             overflow: hidden;
+        }
+        
+        /* 手机布局 */
+        @media screen and (max-width: 768px) {
+            body {
+                height: 100vh;
+                width: 100vw;
+                overflow: hidden;
+            }
+            
+            .chat-container {
+                flex-direction: column;
+                height: 100vh;
+                width: 100vw;
+            }
+            
+            .nav-sidebar {
+                width: 100%;
+                height: 60px;
+                flex-direction: row;
+                justify-content: space-around;
+                padding-top: 0;
+                padding-bottom: 0;
+                flex-shrink: 0;
+            }
+            
+            .nav-item {
+                margin-bottom: 0;
+            }
+            
+            .sidebar {
+                width: 100%;
+                height: calc(100vh - 60px);
+                border-right: none;
+                border-top: 1px solid #e6e6e6;
+                display: flex;
+                flex-direction: column;
+            }
+            
+            .chat-area {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100vh;
+                z-index: 1000;
+                display: none;
+                background-color: white;
+                flex-direction: column;
+            }
+            
+            .chat-area.active {
+                display: flex;
+            }
+            
+            .chat-header {
+                padding: 12px 15px;
+                background-color: #f7f7f7;
+                border-bottom: 1px solid #e6e6e6;
+                flex-shrink: 0;
+            }
+            
+            .chat-messages {
+                flex: 1;
+                overflow-y: auto;
+                padding: 15px;
+            }
+            
+            .chat-input-area {
+                flex-shrink: 0;
+                padding: 10px 10px 20px 10px;
+                margin-bottom: 0;
+            }
+            
+            .back-btn {
+                display: block !important;
+                font-size: 18px;
+                color: #07c160;
+                margin-right: 10px;
+            }
+            
+            .chat-contact-avatar {
+                width: 36px;
+                height: 36px;
+            }
+            
+            .chat-contact-name {
+                font-size: 16px;
+                font-weight: bold;
+            }
+            
+            .close-window-btn {
+                padding: 6px 12px;
+                font-size: 12px;
+            }
+            
+            .message {
+                margin-bottom: 15px;
+            }
+            
+            .message-avatar {
+                width: 32px;
+                height: 32px;
+                margin: 0 8px;
+            }
+            
+            .message-content {
+                max-width: 75%;
+                padding: 8px 12px;
+                font-size: 14px;
+            }
+            
+            .input-row {
+                align-items: center;
+            }
+            
+            .chat-input {
+                padding: 8px 10px;
+                font-size: 14px;
+                min-height: 36px;
+                max-height: 100px;
+            }
+            
+            .send-btn {
+                padding: 6px 16px;
+                height: 36px;
+                min-width: 70px;
+                font-size: 14px;
+            }
         }
         
         /* 左侧导航栏 */
@@ -483,11 +615,12 @@
         
         /* 聊天输入区域 */
         .chat-input-area {
-            padding: 15px;
+            padding: 15px 15px 20px 15px;
             border-top: 1px solid #e6e6e6;
             display: flex;
             flex-direction: column;
             background-color: #f7f7f7;
+            margin-bottom: 10px;
         }
         
         .chat-tools {
@@ -503,13 +636,19 @@
             cursor: pointer;
         }
         
+        .input-row {
+            display: flex;
+            align-items: center;
+            margin-top: 10px;
+            gap: 10px;
+        }
+        
         .chat-input-wrapper {
             flex: 1;
             background-color: white;
             border-radius: 4px;
             border: 1px solid #e6e6e6;
             overflow: hidden;
-            margin-top: 10px;
         }
         
         .chat-input {
@@ -542,12 +681,15 @@
             border: none;
             border-radius: 4px;
             padding: 8px 20px;
-            margin-left: 10px;
             cursor: pointer;
             font-weight: bold;
             transition: background-color 0.2s;
-            align-self: flex-end;
-            margin-top: 10px;
+            height: 40px;
+            min-width: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 0;
         }
         
         .send-btn:hover:not(:disabled) {
@@ -766,6 +908,210 @@
             from { opacity: 1; }
             to   { opacity: 0; }
         }
+        
+        /* 响应式设计 - 手机布局 */
+        @media (max-width: 768px) {
+            body {
+                height: 100vh;
+                width: 100vw;
+                overflow: hidden;
+            }
+            
+            .chat-container {
+                flex-direction: column;
+                height: 100vh;
+                width: 100vw;
+            }
+            
+            .nav-sidebar {
+                width: 100%;
+                height: 60px;
+                flex-direction: row;
+                padding-top: 0;
+                padding-bottom: 0;
+                flex-shrink: 0;
+                justify-content: space-around;
+            }
+            
+            .nav-item {
+                margin-bottom: 0;
+            }
+            
+            .sidebar {
+                width: 100%;
+                height: calc(100vh - 60px);
+                border-right: none;
+                border-top: 1px solid #e6e6e6;
+                display: flex;
+                flex-direction: column;
+            }
+            
+            .chat-area {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100vh;
+                z-index: 1000;
+                display: none;
+                background-color: white;
+                flex-direction: column;
+            }
+            
+            .chat-area.active {
+                display: flex;
+            }
+            
+            .chat-header {
+                padding: 12px 15px;
+                background-color: #f7f7f7;
+                border-bottom: 1px solid #e6e6e6;
+                flex-shrink: 0;
+            }
+            
+            .chat-messages {
+                flex: 1;
+                overflow-y: auto;
+                padding: 15px;
+            }
+            
+            .chat-input-area {
+                flex-shrink: 0;
+                padding: 10px 10px 20px 10px;
+                margin-bottom: 0;
+            }
+            
+            .back-btn {
+                display: block !important;
+                font-size: 18px;
+                color: #07c160;
+                margin-right: 10px;
+            }
+            
+            .chat-contact-avatar {
+                width: 36px;
+                height: 36px;
+            }
+            
+            .chat-contact-name {
+                font-size: 16px;
+                font-weight: bold;
+            }
+            
+            .close-window-btn {
+                padding: 6px 12px;
+                font-size: 12px;
+            }
+            
+            .message {
+                margin-bottom: 15px;
+            }
+            
+            .message-avatar {
+                width: 32px;
+                height: 32px;
+                margin: 0 8px;
+            }
+            
+            .message-content {
+                max-width: 75%;
+                padding: 8px 12px;
+                font-size: 14px;
+            }
+            
+            .input-row {
+                align-items: center;
+            }
+            
+            .chat-input {
+                padding: 8px 10px;
+                font-size: 14px;
+                min-height: 36px;
+                max-height: 100px;
+            }
+            
+            .send-btn {
+                padding: 6px 16px;
+                height: 36px;
+                min-width: 70px;
+                font-size: 14px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .chat-header {
+                padding: 10px 12px;
+            }
+            
+            .chat-messages {
+                padding: 10px;
+            }
+            
+            .message-content {
+                max-width: 80%;
+                padding: 6px 10px;
+                font-size: 13px;
+            }
+            
+            .message-avatar {
+                width: 28px;
+                height: 28px;
+                margin: 0 6px;
+            }
+            
+            .chat-input {
+                padding: 6px 8px;
+                font-size: 13px;
+                min-height: 32px;
+                max-height: 80px;
+            }
+            
+            .send-btn {
+                padding: 4px 12px;
+                font-size: 12px;
+                height: 32px;
+                min-width: 60px;
+            }
+        }
+        
+        /* iOS 设备特定优化 */
+        @media screen and (max-width: 768px) and (-webkit-min-device-pixel-ratio: 2) {
+            body {
+                -webkit-text-size-adjust: 100%;
+            }
+            
+            .nav-item {
+                -webkit-tap-highlight-color: transparent;
+            }
+            
+            .add-btn {
+                -webkit-tap-highlight-color: transparent;
+            }
+            
+            .contact-item {
+                -webkit-tap-highlight-color: transparent;
+            }
+            
+            .close-window-btn {
+                -webkit-tap-highlight-color: transparent;
+            }
+            
+            .chat-tool-btn {
+                -webkit-tap-highlight-color: transparent;
+            }
+            
+            .send-btn {
+                -webkit-tap-highlight-color: transparent;
+            }
+            
+            .modal-btn {
+                -webkit-tap-highlight-color: transparent;
+            }
+            
+            .tianzun-btn {
+                -webkit-tap-highlight-color: transparent;
+            }
+        }
     </style>
 </head>
 <body>
@@ -928,7 +1274,7 @@
                     { type: 'received', time: '半月前 09:15', content: '温小姐您好，我是《奇闻调查》的记者明月夜。' },
                     { type: 'received', time: '半月前 09:15', content: '请问您是否是七月半论坛的正式用户？' },
                     { type: 'sent', time: '半月前 10:03', content: '怎么了？' },
-                    { type: 'received', time: '半月前 10:05', content: '是这样的，本节目正在做一个关于现代都市传说的专题报道，您所在的论坛是我们有很多有意思的怪谈。' },
+                    { type: 'received', time: '半月前 10:05', content: '是这样的，本节目正在做一个关于现代都市传说的专题报道，您所在的论坛里有很多我们感兴趣的灵异故事。' },
                     { type: 'received', time: '半月前 10:05', content: '但是，由于论坛已经关闭注册，我们无法查看更多有帖子，也无法私聊论坛发帖人，几番辗转才找到您的联系方式，希望能从您这里获得一些信息和线索。' },
                     { type: 'sent', time: '半月前 11:20', content: '是要我帮你搜集灵异事件吗？' },
                     { type: 'received', time: '半月前 11:22', content: '可以这么说。请您放心，本节目为正规栏目，对于您提供的信息，将会按照正式员工的标准为您提供相应报酬。' },
@@ -938,7 +1284,7 @@
                     { type: 'sent', time: '半月前 16:45', content: '这个不方便说' },
                     { type: 'received', time: '半月前 16:46', content: '没关系，等您准备好我们再聊。感谢您抽时间回复我。' },
                     { type: 'time-divider', content: '一周前' },
-                    { type: 'received', time: '一周前 10:30', content: '温小姐，请问您有什么怪谈可以提供吗？' },
+                    { type: 'received', time: '一周前 10:30', content: '温小姐，请问您有什么灵异故事可以提供吗？' },
                     { type: 'received', time: '3天前 15:22', content: '温小姐您现在方便吗？' },
                     { type: 'time-divider', content: '昨天' },
                     { type: 'received', time: '昨天 09:05', content: '温小姐，我很担心您，请尽快回复。' },
@@ -1655,10 +2001,12 @@
                         <div class="chat-tool-btn"><i class="fas fa-smile"></i></div>
                         <div class="chat-tool-btn"><i class="fas fa-paperclip"></i></div>
                     </div>
-                    <div class="chat-input-wrapper">
-                        <textarea class="chat-input readonly" id="message-input" placeholder="请点击此处输入消息" readonly></textarea>
+                    <div class="input-row">
+                        <div class="chat-input-wrapper">
+                            <textarea class="chat-input readonly" id="message-input" placeholder="请点击此处输入消息" readonly></textarea>
+                        </div>
+                        <button class="send-btn" id="send-btn">发送</button>
                     </div>
-                    <button class="send-btn" id="send-btn">发送</button>
                 `;
                 
                 chatInputAreaEl.appendChild(inputArea);
@@ -1889,10 +2237,12 @@
                         <div class="chat-tool-btn"><i class="fas fa-smile"></i></div>
                         <div class="chat-tool-btn"><i class="fas fa-paperclip"></i></div>
                     </div>
-                    <div class="chat-input-wrapper">
-                        <textarea class="chat-input" placeholder="输入消息..." id="message-input" ${!canSendThisContact ? 'disabled' : ''}></textarea>
+                    <div class="input-row">
+                        <div class="chat-input-wrapper">
+                            <textarea class="chat-input" placeholder="输入消息..." id="message-input" ${!canSendThisContact ? 'disabled' : ''}></textarea>
+                        </div>
+                        <button class="send-btn" id="send-btn" ${!canSendThisContact ? 'disabled' : ''}>发送</button>
                     </div>
-                    <button class="send-btn" id="send-btn" ${!canSendThisContact ? 'disabled' : ''}>发送</button>
                 `;
                 
                 chatInputAreaEl.appendChild(inputArea);
@@ -1924,10 +2274,12 @@
                         <div class="chat-tool-btn"><i class="fas fa-smile"></i></div>
                         <div class="chat-tool-btn"><i class="fas fa-paperclip"></i></div>
                     </div>
-                    <div class="chat-input-wrapper">
-                        <textarea class="chat-input" placeholder="输入消息..." id="message-input" ${!chat.canSend ? 'disabled' : ''}></textarea>
+                    <div class="input-row">
+                        <div class="chat-input-wrapper">
+                            <textarea class="chat-input" placeholder="输入消息..." id="message-input" ${!chat.canSend ? 'disabled' : ''}></textarea>
+                        </div>
+                        <button class="send-btn" id="send-btn" ${!chat.canSend ? 'disabled' : ''}>发送</button>
                     </div>
-                    <button class="send-btn" id="send-btn" ${!chat.canSend ? 'disabled' : ''}>发送</button>
                 `;
                 
                 chatInputAreaEl.appendChild(inputArea);
@@ -1999,6 +2351,9 @@
             const avatar = getRandomAvatar(chat.id);
             
             chatHeaderLeftEl.innerHTML = `
+                <div class="back-btn" onclick="hideChatArea()" style="margin-right: 10px; cursor: pointer; display: none;">
+                    <i class="fas fa-arrow-left"></i>
+                </div>
                 <div class="chat-contact-avatar" style="background-color: ${avatar.color}; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 16px;">
                     ${avatar.text}
                 </div>
@@ -2110,6 +2465,35 @@
             }, 10);
             
             renderChatInputArea(chatId);
+            
+            // 检测是否为手机端，在手机上显示聊天区域
+            const isMobile = window.innerWidth <= 768;
+            if (isMobile) {
+                const chatArea = document.querySelector('.chat-area');
+                chatArea.classList.add('active');
+                
+                // 显示返回按钮
+                const backBtn = document.querySelector('.back-btn');
+                if (backBtn) {
+                    backBtn.style.display = 'block';
+                }
+            }
+        }
+        
+        function hideChatArea() {
+            const chatArea = document.querySelector('.chat-area');
+            chatArea.classList.remove('active');
+            gameState.currentChatId = null;
+            
+            // 清除聊天区域的选中状态
+            chatMessagesEl.innerHTML = '<div class="empty-chat"><i class="fas fa-comments"></i><div>选择一个聊天开始对话</div></div>';
+            chatInputAreaEl.innerHTML = '';
+            chatHeaderLeftEl.innerHTML = '';
+            
+            // 清除联系人的active状态
+            document.querySelectorAll('.contact-item').forEach(item => {
+                item.classList.remove('active');
+            });
         }
         
         // 显示链接已失效
@@ -2686,8 +3070,10 @@
             var inputArea = document.createElement('div');
             inputArea.className = 'chat-input-area';
             inputArea.innerHTML = '<div class="chat-tools"><div class="chat-tool-btn"><i class="fas fa-smile"></i></div></div>' +
+                '<div class="input-row">' +
                 '<div class="chat-input-wrapper"><textarea class="chat-input readonly" id="xqy-input" readonly placeholder="点击此处输入消息"></textarea></div>' +
-                '<button class="send-btn" id="xqy-send">发送</button>';
+                '<button class="send-btn" id="xqy-send">发送</button>' +
+                '</div>';
             chatInputAreaEl.appendChild(inputArea);
 
             var inp = document.getElementById('xqy-input');
@@ -2769,7 +3155,7 @@
                         // 当前轮到对方发言，自动开始播放
                         var ia = document.createElement('div');
                         ia.className = 'chat-input-area';
-                        ia.innerHTML = '<div class="chat-input-wrapper"><textarea class="chat-input" disabled placeholder="对方正在输入..."></textarea></div><button class="send-btn" disabled>发送</button>';
+                        ia.innerHTML = '<div class="input-row"><div class="chat-input-wrapper"><textarea class="chat-input" disabled placeholder="对方正在输入..."></textarea></div><button class="send-btn" disabled>发送</button></div>';
                         chatInputAreaEl.appendChild(ia);
                         // 延迟后自动播放
                         setTimeout(playXiaoqingyuScript, 1000);
@@ -2777,13 +3163,13 @@
                         // 显示禁用输入框
                         var ia = document.createElement('div');
                         ia.className = 'chat-input-area';
-                        ia.innerHTML = '<div class="chat-input-wrapper"><textarea class="chat-input" disabled placeholder="对方正在输入..."></textarea></div><button class="send-btn" disabled>发送</button>';
+                        ia.innerHTML = '<div class="input-row"><div class="chat-input-wrapper"><textarea class="chat-input" disabled placeholder="对方正在输入..."></textarea></div><button class="send-btn" disabled>发送</button></div>';
                         chatInputAreaEl.appendChild(ia);
                     }
                 } else {
                     var ia2 = document.createElement('div');
                     ia2.className = 'chat-input-area';
-                    ia2.innerHTML = '<div class="chat-input-wrapper"><textarea class="chat-input" disabled placeholder="无法发送消息"></textarea></div><button class="send-btn" disabled>发送</button>';
+                    ia2.innerHTML = '<div class="input-row"><div class="chat-input-wrapper"><textarea class="chat-input" disabled placeholder="无法发送消息"></textarea></div><button class="send-btn" disabled>发送</button></div>';
                     chatInputAreaEl.appendChild(ia2);
                 }
                 return;
@@ -2855,7 +3241,7 @@
                 }
                 var ia = document.createElement('div');
                 ia.className = 'chat-input-area';
-                ia.innerHTML = '<div class="chat-input-wrapper"><textarea class="chat-input" disabled placeholder="对话已结束"></textarea></div><button class="send-btn" disabled>发送</button>';
+                ia.innerHTML = '<div class="input-row"><div class="chat-input-wrapper"><textarea class="chat-input" disabled placeholder="对话已结束"></textarea></div><button class="send-btn" disabled>发送</button></div>';
                 chatInputAreaEl.appendChild(ia);
                 return;
             }
@@ -2863,8 +3249,10 @@
             var inputArea = document.createElement('div');
             inputArea.className = 'chat-input-area';
             inputArea.innerHTML = '<div class="chat-tools"><div class="chat-tool-btn"><i class="fas fa-smile"></i></div></div>' +
+                '<div class="input-row">' +
                 '<div class="chat-input-wrapper"><textarea class="chat-input readonly" id="script-input" readonly placeholder="点击此处输入消息"></textarea></div>' +
-                '<button class="send-btn" id="script-send">发送</button>';
+                '<button class="send-btn" id="script-send">发送</button>' +
+                '</div>';
             chatInputAreaEl.appendChild(inputArea);
 
             var inp = document.getElementById('script-input');
@@ -3081,12 +3469,29 @@
             initChatList();
             initContacts();
             
-            // 默认显示第一个聊天
+            // 默认显示第一个聊天（仅在桌面端自动显示）
             if (gameState.chatData.length > 0) {
                 // 确保文件传输助手是第一个，否则重新排序
                 const firstChatId = 'file-helper';
                 gameState.currentChatId = firstChatId;
-                switchToChat(firstChatId);
+                
+                // 检测是否为手机端
+                const isMobile = window.innerWidth <= 768;
+                
+                if (!isMobile) {
+                    // 桌面端自动显示聊天内容
+                    switchToChat(firstChatId);
+                } else {
+                    // 手机端只显示聊天列表，不自动打开聊天
+                    // 确保聊天区域默认隐藏
+                    const chatArea = document.querySelector('.chat-area');
+                    chatArea.classList.remove('active');
+                    
+                    // 重置聊天区域内容
+                    chatMessagesEl.innerHTML = '<div class="empty-chat"><i class="fas fa-comments"></i><div>选择一个聊天开始对话</div></div>';
+                    chatInputAreaEl.innerHTML = '';
+                    chatHeaderLeftEl.innerHTML = '';
+                }
                 
                 setTimeout(() => {
                     const firstContact = document.querySelector(`.contact-item[data-id="${firstChatId}"]`);
@@ -3106,6 +3511,13 @@
                 searchText.textContent = '搜索';
                 addBtn.style.display = 'flex';
                 
+                // 手机端确保聊天区域隐藏
+                const isMobile = window.innerWidth <= 768;
+                if (isMobile) {
+                    const chatArea = document.querySelector('.chat-area');
+                    chatArea.classList.remove('active');
+                }
+                
                 saveGameState();
             });
             
@@ -3121,6 +3533,13 @@
                 chatHeaderLeftEl.innerHTML = '';
                 chatMessagesEl.innerHTML = '<div class="empty-chat"><i class="fas fa-address-book"></i><div>通讯录</div></div>';
                 chatInputAreaEl.innerHTML = '';
+                
+                // 手机端确保聊天区域隐藏
+                const isMobile = window.innerWidth <= 768;
+                if (isMobile) {
+                    const chatArea = document.querySelector('.chat-area');
+                    chatArea.classList.remove('active');
+                }
                 
                 saveGameState();
             });
