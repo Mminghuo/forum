@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
@@ -1258,10 +1258,18 @@
                     dialog.classList.remove('show');
                     loadingToast.style.display = 'block';
                     
-                    // 2秒后跳转
+                    // 先创建窗口（在用户交互上下文中）
+                    const newWindow = window.open('', '_blank');
+                    
+                    // 2秒后更新窗口位置并隐藏提示
                     setTimeout(function() {
                         loadingToast.style.display = 'none';
-                        window.open('gongfengqiang.html', '_blank');
+                        if (newWindow) {
+                            newWindow.location.href = 'gongfengqiang.html';
+                        } else {
+                            // 如果窗口创建失败，尝试直接打开
+                            window.open('gongfengqiang.html', '_blank');
+                        }
                     }, 2000);
                 } else {
                     // 错误，显示错误信息
